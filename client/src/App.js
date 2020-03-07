@@ -1,9 +1,12 @@
 import React from 'react';
 import './App.css';
+import Map from './components/Map';
 
 const App = () => {
   return (
-    <h1>mywta</h1>
+    <Map>
+
+    </Map>
   );
 }
 
