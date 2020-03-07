@@ -2,49 +2,38 @@ import React, { useEffect } from 'react';
 
 const Map = () => {
 
-  //loads map on initial load
+  //loads map aftrer initial render (only runs once)
   useEffect(() => {
-    let googleMapsPromise;
-    //manages loading google maps
-    const getGoogleMapsPromise = () => {
-      //only set promise in window object if it hasn't been declared
-      if(!googleMapsPromise) {
-        googleMapsPromise = new Promise(resolve => {
-          window.resolveGoogleMapsPromise = () => {
-            resolve(window.google);
-
-            delete window.resolveGoogleMapsPromise;
-          }
-        });
-
-        let script = document.createElement('script');
-        script.async = true;
-        script.defer = true;
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&callback=resolveGoogleMapsPromise';
-        document.getElementsByTagName('body')[0].appendChild(script);
-      }
-
-      return googleMapsPromise;
+    //first add the initMap method to the window object
+    window.initMap = () => {
+      //initMap calls the map logic after the google maps resources have been loaded
+      mywtaMap(window.google);
+      //init map no longer needed
+      delete window.initMap;
     }
 
-    getGoogleMapsPromise()
-      .then(google => { mywtaMap(google) });
-
+    //add script tag to call google maps api
+    let script = document.createElement('script');
+    script.async = true;
+    script.defer = true;
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&callback=initMap';
+    document.getElementsByTagName('body')[0].appendChild(script);
   }, []);
 
+  //mywta map logic
   const mywtaMap = (google) => {
-    // The location of Uluru
-    var seattle = {lat: 47.60624, lng: -122.3321};
-    // The map, centered at Uluru
+    //washington coordinates
+    var wa = {lat: 47.7511, lng: -120.7401};
+    //the map object
     var map = new google.maps.Map(
         document.getElementById('map'), {
-          zoom: 16,
-          center: seattle
+          zoom: 6,
+          center: wa
         }
     );
 
-    // The marker, positioned in seattle
-    new google.maps.Marker({position: seattle, map: map});
+    //a marker centered in washinton
+    new google.maps.Marker({position: wa, map: map});
   }
 
   return(
