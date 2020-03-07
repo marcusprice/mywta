@@ -13,11 +13,11 @@ const Map = () => {
     }
 
     //add script tag to call google maps api
-    let script = document.createElement('script');
-    script.async = true;
-    script.defer = true;
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&callback=initMap';
-    document.getElementsByTagName('body')[0].appendChild(script);
+    let googleScript = document.createElement('script');
+    googleScript.async = true;
+    googleScript.defer = true;
+    googleScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&callback=initMap';
+    document.getElementsByTagName('body')[0].appendChild(googleScript);
   }, []);
 
   //mywta map logic
@@ -26,10 +26,10 @@ const Map = () => {
     var wa = {lat: 47.7511, lng: -120.7401};
     //the map object
     var map = new google.maps.Map(
-        document.getElementById('map'), {
-          zoom: 6,
-          center: wa
-        }
+      document.getElementById('map'), {
+        zoom: 6,
+        center: wa
+      }
     );
 
     //a marker centered in washinton
