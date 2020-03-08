@@ -4,11 +4,11 @@ import MenuItem from './MenuItem';
 const Menu = () => {
   return(
     <ul className="menu">
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
-      <MenuItem />
+      <MenuItem icon="search"/>
+      <MenuItem icon="hike-info"/>
+      <MenuItem icon="location" />
+      <MenuItem icon="map"/>
+      <MenuItem icon="about"/>
     </ul>
   )
 }
