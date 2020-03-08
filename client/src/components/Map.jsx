@@ -26,6 +26,7 @@ const Map = (props) => {
 
       //set the google map
       setMap(googleMap);
+
       //init map no longer needed
       delete window.initMap;
     }
@@ -118,6 +119,16 @@ const Map = (props) => {
 
   }, [props.userLocation, map]);
 
+
+  useEffect(() => {
+    if(map) {
+      //when user clicks location icon
+      document.querySelector('.location')
+        .addEventListener('click', () => {
+          map.panTo({lat: props.userLocation.lat, lng: props.userLocation.lng});
+        });
+    }
+  }, [map, props.userLocation.lat, props.userLocation.lng]);
 
   return(
     <div id="map" />

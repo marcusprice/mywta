@@ -7,6 +7,7 @@ import about from '../assets/icons/about.svg';
 
 const MenuItem = (props) => {
   let icon, alt;
+  let className = '';
   switch(props.icon) {
     case 'search':
       icon = search;
@@ -19,6 +20,7 @@ const MenuItem = (props) => {
     case 'location':
       icon = location;
       alt = 'location pin icon';
+      className = 'location';
       break;
     case 'map':
       icon = map;
@@ -36,7 +38,7 @@ const MenuItem = (props) => {
 
   return(
     <li className="menu-item">
-      <img className="menu-item-icon" src={icon} alt=""/>
+      <img className={'menu-item-icon ' + className}src={icon} alt={alt} />
     </li>
   )
 }
