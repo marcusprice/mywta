@@ -18,6 +18,7 @@ html {
   padding: 0 12px;
   display: flex;
   align-items: center;
+  background-color: #1abc9c;
 }
 
 #map {
@@ -25,7 +26,21 @@ html {
 }
 
 .menu {
+  border-top: #1abc9c 1px solid;
   height: 64px;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-item {
+  border-right: solid #1abc9c 1px;
+  list-style-type: none;
+  margin: 0; padding: 0;
+  width: 25%;
+}
+
+.menu-item:last-child {
+  border-right: 0;
 }

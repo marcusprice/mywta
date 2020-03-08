@@ -1,9 +1,14 @@
 import React from 'react';
+import MenuItem from './MenuItem';
 
 const Menu = () => {
   return(
     <ul className="menu">
-      I'm a menu
+      <MenuItem />
+      <MenuItem />
+      <MenuItem />
+      <MenuItem />
+      <MenuItem />
     </ul>
   )
 }
