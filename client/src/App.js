@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import Map from './components/Map';
+import HikeBar from './components/HikeBar';
+import Menu from './components/Menu';
 
 const App = () => {
   const [userLocation, setUserLocation] = useState({ enabled: false, lat: 47.7511, lng: -120.7401, accuracy: 0 }); //defaults to washington coordinates
@@ -16,7 +18,11 @@ const App = () => {
   });
 
   return (
-    <Map userLocation={userLocation} />
+    <div className="app">
+      <HikeBar />
+      <Map userLocation={userLocation} />
+      <Menu />
+    </div>
   );
 }
 

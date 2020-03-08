@@ -9,6 +9,23 @@ html {
   box-sizing: inherit;
 }
 
-#map {
+.app {
   width: 100vw; height: 100vh;
+}
+
+.hike-bar {
+  height: 36px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+
+#map {
+  width: 100vw; height: calc(100vh - 100px);
+}
+
+.menu {
+  height: 64px;
+  margin: 0;
+  padding: 0;
 }
