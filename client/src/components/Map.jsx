@@ -131,8 +131,6 @@ const Map = (props) => {
         initialLoad.current = true;
       }
 
-      console.log(userCoords);
-
       //when user clicks location icon
       document.querySelector('.location')
         .addEventListener('click', () => {
@@ -141,8 +139,15 @@ const Map = (props) => {
     }
   });
 
+  let mapHeight;
+  if(props.windowDimensions.width < 450) {
+    mapHeight = props.windowDimensions.height - 100
+  } else {
+    mapHeight = props.windowDimensions.height - 36;
+  }
+
   return(
-    <div id="map" style={{width: "100%", height: props.windowHeight - 100}} />
+    <div id="map" style={{width: "100%", height: mapHeight}} />
   )
 }
 

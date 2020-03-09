@@ -6,19 +6,19 @@ import Menu from './components/Menu';
 
 const App = () => {
   const [userLocation, setUserLocation] = useState({ enabled: false, lat: 47.7511, lng: -120.7401, accuracy: 0 }); //defaults to washington coordinates
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [windowDimensions, setWindowDimensions] = useState({height: window.innerHeight, width: window.innerWidth});
 
   //updates window size on resize
   window.onresize = () => {
-    setWindowHeight(window.innerHeight)
+    setWindowDimensions({height: window.innerHeight, width: window.innerWidth});
   }
 
   return (
-    <div className="app">
-      <HikeBar />
-      <Map userLocation={userLocation} windowHeight={windowHeight} />
-      <Menu />
-    </div>
+   <div className="app" style={{height: windowDimensions.height}}>
+    <HikeBar />
+    <Map userLocation={userLocation} windowDimensions={windowDimensions} />
+    <Menu />
+  </div>
   );
 }
 
