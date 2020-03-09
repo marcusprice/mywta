@@ -130,8 +130,9 @@ const Map = (props) => {
     }
   }, [map, props.userLocation.lat, props.userLocation.lng]);
 
+
   return(
-    <div id="map" />
+    <div id="map" style={{width: "100%", height: props.windowHeight - 100}} />
   )
 }
 

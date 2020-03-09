@@ -6,6 +6,7 @@ import Menu from './components/Menu';
 
 const App = () => {
   const [userLocation, setUserLocation] = useState({ enabled: false, lat: 47.7511, lng: -120.7401, accuracy: 0 }); //defaults to washington coordinates
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
   //gets user's position for the map & hike radius
   navigator.geolocation.watchPosition((position) => {
@@ -17,17 +18,15 @@ const App = () => {
     });
   });
 
-  //handles viewport bug for 100vh
+  //updates window size on resize
   window.onresize = () => {
-    document.body.height = window.innerHeight;
+    setWindowHeight(window.innerHeight)
   }
-
-  window.onresize();
 
   return (
     <div className="app">
       <HikeBar />
-      <Map userLocation={userLocation} />
+      <Map userLocation={userLocation} windowHeight={windowHeight} />
       <Menu />
     </div>
   );
