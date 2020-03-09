@@ -13,6 +13,20 @@ const Map = (props) => {
       const google = window.google;
       //intialize with WA coordinates
       const wa = { lat: 47.7511, lng: -120.7401 };
+      //turn off places of interest
+      const myStyles = [{
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [
+          { visibility: "off" }
+        ]
+      }, {
+        featureType: "transit",
+        elementType: "labels.icon",
+        stylers: [
+          { visibility: "off" }
+        ]
+      }];
 
       //the map
       const googleMap = new google.maps.Map(
@@ -21,6 +35,7 @@ const Map = (props) => {
           zoomControl: true,
           zoom: 6,
           center: wa,
+          styles: myStyles
         }
       );
 
