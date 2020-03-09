@@ -54,14 +54,16 @@ const Map = (props) => {
     document.getElementsByTagName('body')[0].appendChild(googleScript);
   }, []);
 
-  //update map when user's location changes
-  useEffect(() => {
-    if(map && props.userLocation.enabled) { //only run if the user's location is enabled and the map has loaded
+  //updates user's location on map
+  navigator.geolocation.watchPosition((position) => {
+    if(map) {
       const google = window.google;
-      const userCoords = { lat: props.userLocation.lat, lng: props.userLocation.lng };
-      let accuracy = props.userLocation.accuracy;
+      const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude };
+      let accuracy = position.coords.accuracy;
       const locationCircles = [];
 
+      console.log(userCoords);
+      console.log(accuracy);
       //inner location circle
       locationCircles.push(new google.maps.Marker({
         clickable: false,
@@ -95,7 +97,7 @@ const Map = (props) => {
           map: map
       }));
 
-      if(props.userLocation.accuracy < 1000) {
+      if(accuracy < 1000) {
         //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
         //accuracy range
         locationCircles.push(new google.maps.Circle({
@@ -131,10 +133,9 @@ const Map = (props) => {
         initialLoad.current = true;
       }
     }
+  });
 
-  }, [props.userLocation, map]);
-
-
+  //creates an event listener for orienting the user on the map
   useEffect(() => {
     if(map) {
       //when user clicks location icon
