@@ -62,8 +62,6 @@ const Map = (props) => {
       let accuracy = position.coords.accuracy;
       const locationCircles = [];
 
-      console.log(userCoords);
-      console.log(accuracy);
       //inner location circle
       locationCircles.push(new google.maps.Marker({
         clickable: false,
@@ -132,20 +130,16 @@ const Map = (props) => {
         map.setZoom(14);
         initialLoad.current = true;
       }
-    }
-  });
 
-  //creates an event listener for orienting the user on the map
-  useEffect(() => {
-    if(map) {
+      console.log(userCoords);
+
       //when user clicks location icon
       document.querySelector('.location')
         .addEventListener('click', () => {
-          map.panTo({lat: props.userLocation.lat, lng: props.userLocation.lng});
+          map.panTo(userCoords);
         });
     }
-  }, [map, props.userLocation.lat, props.userLocation.lng]);
-
+  });
 
   return(
     <div id="map" style={{width: "100%", height: props.windowHeight - 100}} />
