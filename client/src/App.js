@@ -17,6 +17,13 @@ const App = () => {
     });
   });
 
+  //handles viewport bug for 100vh
+  window.onresize = () => {
+    document.body.height = window.innerHeight;
+  }
+
+  window.onresize();
+
   return (
     <div className="app">
       <HikeBar />
