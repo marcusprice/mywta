@@ -1,0 +1,23 @@
+{
+  "name": "mywta",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcusprice/mywta.git"
+  },
+  "author": "Marcus Price",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcusprice/mywta/issues"
+  },
+  "homepage": "https://github.com/marcusprice/mywta#readme"
+}
