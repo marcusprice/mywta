@@ -18,7 +18,19 @@ html {
   padding: 0 12px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: #1abc9c;
+}
+
+.hike-bar-title {
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.info-icon {
+  height: 75%;
 }
 
 #map {
