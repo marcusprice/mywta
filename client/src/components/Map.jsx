@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const Map = (props) => {
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
   const userLocationMarkers = useRef([]);
-  const initialLoad = useRef(false);
+  const initialLocationLoad = useRef(false);
 
   //loads map after initial render (only runs once)
   useEffect(() => {
@@ -125,22 +125,22 @@ const Map = (props) => {
       userLocationMarkers.current = locationCircles;
 
       //center the map over the user if it's the first time loading
-      if(!initialLoad.current) {
+      if(!initialLocationLoad.current) {
         map.setCenter(userCoords);
         map.setZoom(14);
-        initialLoad.current = true;
+        initialLocationLoad.current = true;
       }
 
-      //function for the location event listener (centers user on map)
-      const centerUser = () => {
-        map.panTo(userCoords);
-      }
+      //remove event listener by cloning and replacing node
+      const oldNode = document.querySelector('.location');
+      const newNode = oldNode.cloneNode(true);
+      oldNode.parentNode.replaceChild(newNode, oldNode);
 
+      //add an event listener for the location pin
       document.querySelector('.location')
-        .removeEventListener('click', centerUser);
-
-      document.querySelector('.location')
-        .addEventListener('click', centerUser);
+        .addEventListener('click', () => {
+          map.panTo(userCoords);
+        });
     }
   });
 
