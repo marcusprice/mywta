@@ -131,15 +131,11 @@ const Map = (props) => {
         initialLoad.current = true;
       }
 
-<<<<<<< HEAD
       //function for the location event listener (centers user on map)
       const centerUser = () => {
         map.panTo(userCoords);
       }
 
-=======
-      //when user clicks location icon
->>>>>>> 425330d8ccfe4ecde783d3d776b7d09bcf2412de
       document.querySelector('.location')
         .removeEventListener('click', centerUser);
 
