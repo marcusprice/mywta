@@ -36,8 +36,16 @@ const MenuItem = (props) => {
       break;
   }
 
+  const handleClick = () => {
+    if(props.icon === 'search' || props.icon === 'hike-info' || props.icon === 'about') {
+      props.setContentWindowExpanded(true);
+    } else {
+      props.setContentWindowExpanded(false);
+    }
+  }
+
   return(
-    <li className="menu-item">
+    <li onClick={handleClick} className="menu-item">
       <img className={'menu-item-icon ' + className}src={icon} alt={alt} />
     </li>
   )

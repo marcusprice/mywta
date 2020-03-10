@@ -1,16 +1,15 @@
 import React from 'react';
 import MenuItem from './MenuItem';
 
-const Menu = () => {
+const Menu = (props) => {
   return(
-
       <nav>
         <ul className="menu">
-          <MenuItem icon="search"/>
-          <MenuItem icon="hike-info"/>
-          <MenuItem icon="location" />
-          <MenuItem icon="map"/>
-          <MenuItem icon="about"/>
+          <MenuItem icon="search" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="hike-info" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="location" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="map" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="about" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
         </ul>
       </nav>
   )

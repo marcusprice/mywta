@@ -9,6 +9,11 @@ html {
   box-sizing: inherit;
 }
 
+.app {
+  position: relative;
+  width: 100%;
+}
+
 .hike-bar {
   height: 36px;
   padding: 0 12px;
@@ -27,6 +32,15 @@ html {
 
 .info-icon {
   height: 75%;
+}
+
+.content-window {
+  height: 0; width: 100%;
+  position: absolute;
+  bottom: 64px;
+  background-color: #fff;
+  transition-timing-function: ease;
+  transition: height 1s;
 }
 
 nav {
@@ -74,11 +88,6 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 
 /*Desktop Styles*/
 @media only screen and (min-width: 450px) {
-  .app {
-    position: absolute;
-    width: 100%;
-  }
-
   .hike-bar {
     background-color: #333;
   }
@@ -89,8 +98,9 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 
   nav {
     border: #1abc9c 1px solid;
+    position: absolute;
+    bottom: 0px;
     background-color: #fff;
-    position: relative;
     bottom: 74px;
     margin: 0 auto;
   }
