@@ -131,13 +131,16 @@ const Map = (props) => {
         initialLoad.current = true;
       }
 
-      console.log(userCoords);
+      //function for the location event listener (centers user on map)
+      const centerUser = () => {
+        map.panTo(userCoords);
+      }
 
-      //when user clicks location icon
       document.querySelector('.location')
-        .addEventListener('click', () => {
-          map.panTo(userCoords);
-        });
+        .removeEventListener('click', centerUser);
+
+      document.querySelector('.location')
+        .addEventListener('click', centerUser);
     }
   });
 
