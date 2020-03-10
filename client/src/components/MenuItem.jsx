@@ -46,7 +46,7 @@ const MenuItem = (props) => {
 
   return(
     <li onClick={handleClick} className="menu-item">
-      <img className={'menu-item-icon ' + className}src={icon} alt={alt} />
+      <img className={'menu-item-icon ' + className} src={icon} alt={alt} />
     </li>
   )
 }

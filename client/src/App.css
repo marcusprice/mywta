@@ -98,10 +98,20 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 
   nav {
     border: #1abc9c 1px solid;
-    position: absolute;
+    position: relative;
     bottom: 0px;
     background-color: #fff;
     bottom: 74px;
     margin: 0 auto;
+  }
+
+  .content-window {
+    height: 0; width: calc(25% - 12px);
+    position: absolute;
+    bottom: 74px;
+    left: 12px;
+    background-color: #fff;
+    transition-timing-function: ease;
+    transition: height 1s;
   }
 }
