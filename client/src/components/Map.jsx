@@ -131,11 +131,15 @@ const Map = (props) => {
         initialLoad.current = true;
       }
 
+<<<<<<< HEAD
       //function for the location event listener (centers user on map)
       const centerUser = () => {
         map.panTo(userCoords);
       }
 
+=======
+      //when user clicks location icon
+>>>>>>> 425330d8ccfe4ecde783d3d776b7d09bcf2412de
       document.querySelector('.location')
         .removeEventListener('click', centerUser);
 
@@ -144,8 +148,15 @@ const Map = (props) => {
     }
   });
 
+  let mapHeight;
+  if(props.windowDimensions.width < 450) {
+    mapHeight = props.windowDimensions.height - 100
+  } else {
+    mapHeight = props.windowDimensions.height - 36;
+  }
+
   return(
-    <div id="map" style={{width: "100%", height: props.windowHeight - 100}} />
+    <div id="map" style={{width: "100%", height: mapHeight}} />
   )
 }
 
