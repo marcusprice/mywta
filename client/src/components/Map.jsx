@@ -4,6 +4,7 @@ const Map = (props) => {
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
   const userLocationMarkers = useRef([]);
   const initialLocationLoad = useRef(false);
+  const usersLocation = useRef({});
 
   //loads map after initial render (only runs once)
   useEffect(() => {
@@ -13,6 +14,7 @@ const Map = (props) => {
       const google = window.google;
       //intialize with WA coordinates
       const wa = { lat: 47.7511, lng: -120.7401 };
+      usersLocation.current = wa;
       //turn off places of interest
       const myStyles = [{
         featureType: "poi",
@@ -56,9 +58,11 @@ const Map = (props) => {
 
   //updates user's location on map
   navigator.geolocation.watchPosition((position) => {
+          console.log('hello?');
     if(map) {
       const google = window.google;
       const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude };
+      usersLocation.current = userCoords;
       let accuracy = position.coords.accuracy;
       const locationCircles = [];
 
@@ -131,18 +135,18 @@ const Map = (props) => {
         initialLocationLoad.current = true;
       }
 
-      //remove event listener by cloning and replacing node
-      const oldNode = document.querySelector('.location');
-      const newNode = oldNode.cloneNode(true);
-      oldNode.parentNode.replaceChild(newNode, oldNode);
-
       //add an event listener for the location pin
-      document.querySelector('.location')
-        .addEventListener('click', () => {
-          map.panTo(userCoords);
-        });
+      document.querySelector('.location').removeEventListener('click', centerUser, true);
+      document.querySelector('.location').addEventListener('click', centerUser, true);
     }
   });
+
+  const centerUser = () => {
+    if(map) {
+      console.log('fired');
+      map.panTo(usersLocation.current);
+    }
+  }
 
   let mapHeight;
   if(props.windowDimensions.width < 450) {
