@@ -8,7 +8,7 @@ const Map = (props) => {
 
   //loads map after initial render (only runs once)
   useEffect(() => {
-    //first add the initMap method to the window object (called by google maps uri callback)
+    //first adds the initMap method to the window object (called by google maps uri callback)
     window.initMap = () => {
       //initMap creates a google map after the google maps resources have been loaded
       const google = window.google;
@@ -56,7 +56,7 @@ const Map = (props) => {
     document.getElementsByTagName('body')[0].appendChild(googleScript);
   }, []);
 
-  //updates user's location on map
+  //watches and updates user's location on map
   navigator.geolocation.watchPosition((position) => {
     if(map) {
       const google = window.google; //grab google resources from the window

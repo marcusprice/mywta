@@ -7,7 +7,7 @@ const ContentWindow = (props) => {
   let left = 0;
   if(props.contentWindowExpanded) {
     if(props.windowDimensions.width > 499) {  //we are in desktop mode
-      height = "75%";
+      height = props.windowDimensions.height - 238;
       left = 12;
     } else {  //mobile mode
       height = props.windowDimensions.height - 100;
@@ -17,7 +17,7 @@ const ContentWindow = (props) => {
 
     if(props.windowDimensions.width > 499) {  //we are in dekstop mode
       height = "75%"
-      left = "-40%";
+      left = "-660px";
     }
 
   }

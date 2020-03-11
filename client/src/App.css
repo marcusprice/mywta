@@ -109,7 +109,6 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 
   nav {
     position: relative;
-    bottom: 0px;
     left: 12px;
     background-color: #fff;
     bottom: 74px;
@@ -125,7 +124,7 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
     border-radius: 5px;
     height: 0; width: 640px;
     position: absolute;
-    bottom: calc(15% - 12px);
+    top: 100px;
     left: 12px;
     background-color: #fff;
     transition: height 0s;

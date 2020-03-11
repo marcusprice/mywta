@@ -13,7 +13,11 @@ const App = () => {
   //updates window size on resize
   window.onresize = () => {
     setWindowDimensions({height: window.innerHeight, width: window.innerWidth});
-  }
+  };
+
+  window.onorientationchange = () => {
+    setWindowDimensions({height: window.innerWidth, width: window.innerHeight});
+  };
 
   return (
    <div className="app" style={{height: windowDimensions.height}}>
