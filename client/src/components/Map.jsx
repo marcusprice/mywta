@@ -58,15 +58,17 @@ const Map = (props) => {
 
   //updates user's location on map
   navigator.geolocation.watchPosition((position) => {
-          console.log('hello?');
     if(map) {
-      const google = window.google;
-      const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude };
+      const google = window.google; //grab google resources from the window
+      const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude }; //user's coordinates
+      let accuracy = position.coords.accuracy;  //user's accuracy
+
+      //update component's global ref with the user's location
       usersLocation.current = userCoords;
-      let accuracy = position.coords.accuracy;
+      //empty array for the new location circles
       const locationCircles = [];
 
-      //inner location circle
+      //add inner location circle to locationCircles array
       locationCircles.push(new google.maps.Marker({
         clickable: false,
         cursor: 'pointer',
@@ -82,7 +84,7 @@ const Map = (props) => {
         map: map
       }));
 
-      //outer location circle
+      //add outer location circle to locationCircles array
       locationCircles.push(new google.maps.Marker({
         clickable: false,
         cursor: 'pointer',
@@ -99,8 +101,8 @@ const Map = (props) => {
           map: map
       }));
 
+      //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
       if(accuracy < 1000) {
-        //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
         //accuracy range
         locationCircles.push(new google.maps.Circle({
           map: map,
@@ -120,8 +122,8 @@ const Map = (props) => {
       //remove old markers if they are there
       if(userLocationMarkers.current.length > 0) {
         userLocationMarkers.current.forEach(marker => {
-          marker.setMap(null);
-          marker = null;
+          marker.setMap(null);  //removes the marker from the map
+          marker = null;  //sets the marker to null for cleanup
         });
       }
 
@@ -134,24 +136,33 @@ const Map = (props) => {
         map.setZoom(14);
         initialLocationLoad.current = true;
       }
-
-      //add an event listener for the location pin
-      document.querySelector('.location').removeEventListener('click', centerUser, true);
-      document.querySelector('.location').addEventListener('click', centerUser, true);
     }
   });
 
+  //centers the user on the map when called
   const centerUser = () => {
     if(map) {
-      console.log('fired');
       map.panTo(usersLocation.current);
     }
   }
 
+  //used to add an event listener to center user after the component mounts
+  useEffect(() => {
+    document.querySelector('.location').addEventListener('click', centerUser, true);
+
+    return () => {
+      //remove the event listener on unmount
+      document.querySelector('.location').removeEventListener('click', centerUser, true);
+    }
+  })
+
+  //set the map height before mounting
   let mapHeight;
   if(props.windowDimensions.width < 450) {
+    //mobile view - map needs to be inner window height minus menu & nav
     mapHeight = props.windowDimensions.height - 100
   } else {
+    //desktop & tablet view, do not have to account for the menu on the bottom
     mapHeight = props.windowDimensions.height - 36;
   }
 
