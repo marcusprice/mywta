@@ -1,4 +1,6 @@
 import React from 'react';
+import About from './About';
+import trees from '../assets/img/trees.jpg';
 
 const ContentWindow = (props) => {
   let height = 0;
@@ -21,7 +23,10 @@ const ContentWindow = (props) => {
   }
 
   return(
-    <div className="content-window" style={{height: height, left: left}}/>
+    <div className="content-window" style={{height: height, left: left}}>
+      <img className="content-image" src={trees} alt="PNW trees" />
+      <About />
+    </div>
   )
 }
 
