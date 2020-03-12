@@ -5,11 +5,11 @@ const Menu = (props) => {
   return(
       <nav>
         <ul className="menu">
-          <MenuItem icon="search" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
-          <MenuItem icon="hike-info" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="search" setView={props.setView} contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="hike-info" setView={props.setView} contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
           <MenuItem icon="location" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
           <MenuItem icon="map" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
-          <MenuItem icon="about" contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
+          <MenuItem icon="about" setView={props.setView} contentWindowExpanded={props.contentWindowExpanded} setContentWindowExpanded={props.setContentWindowExpanded} />
         </ul>
       </nav>
   )

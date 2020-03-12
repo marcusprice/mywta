@@ -38,6 +38,9 @@ const MenuItem = (props) => {
 
   const handleClick = () => {
     if(props.icon === 'search' || props.icon === 'hike-info' || props.icon === 'about') {
+      if(props.icon === 'search') {  props.setView('search') }
+      if(props.icon === 'hike-info') {  props.setView('hike-info') }
+      if(props.icon === 'about') {  props.setView('about') }
       props.setContentWindowExpanded(true);
     } else {
       props.setContentWindowExpanded(false);
