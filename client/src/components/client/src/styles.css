@@ -1,0 +1,84 @@
+h1, {
+  font-weight: 400;
+}
+
+h2 {
+  font-weight: 300;
+}
+
+.content-container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.content-container form, ul {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+ul {
+  list-style-type: none;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  margin-top: 32px;
+}
+
+.form-action-button {
+  width: 100%;
+}
+
+ul li {
+  font-size: 18px;
+  margin: 0 auto;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.report-card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 64px;
+}
+
+.dashboard-header {
+  max-width: 1024px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.reset-password-form {
+  margin-top: 32px;
+}
+
+.site-title {
+  cursor: pointer;
+}
+
+.tag-button {
+  margin-bottom: 8px;
+  margin-right: 8px;
+}
+
+.subreddit-tag-container {
+  margin-bottom: 32px;
+}
+
+
+.suggestion-box {
+  margin-left: 12px;
+  display: inline-block;
+  list-style-type: none;
+  width: auto;
+  text-align: left;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.suggestion-item:hover {
+  color: #007bff;
+}
+
+.selected {
+  color: #007bff;
+}

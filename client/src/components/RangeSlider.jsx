@@ -3,7 +3,6 @@ import React from 'react';
 const RangeSlider = (props) => {
 
   const handlePlural = () => {
-    console.log(props.value);
     if(props.value > 1 && props.unit === "Mile") {
       return 's';
     }
