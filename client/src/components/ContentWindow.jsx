@@ -1,8 +1,10 @@
 import React from 'react';
 import About from './About';
 import Search from './Search';
+import HikeDetails from './HikeDetails';
 import trees from '../assets/img/trees.jpg';
 import search from '../assets/img/search.jpg';
+import oysterDome from '../assets/img/oyster-dome.jpeg';
 
 const ContentWindow = (props) => {
   let image, alt, view;
@@ -16,6 +18,11 @@ const ContentWindow = (props) => {
       view = <Search />;
       image = search;
       alt = "Person Hiking";
+      break;
+    case 'hike-info':
+      view = <HikeDetails />;
+      image = oysterDome;
+      alt = "Trail Image";
       break;
     default:
       view = <About />;
