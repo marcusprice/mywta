@@ -156,18 +156,8 @@ const Map = (props) => {
     }
   })
 
-  //set the map height before mounting
-  let mapHeight;
-  if(props.windowDimensions.width < 450) {
-    //mobile view - map needs to be inner window height minus menu & nav
-    mapHeight = props.windowDimensions.height - 100
-  } else {
-    //desktop & tablet view, do not have to account for the menu on the bottom
-    mapHeight = props.windowDimensions.height - 36;
-  }
-
   return(
-    <div id="map" style={{width: "100%", height: mapHeight}} />
+    <div id="map" />
   )
 }
 

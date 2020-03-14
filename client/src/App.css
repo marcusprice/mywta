@@ -34,14 +34,24 @@ html {
   height: 75%;
 }
 
+#map {
+  height: calc(100% - 100px);
+  width: 100%;
+}
+
 .content-window {
   height: 0; width: 100%;
   position: absolute;
   bottom: 64px;
   background-color: #fff;
   transition-timing-function: ease;
+  transition: left 1s;
   transition: height 1s;
   overflow: auto;
+}
+
+.expanded {
+  height: calc(100% - 100px);
 }
 
 .content-section {
@@ -266,59 +276,6 @@ button {
   cursor: pointer;
 }
 
-
-/*Desktop Styles*/
-@media only screen and (min-width: 450px) {
-  .hike-bar {
-    background-color: #333;
-  }
-
-  .info-icon {
-    display: none;
-  }
-
-  nav {
-    position: relative;
-    left: 12px;
-    background-color: #fff;
-    bottom: 74px;
-    border-top: 0;
-    border-radius: 5px;
-
-    -webkit-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.21);
-    -moz-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.21);
-    box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.21);
-  }
-
-  .content-window {
-    border-radius: 5px;
-    height: 0; width: 640px;
-    position: absolute;
-    top: 100px;
-    left: 12px;
-    background-color: #fff;
-    transition: height 0s;
-    transition: left .5s;
-    -webkit-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
-    -moz-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
-    box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
-  }
-
-  .content-section {
-    padding: 24px 36px;
-  }
-
-  /*scrollbar styles*/
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  .multi-range {
-    width: 100%;
-  }
-}
-
 /*typeography*/
 
 .hike-bar-title {
@@ -387,4 +344,62 @@ span {
   font-weight: 400;
   font-size: 14px;
   margin-top: 8px;
+}
+
+/*Desktop Styles*/
+@media only screen and (min-width: 640px) {
+  .hike-bar {
+    background-color: #333;
+  }
+
+  .info-icon {
+    display: none;
+  }
+
+  nav {
+    position: relative;
+    left: 12px;
+    background-color: #fff;
+    bottom: 74px;
+    border-top: 0;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.21);
+    -moz-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.21);
+    box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.21);
+  }
+
+  .content-window {
+    border-radius: 5px;
+    height: calc(100% - 238px); width: 640px;
+    position: absolute;
+    top: 100px;
+    left: -700px;
+    transition: height 0s;
+    transition: left .5s;
+    -webkit-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
+    -moz-box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
+    box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
+  }
+
+  .expanded {
+    left: 12px;
+  }
+
+  #map {
+    height: calc(100% - 36px);
+  }
+
+  .content-section {
+    padding: 24px 36px;
+  }
+
+  /*scrollbar styles*/
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .multi-range {
+    width: 100%;
+  }
 }

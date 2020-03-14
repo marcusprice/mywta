@@ -36,27 +36,12 @@ const ContentWindow = (props) => {
       break;
   }
 
-  let height = 0;
-  let left = 0;
-  if(props.contentWindowExpanded) {
-    if(props.windowDimensions.width > 499) {  //we are in desktop mode
-      height = props.windowDimensions.height - 238;
-      left = 12;
-    } else {  //mobile mode
-      height = props.windowDimensions.height - 100;
-      left = 0;
-    }
-  } else {
-    if(props.windowDimensions.width > 499) {  //we are in dekstop mode
-      height = props.windowDimensions.height - 238;
-      left = "-660px";
-    }
-  }
-
   return(
-    <div className="content-window" style={{height: height, left: left}}>
+    <div className="content-window" className={"content-window " + (props.contentWindowExpanded ? 'expanded' : '')}>
+      <div>
       <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
       { view }
+      </div>
     </div>
   )
 }
