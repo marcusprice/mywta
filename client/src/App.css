@@ -48,6 +48,7 @@ html {
   transition: left 1s;
   transition: height 1s;
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .expanded {
@@ -92,7 +93,6 @@ html {
 
 nav {
   width: 100%;
-  max-width: 450px;
   height: 64px;
   border-top: #1abc9c 1px solid;
 }
@@ -123,6 +123,7 @@ nav {
 
 .menu-item-icon {
   width: 50%;
+  max-width: 50px;
   cursor: pointer;
 }
 
@@ -347,7 +348,7 @@ span {
 }
 
 /*Desktop Styles*/
-@media only screen and (min-width: 640px) {
+@media only screen and (min-width: 769px) {
   .hike-bar {
     background-color: #333;
   }
@@ -359,6 +360,7 @@ span {
   nav {
     position: relative;
     left: 12px;
+    max-width: 450px;
     background-color: #fff;
     bottom: 74px;
     border-top: 0;
