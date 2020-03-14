@@ -143,8 +143,21 @@ const Map = (props) => {
   const centerUser = () => {
     if(map) {
       map.panTo(usersLocation.current);
+      if(window.innerHeight > 769 && props.contentWindowExpanded) {
+        map.panBy(-326, 0);
+      }
     }
   }
+
+  useEffect(() => {
+    if(map && window.innerHeight > 769) {
+      if(props.contentWindowExpanded) {
+        map.panBy(-326, 0);
+      } else {
+        map.panBy(326, 0);
+      }
+    }
+  }, [props.contentWindowExpanded, map])
 
   //used to add an event listener to center user after the component mounts
   useEffect(() => {
@@ -155,6 +168,11 @@ const Map = (props) => {
       document.querySelector('.location').removeEventListener('click', centerUser, true);
     }
   })
+
+  //
+  // if(props.contentWindowExpanded && window.innerHeight > 769 && map) {
+  //   map.panBy(652, 0);
+  // }
 
   return(
     <div id="map" />

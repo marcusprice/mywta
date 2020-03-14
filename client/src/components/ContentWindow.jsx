@@ -37,7 +37,7 @@ const ContentWindow = (props) => {
   }
 
   return(
-    <div className="content-window" className={"content-window " + (props.contentWindowExpanded ? 'expanded' : '')}>
+    <div className={"content-window " + (props.contentWindowExpanded ? 'expanded' : '')}>
       <div>
       <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
       { view }

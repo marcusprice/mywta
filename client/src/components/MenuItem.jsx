@@ -43,7 +43,11 @@ const MenuItem = (props) => {
       if(props.icon === 'about') {  props.setView('about') }
       props.setContentWindowExpanded(true);
     } else {
-      props.setContentWindowExpanded(false);
+      if(props.icon === 'location' && window.innerHeight > 769 && props.contentWindowExpanded) {
+        props.setContentWindowExpanded(true);
+      } else {
+        props.setContentWindowExpanded(false);
+      }
     }
   }
 
