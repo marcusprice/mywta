@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Img from 'react-image';
 import About from './About';
 import Search from './Search';
 import HikeDetails from './HikeDetails';
@@ -46,16 +47,15 @@ const ContentWindow = (props) => {
       left = 0;
     }
   } else {
-
     if(props.windowDimensions.width > 499) {  //we are in dekstop mode
-      height = "75%"
+      height = props.windowDimensions.height - 238;
       left = "-660px";
     }
   }
 
   return(
     <div className="content-window" style={{height: height, left: left}}>
-      <img className="content-image" src={image} alt={alt} />
+      <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
       { view }
     </div>
   )
