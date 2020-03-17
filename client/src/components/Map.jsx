@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const Map = (props) => {
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
-  const userLocationMarkers = useRef([]);
-  const initialLocationLoad = useRef(false);
-  const usersLocation = useRef({});
+  const userLocationMarkers = useRef([]); //array to store location markers
+  const initialMapLoad = useRef(false); //used to determine if the map has loaded once already
+  const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
+  const usersLocation = useRef({}); //users coordiantes
 
   //loads map after initial render (only runs once)
   useEffect(() => {
@@ -143,21 +144,25 @@ const Map = (props) => {
   const centerUser = () => {
     if(map) {
       map.panTo(usersLocation.current);
-      if(window.innerHeight > 769 && props.contentWindowExpanded) {
+      if(window.innerWidth > 769 && props.contentWindowExpanded) {
         map.panBy(-326, 0);
       }
     }
   }
 
   useEffect(() => {
-    if(map && window.innerHeight > 769) {
-      if(props.contentWindowExpanded) {
-        map.panBy(-326, 0);
+    if(map && window.innerWidth > 769) {
+      if(initialMapLoad.current) {
+        if(props.contentWindowExpanded) {
+          map.panBy(-326, 0);
+        } else {
+          map.panBy(326, 0);
+        }
       } else {
-        map.panBy(326, 0);
+        initialMapLoad.current = true;
       }
     }
-  }, [props.contentWindowExpanded, map])
+  }, [props.contentWindowExpanded, map]);
 
   //used to add an event listener to center user after the component mounts
   useEffect(() => {
@@ -168,11 +173,6 @@ const Map = (props) => {
       document.querySelector('.location').removeEventListener('click', centerUser, true);
     }
   })
-
-  //
-  // if(props.contentWindowExpanded && window.innerHeight > 769 && map) {
-  //   map.panBy(652, 0);
-  // }
 
   return(
     <div id="map" />

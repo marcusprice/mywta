@@ -13,17 +13,23 @@ const App = () => {
 
   return (
    <AppContainer className="app">
+
     <HikeBar />
-    <Map contentWindowExpanded={contentWindowExpanded}/>
+
+    <Map contentWindowExpanded={contentWindowExpanded} />
+
     <ContentWindow
       view={view}
       contentWindowExpanded={contentWindowExpanded}
     />
+
     <Menu
       contentWindowExpanded={contentWindowExpanded}
       setContentWindowExpanded={setContentWindowExpanded}
       setView={setView}
+      view={view}
     />
+
   </AppContainer>
   );
 }

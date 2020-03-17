@@ -41,9 +41,14 @@ const MenuItem = (props) => {
       if(props.icon === 'search') {  props.setView('search') }
       if(props.icon === 'hike-info') {  props.setView('hike-info') }
       if(props.icon === 'about') {  props.setView('about') }
-      props.setContentWindowExpanded(true);
+
+      if(props.view === props.icon && props.contentWindowExpanded) {
+        props.setContentWindowExpanded(false);
+      } else {
+        props.setContentWindowExpanded(true);
+      }
     } else {
-      if(props.icon === 'location' && window.innerHeight > 769 && props.contentWindowExpanded) {
+      if(props.icon === 'location' && window.innerWidth > 769 && props.contentWindowExpanded) {
         props.setContentWindowExpanded(true);
       } else {
         props.setContentWindowExpanded(false);
