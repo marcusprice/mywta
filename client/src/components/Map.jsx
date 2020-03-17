@@ -150,16 +150,19 @@ const Map = (props) => {
     }
   }
 
+  //manages map center offset for desktop UI
   useEffect(() => {
-    if(map && window.innerWidth > 769) {
-      if(initialMapLoad.current) {
+    if(map && window.innerWidth > 769) {  //only run in desktop mode
+      if(initialMapLoad.current) {  //only run if the map has loaded at least once
         if(props.contentWindowExpanded) {
+          //if the content menu is expanded, offset map center by 326 pixels
           map.panBy(-326, 0);
         } else {
+          //if the content menu is closes, offset again 326 (bringing it to original center)
           map.panBy(326, 0);
         }
       } else {
-        initialMapLoad.current = true;
+        initialMapLoad.current = true;  //map has loaded, set to true for next render
       }
     }
   }, [props.contentWindowExpanded, map]);
