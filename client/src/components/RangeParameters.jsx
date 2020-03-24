@@ -6,6 +6,7 @@ const RangeParameters = (props) => {
   return(
     <div>
       <h3>Hike Range Parameters</h3>
+
       <RangeSlider
         title="Distance From You"
         name="distance"
@@ -14,6 +15,7 @@ const RangeParameters = (props) => {
         max="100"
         step="1"
         value={props.parameters.distance}
+        setParameters={props.setParameters}
       />
 
       <DualRangeSlider

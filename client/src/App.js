@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar';
@@ -48,6 +48,10 @@ const App = () => {
     dogFriendly: true
   });
 
+  useEffect(() => {
+    console.log(parameters.distance);
+  })
+
   return (
    <AppContainer className="app">
 
@@ -59,6 +63,7 @@ const App = () => {
       view={view}
       contentWindowExpanded={contentWindowExpanded}
       parameters={parameters}
+      setParameters={setParameters}
     />
 
     <Menu

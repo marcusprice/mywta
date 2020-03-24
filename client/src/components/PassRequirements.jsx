@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from './Checkbox';
 
-const PassRequirements = () => {
+const PassRequirements = (props) => {
   return(
     <div>
       <h3>Pass Requirements</h3>
@@ -9,15 +9,15 @@ const PassRequirements = () => {
       <Checkbox
         name="Discover Pass"
         inputName="coast"
-        value={true}
+        value={props.parameters.discoverPass}
       />
 
       <Checkbox
         name="Northwest Forest Pass"
         inputName="coast"
-        value={true}
+        value={props.parameters.northwestForestPass}
       />
-
+      
     </div>
   );
 }

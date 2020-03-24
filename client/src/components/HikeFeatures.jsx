@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from './Checkbox';
 
-const HikeFeatures = () => {
+const HikeFeatures = (props) => {
   return(
     <div>
       <h3>Hike Features</h3>
@@ -9,67 +9,67 @@ const HikeFeatures = () => {
       <Checkbox
         name="Coast"
         inputName="coast"
-        value={true}
+        value={props.parameters.coast}
       />
 
       <Checkbox
         name="Rivers"
         inputName="rivers"
-        value={true}
+        value={props.parameters.rivers}
       />
 
       <Checkbox
         name="Lakes"
         inputName="lakes"
-        value={true}
+        value={props.parameters.lakes}
       />
 
       <Checkbox
         name="Waterfalls"
         inputName="waterfalls"
-        value={true}
+        value={props.parameters.waterfalls}
       />
 
       <Checkbox
         name="Old Growth"
         inputName="oldGrowth"
-        value={true}
+        value={props.parameters.oldGrowth}
       />
 
       <Checkbox
         name="Fall Foliage"
         inputName="fallFoliage"
-        value={true}
+        value={props.parameters.fallFoliage}
       />
 
       <Checkbox
         name="Mountain Views"
         inputName="mountainViews"
-        value={true}
+        value={props.parameters.mountainViews}
       />
 
       <Checkbox
         name="Summits"
         inputName="summits"
-        value={true}
+        value={props.parameters.summits}
       />
 
       <Checkbox
         name="WildLife"
         inputName="wildlife"
-        value={true}
+        value={props.parameters.wildlife}
       />
 
       <Checkbox
         name="Ridges &amp; Passes"
         inputName="ridgesPasses"
-        value={true}
+        value={props.parameters.ridgesPasses}
       />
 
       <Checkbox
         name="Established Campsites"
         inputName="establishCampsites"
-        value={true}
+        value={props.parameters.establishCampsites}
       />
     </div>
   );

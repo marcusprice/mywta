@@ -11,7 +11,7 @@ const Search = (props) => {
       <h2>Search for Hikes</h2>
       <p>Use the form below to search for hikes.</p>
       <form>
-        <RangeParameters parameters={props.parameters} />
+        <RangeParameters parameters={props.parameters} setParameters={props.setParameters} />
         <HikeRegions parameters={props.parameters} />
         <HikeFeatures parameters={props.parameters} />
         <PassRequirements parameters={props.parameters} />

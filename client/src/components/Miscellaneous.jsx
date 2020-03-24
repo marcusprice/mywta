@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from './Checkbox';
 
-const Miscellaneous = () => {
+const Miscellaneous = (props) => {
   return(
     <div>
       <h3>Miscellaneous</h3>
@@ -9,13 +9,13 @@ const Miscellaneous = () => {
       <Checkbox
         name="Kid Friendly"
         inputName="kidFriendly"
-        value={false}
+        value={props.parameters.kidFriendly}
       />
 
       <Checkbox
         name="Dog Friendly"
         inputName="dogFriendly"
-        value={false}
+        value={props.parameters.dogFriendly}
       />
 
     </div>
