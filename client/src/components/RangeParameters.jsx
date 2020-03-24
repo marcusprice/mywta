@@ -2,7 +2,7 @@ import React from 'react';
 import RangeSlider from './RangeSlider';
 import DualRangeSlider from './DualRangeSlider';
 
-const RangeParameters = () => {
+const RangeParameters = (props) => {
   return(
     <div>
       <h3>Hike Range Parameters</h3>
@@ -13,7 +13,7 @@ const RangeParameters = () => {
         min="1"
         max="100"
         step="1"
-        value="100"
+        value={props.parameters.distance}
       />
 
       <DualRangeSlider
@@ -23,8 +23,8 @@ const RangeParameters = () => {
         min="0"
         max="50"
         step="1"
-        minValue={0}
-        maxValue={60}
+        minValue={props.parameters.lengthMin}
+        maxValue={props.parameters.lengthMax}
       />
 
       <DualRangeSlider
@@ -34,8 +34,8 @@ const RangeParameters = () => {
         min="0"
         max="10000"
         step="1"
-        minValue={0}
-        maxValue={8000}
+        minValue={props.parameters.elevationMin}
+        maxValue={props.parameters.elevationMax}
       />
 
       <DualRangeSlider
@@ -45,8 +45,8 @@ const RangeParameters = () => {
         min="0"
         max="10000"
         step="1"
-        minValue={0}
-        maxValue={2000}
+        minValue={props.parameters.elevationGainMin}
+        maxValue={props.parameters.elevationGainMax}
       />
 
 
@@ -57,7 +57,7 @@ const RangeParameters = () => {
         min="0.0"
         max="4.9"
         step=".1"
-        value={3.8}
+        value={props.parameters.minRating}
       />
     </div>
   )

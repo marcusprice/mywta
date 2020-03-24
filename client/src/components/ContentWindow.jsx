@@ -20,7 +20,7 @@ const ContentWindow = (props) => {
       alt = "PNW Trees";
       break;
     case 'search':
-      view = <Search />;
+      view = <Search parameters={props.parameters} />;
       image = search;
       alt = "Person Hiking";
       break;
