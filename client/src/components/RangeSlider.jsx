@@ -25,7 +25,6 @@ const RangeSlider = (props) => {
           min={props.min}
           max={props.max}
           step={props.step}
-          defaultValue={props.value}
           value={value}
           onChange={handleChange}
         />

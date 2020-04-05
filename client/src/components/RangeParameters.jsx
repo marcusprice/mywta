@@ -13,7 +13,7 @@ const RangeParameters = (props) => {
         unit="Mile"
         min="1"
         max="100"
-        step="1"
+        step={1}
         value={props.parameters.distance}
         setParameters={props.setParameters}
       />
@@ -24,7 +24,7 @@ const RangeParameters = (props) => {
         unit="Miles"
         min="0"
         max="50"
-        step="1"
+        step={1}
         minValue={props.parameters.lengthMin}
         maxValue={props.parameters.lengthMax}
       />
@@ -35,7 +35,7 @@ const RangeParameters = (props) => {
         unit="Feet"
         min="0"
         max="10000"
-        step="1"
+        step={100}
         minValue={props.parameters.elevationMin}
         maxValue={props.parameters.elevationMax}
       />
@@ -46,7 +46,7 @@ const RangeParameters = (props) => {
         unit="Feet"
         min="0"
         max="10000"
-        step="1"
+        step={100}
         minValue={props.parameters.elevationGainMin}
         maxValue={props.parameters.elevationGainMax}
       />
@@ -58,7 +58,7 @@ const RangeParameters = (props) => {
         unit="/ 5"
         min="0.0"
         max="4.9"
-        step=".1"
+        step={.1}
         value={props.parameters.minRating}
       />
     </div>
