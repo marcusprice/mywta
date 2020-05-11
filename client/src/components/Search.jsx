@@ -44,6 +44,33 @@ const Search = (props) => {
     dogFriendly: true
   });
 
+  const searchHikes = (e) => {
+    //console.log('/getHikes?' + convertToURI(parameters));
+
+    e.preventDefault();
+    fetch('/getHikes?' + convertToURI(parameters), {
+      headers : {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+     })
+      .then(response => response.json())
+      .then((result) => {
+        console.log(result);
+      })
+  }
+
+  const convertToURI = (obj) => {
+    var str = '';
+    for (var key in obj) {
+      if (str !== '') {
+          str += '&';
+      }
+      str += key + "=" + encodeURIComponent(obj[key]);
+    }
+    return str;
+  }
+
   return(
     <div className="content-section">
       <h2>Search for Hikes</h2>
@@ -54,7 +81,7 @@ const Search = (props) => {
         <HikeFeatures parameters={parameters} setParameters={setParameters} />
         <PassRequirements parameters={parameters} setParameters={setParameters} />
         <Miscellaneous parameters={parameters} setParameters={setParameters} />
-        <button>Search Hikes</button>
+        <button onClick={searchHikes}>Search Hikes</button>
       </form>
     </div>
   )
