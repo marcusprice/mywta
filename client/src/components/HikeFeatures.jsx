@@ -69,7 +69,7 @@ const HikeFeatures = (props) => {
       <Checkbox
         name="Established Campsites"
         inputName="establishCampsites"
-        value={props.parameters.establishCampsites}
+        value={props.parameters.establishedCampsites}
       />
     </div>
   );

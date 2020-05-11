@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar';
@@ -47,10 +47,6 @@ const App = () => {
     kidFriendly: true,
     dogFriendly: true
   });
-
-  useEffect(() => {
-    console.log(parameters.distance);
-  })
 
   return (
    <AppContainer className="app">
