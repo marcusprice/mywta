@@ -10,7 +10,10 @@ const RangeSlider = (props) => {
   }
 
   const handleChange = (e) => {
+    //update the slider's value
     setValue(e.target.value);
+    //update the parameters' property
+    props.setParameters({...props.parameters, [props.name]: e.target.value})
   }
 
   return(

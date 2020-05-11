@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 const Checkbox = (props) => {
   const [checked, setChecked] = useState(props.value);
 
+  const handleChange = (e) => {
+    setChecked(e.target.checked);
+    props.setParameters({...props.parameters, [props.inputName]: e.target.checked});
+  }
+
   return(
     <div>
       <div className="checkbox">
@@ -10,9 +15,9 @@ const Checkbox = (props) => {
         <input
           name={props.inputName}
           checked={checked}
-          className="hike-switch" 
+          className="hike-switch"
           type="checkbox"
-          onChange={(e) => {setChecked(e.target.checked)}}
+          onChange={handleChange}
         />
       </div>
   </div>

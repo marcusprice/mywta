@@ -3,6 +3,7 @@ import RangeSlider from './RangeSlider';
 import DualRangeSlider from './DualRangeSlider';
 
 const RangeParameters = (props) => {
+
   return(
     <div>
       <h3>Hike Range Parameters</h3>
@@ -15,6 +16,7 @@ const RangeParameters = (props) => {
         max="100"
         step={1}
         value={props.parameters.distance}
+        parameters={props.parameters}
         setParameters={props.setParameters}
       />
 
@@ -27,6 +29,8 @@ const RangeParameters = (props) => {
         step={1}
         minValue={props.parameters.lengthMin}
         maxValue={props.parameters.lengthMax}
+        parameters={props.parameters}
+        setParameters={props.setParameters}
       />
 
       <DualRangeSlider
@@ -38,6 +42,8 @@ const RangeParameters = (props) => {
         step={100}
         minValue={props.parameters.elevationMin}
         maxValue={props.parameters.elevationMax}
+        parameters={props.parameters}
+        setParameters={props.setParameters}
       />
 
       <DualRangeSlider
@@ -49,6 +55,8 @@ const RangeParameters = (props) => {
         step={100}
         minValue={props.parameters.elevationGainMin}
         maxValue={props.parameters.elevationGainMax}
+        parameters={props.parameters}
+        setParameters={props.setParameters}
       />
 
 
@@ -57,9 +65,11 @@ const RangeParameters = (props) => {
         name="minRating"
         unit="/ 5"
         min="0.0"
-        max="4.9"
+        max="5.0"
         step={.1}
         value={props.parameters.minRating}
+        parameters={props.parameters}
+        setParameters={props.setParameters}
       />
     </div>
   )

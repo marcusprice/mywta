@@ -10,12 +10,16 @@ const Miscellaneous = (props) => {
         name="Kid Friendly"
         inputName="kidFriendly"
         value={props.parameters.kidFriendly}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
       />
 
       <Checkbox
         name="Dog Friendly"
         inputName="dogFriendly"
         value={props.parameters.dogFriendly}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
       />
 
     </div>

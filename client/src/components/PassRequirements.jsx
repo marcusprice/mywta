@@ -8,16 +8,20 @@ const PassRequirements = (props) => {
 
       <Checkbox
         name="Discover Pass"
-        inputName="coast"
+        inputName="discoverPass"
         value={props.parameters.discoverPass}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
       />
 
       <Checkbox
         name="Northwest Forest Pass"
-        inputName="coast"
+        inputName="northwestForestPass"
         value={props.parameters.northwestForestPass}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
       />
-      
+
     </div>
   );
 }

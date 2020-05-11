@@ -13,7 +13,7 @@ const Search = (props) => {
     elevationMin: 0,
     elevationMax: 5000,
     elevationGainMin: 0,
-    elevationGainMax: 5000,
+    elevationGainMax: 10000,
     minRating: 0,
     centralCascades: true,
     centralWashington: true,
@@ -50,10 +50,10 @@ const Search = (props) => {
       <p>Use the form below to search for hikes.</p>
       <form>
         <RangeParameters parameters={parameters} setParameters={setParameters} />
-        <HikeRegions parameters={parameters} />
-        <HikeFeatures parameters={parameters} />
-        <PassRequirements parameters={parameters} />
-        <Miscellaneous parameters={parameters} />
+        <HikeRegions parameters={parameters} setParameters={setParameters} />
+        <HikeFeatures parameters={parameters} setParameters={setParameters} />
+        <PassRequirements parameters={parameters} setParameters={setParameters} />
+        <Miscellaneous parameters={parameters} setParameters={setParameters} />
         <button>Search Hikes</button>
       </form>
     </div>

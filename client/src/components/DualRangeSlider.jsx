@@ -12,6 +12,9 @@ const DualRangeSlider = (props) => {
 
       if(newValue >= maxValue) {
         setMaxValue(newValue + props.step);
+        props.setParameters({...props.parameters, [props.name + 'Min']: newValue, [props.name + 'Max']: newValue + props.step});
+      } else {
+        props.setParameters({...props.parameters, [props.name + 'Min']: newValue});
       }
     }
   }
@@ -20,12 +23,14 @@ const DualRangeSlider = (props) => {
     const newValue = parseInt(e.target.value);
 
     if(newValue >= props.min + props.step) {
-
+      setMaxValue(newValue);
+      
       if(newValue <= minValue) {
         setMinValue(newValue - props.step);
+        props.setParameters({...props.parameters, [props.name + 'Min']: newValue - props.step, [props.name + 'Max']: newValue});
+      } else {
+        props.setParameters({...props.parameters, [props.name + 'Max']: newValue});
       }
-
-      setMaxValue(newValue);
     }
   }
 
