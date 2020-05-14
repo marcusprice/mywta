@@ -20,7 +20,7 @@ const ContentWindow = (props) => {
       alt = "PNW Trees";
       break;
     case 'search':
-      view = <Search parameters={props.parameters} />;
+      view = <Search setHikes={props.setHikes} setContentWindowExpanded={props.setContentWindowExpanded} />;
       image = search;
       alt = "Person Hiking";
       break;

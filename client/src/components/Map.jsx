@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import MarkerClusterer from '@google/markerclustererplus';
+import hikeMarkerIcon from '../assets/icons/hike-marker.png';
 
 const Map = (props) => {
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
   const userLocationMarkers = useRef([]); //array to store location markers
+  const hikeMarkers = useRef([]); //array to store location markers
+  const markerCluster = useRef(null); //array to store location markers
   const initialMapLoad = useRef(false); //used to determine if the map has loaded once already
   const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
   const usersLocation = useRef({}); //users coordiantes
@@ -166,6 +170,46 @@ const Map = (props) => {
       }
     }
   }, [props.contentWindowExpanded, map]);
+
+  //adds hike markers to map
+  useEffect(() => {
+    if(map) {
+      const google = window.google; //grab google resources from the window
+      //clean any old markers out
+      if(hikeMarkers.current.length > 0) {
+        hikeMarkers.current.forEach(marker => {
+          marker.setMap(null);  //removes the marker from the map
+          marker = null;  //sets the marker to null for cleanup
+        });
+        hikeMarkers.current = [];
+      }
+
+      if(props.hikes.length > 0) {
+        props.hikes.forEach(hike => {
+
+          let position = {
+            lat: hike.latitude,
+            lng: hike.longitude
+          }
+
+          let hikeMarker = new google.maps.Marker({
+            position: position,
+            map: map,
+            icon: hikeMarkerIcon
+          });
+
+          hikeMarkers.current.push(hikeMarker);
+        });
+      }
+
+      if(!markerCluster.current) {
+        markerCluster.current = new MarkerClusterer(map, hikeMarkers.current);
+      } else {
+        markerCluster.current.clearMarkers();
+        markerCluster.current.addMarkers(hikeMarkers.current);
+      }
+    }
+  }, [props.hikes, map])
 
   //used to add an event listener to center user after the component mounts
   useEffect(() => {

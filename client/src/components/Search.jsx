@@ -49,7 +49,7 @@ const Search = (props) => {
 
   const searchHikes = (e) => {
     //console.log('/getHikes?' + convertToURI(parameters));
-
+    props.setContentWindowExpanded(false);
     e.preventDefault();
     fetch('/getHikes?' + convertToURI(parameters), {
       headers : {
@@ -59,7 +59,7 @@ const Search = (props) => {
      })
       .then(response => response.json())
       .then((result) => {
-        console.log(result);
+        props.setHikes(result);
       })
   }
 
