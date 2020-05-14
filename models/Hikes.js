@@ -75,5 +75,4 @@ const buildQuery = (parameters, flag = '') => {
   }
 }
 
-exports.getHikesWithLocation = getHikesWithLocation;
 exports.getHikes = getHikes;
