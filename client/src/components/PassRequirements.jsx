@@ -15,9 +15,33 @@ const PassRequirements = (props) => {
       />
 
       <Checkbox
+        name="National Park Pass"
+        inputName="nationalParkPass"
+        value={props.parameters.nationalParkPass}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
+      />
+
+      <Checkbox
         name="Northwest Forest Pass"
         inputName="northwestForestPass"
         value={props.parameters.northwestForestPass}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
+      />
+
+      <Checkbox
+        name="Oregon State Parks Day-Use"
+        inputName="oregonStateParksDayUse"
+        value={props.parameters.oregonStateParksDayUse}
+        setParameters={props.setParameters}
+        parameters={props.parameters}
+      />
+
+      <Checkbox
+        name="Sno-Parks Permit"
+        inputName="snoParksPermit"
+        value={props.parameters.snoParksPermit}
         setParameters={props.setParameters}
         parameters={props.parameters}
       />

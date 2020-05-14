@@ -71,7 +71,7 @@ const HikeFeatures = (props) => {
       />
 
       <Checkbox
-        name="WildLife"
+        name="Wildlife"
         inputName="wildlife"
         value={props.parameters.wildlife}
         setParameters={props.setParameters}
@@ -88,7 +88,7 @@ const HikeFeatures = (props) => {
 
       <Checkbox
         name="Established Campsites"
-        inputName="establishCampsites"
+        inputName="establishedCampsites"
         value={props.parameters.establishedCampsites}
         setParameters={props.setParameters}
         parameters={props.parameters}

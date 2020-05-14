@@ -9,9 +9,9 @@ const Search = (props) => {
   const [parameters, setParameters] = useState({
     distance: 50,
     lengthMin: 0,
-    lengthMax: 20,
+    lengthMax: 50,
     elevationMin: 0,
-    elevationMax: 5000,
+    elevationMax: 10000,
     elevationGainMin: 0,
     elevationGainMax: 10000,
     minRating: 0,
@@ -39,9 +39,12 @@ const Search = (props) => {
     ridgesPasses: false,
     establishedCampsites: false,
     discoverPass: true,
+    nationalParkPass: true,
     northwestForestPass: true,
-    kidFriendly: true,
-    dogFriendly: true
+    oregonStateParksDayUse: true,
+    snoParksPermit: true,
+    kidFriendly: false,
+    dogFriendly: false
   });
 
   const searchHikes = (e) => {
