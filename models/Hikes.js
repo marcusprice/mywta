@@ -14,18 +14,15 @@ const buildQuery = (parameters, flag = '') => {
 
   //add upper range conditionals
   if(parameters.lengthMax !== 50) {
-    sql += ' AND (length <= $5)';
-    values.push(parameters.lengthMax);
+    sql += ' AND (length <= ' + parameters.lengthMax + ')';
   }
 
   if(parameters.elevationMax != 10000) {
-    sql += ' AND (elevation <= $6)';
-    values.push(parameters.elevationMax);
+    sql += ' AND (elevation <= ' + parameters.elevationMax + ')';
   }
 
   if(parameters.elevationGainMax != 10000) {
-    sql += ' AND (elevationgain <= $7)';
-    values.push(parameters.elevationGainMax);
+    sql += ' AND (elevationgain <= ' + parameters.elevationGainMax + ')';
   }
 
   if(flag === 'getHikesWithLocation') {
