@@ -5,7 +5,7 @@
  * urls have been scraped (see url-scraper.js )and saved to the urls database table.
  */
 
-const asyncForEach = require('../lib/tools').asyncForEach;
+const { asyncForEach } = require('../lib/tools');
 const got = require('got');
 const cheerio = require('cheerio');
 const { Pool } = require('pg')

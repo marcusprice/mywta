@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Executable for scraping all valid wta hike urls and saving them into the
+ * Executable for scraping all hike urls and saving them into the
  * urls table. Should be the first scraping utility ran.
  */
 

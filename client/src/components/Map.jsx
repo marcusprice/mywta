@@ -4,24 +4,25 @@ import hikeMarkerIcon from '../assets/icons/hike-marker.png';
 
 const Map = (props) => {
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
+  const markerCluster = useRef(null); //marker cluster utility
+  const oms = useRef(null); //spiderfy overlapping markers
   const userLocationMarkers = useRef([]); //array to store location markers
-  const hikeMarkers = useRef([]); //array to store location markers
-  const markerCluster = useRef(null); //array to store location markers
+  const hikeMarkers = useRef([]); //array to store hike markers
   const initialMapLoad = useRef(false); //used to determine if the map has loaded once already
   const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
-  const usersLocation = useRef({}); //users coordiantes
+  const usersLocation = useRef({}); //user's coordinates
 
   //loads map after initial render (only runs once)
   useEffect(() => {
-    //first adds the initMap method to the window object (called by google maps uri callback)
+    //first add initMap method to the window object (called later by google maps uri callback)
     window.initMap = () => {
-      //initMap creates a google map after the google maps resources have been loaded
+      //initMap creates a google map after the google maps resources have been loaded from the api
       const google = window.google;
       //intialize with WA coordinates
       const wa = { lat: 47.7511, lng: -120.7401 };
       usersLocation.current = wa;
-      //turn off places of interest
-      const myStyles = [{
+      //turn off places of interest and trasit data
+      const styles = [{
         featureType: "poi",
         elementType: "labels",
         stylers: [
@@ -42,7 +43,7 @@ const Map = (props) => {
           zoomControl: true,
           zoom: 6,
           center: wa,
-          styles: myStyles
+          styles: styles
         }
       );
 
@@ -54,12 +55,16 @@ const Map = (props) => {
     }
 
     //add script tag to call google maps api
-    let googleScript = document.createElement('script');
+    const googleScript = document.createElement('script');
     googleScript.async = true;
     googleScript.defer = true;
     googleScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&callback=initMap';  //calls initMap onload
     document.getElementsByTagName('body')[0].appendChild(googleScript);
   }, []);
+
+
+
+
 
   //watches and updates user's location on map
   navigator.geolocation.watchPosition((position) => {
@@ -144,6 +149,10 @@ const Map = (props) => {
     }
   });
 
+
+
+
+
   //centers the user on the map when called
   const centerUser = () => {
     if(map) {
@@ -153,6 +162,11 @@ const Map = (props) => {
       }
     }
   }
+
+
+
+
+
 
   //manages map center offset for desktop UI
   useEffect(() => {
@@ -171,45 +185,103 @@ const Map = (props) => {
     }
   }, [props.contentWindowExpanded, map]);
 
+
+
+
+
+
   //adds hike markers to map
   useEffect(() => {
     if(map) {
-      const google = window.google; //grab google resources from the window
-      //clean any old markers out
+
+      if(!oms.current) {  //oms hasn't been set up yet
+        //load oms
+        const omsScript = document.createElement('script');
+        omsScript.id= 'omsScript';
+        omsScript.src = './js/oms.min.js';
+        document.body.appendChild(omsScript)
+
+        //create new instance of oms after resources have loaded
+        omsScript.onload = () => {
+          oms.current = new window.OverlappingMarkerSpiderfier(map, {
+            markersWontMove: true,
+            markersWontHide: true,
+            basicFormatEvents: true,
+            keepSpiderfied: true,
+            nearbyDistance: 40,
+            circleSpiralSwitchover: 6
+          });
+        }
+      }
+
+      //clean any old markers out before adding new set
       if(hikeMarkers.current.length > 0) {
+
         hikeMarkers.current.forEach(marker => {
           marker.setMap(null);  //removes the marker from the map
           marker = null;  //sets the marker to null for cleanup
         });
-        hikeMarkers.current = [];
+
+        hikeMarkers.current = []; //sets array to empty so null indexes don't appear in clusterer
       }
 
+
+      //if there are hikes, loop through them and create location markers for them
       if(props.hikes.length > 0) {
         props.hikes.forEach(hike => {
 
-          let position = {
-            lat: hike.latitude,
-            lng: hike.longitude
-          }
+          //get google resources
+          const google = window.google;
 
+          //create a new marker for the hike
           let hikeMarker = new google.maps.Marker({
-            position: position,
+            position: {lat: hike.latitude, lng: hike.longitude},
             map: map,
             icon: hikeMarkerIcon
           });
 
+          //add an event listener to each hike for animation and display queue
+          hikeMarker.addListener('spider_click', () => {
+
+            //removes other animations
+            for(let i = 0; i < hikeMarkers.current.length; i++){
+              hikeMarkers.current[i].setAnimation(-1);
+            }
+
+            //set animation to current marker and center the map over it
+            hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
+            map.panTo({lat: hike.latitude, lng: hike.longitude});
+          });
+
+          //add the marker to oms and the hikemarkers array
+          oms.current.addMarker(hikeMarker);
           hikeMarkers.current.push(hikeMarker);
         });
       }
 
-      if(!markerCluster.current) {
-        markerCluster.current = new MarkerClusterer(map, hikeMarkers.current);
-      } else {
+      //manage marker clustering
+      if(!markerCluster.current) {  //marker clustering hasn't been set up yet
+        //instantiate markerclusterer and save it to current ref
+        markerCluster.current = new MarkerClusterer(
+          map,
+          hikeMarkers.current,
+          {
+            zoomOnClick: true,
+            maxZoom: 12
+          }
+        );
+      } else {  //marker clustering is aldrady set up
+        //clear old markers from the cluster and add the new ones
         markerCluster.current.clearMarkers();
         markerCluster.current.addMarkers(hikeMarkers.current);
       }
+
     }
   }, [props.hikes, map])
+
+
+
+
 
   //used to add an event listener to center user after the component mounts
   useEffect(() => {

@@ -1,5 +1,5 @@
 const Hikes = require('../models/Hikes');
-const parseBool = require('../lib/tools').parseBool;
+const { parseBool } = require('../lib/tools');
 
 const getHikes = async (request, callback) => {
   const convertedRequest = convertParameters(request);

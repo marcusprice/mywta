@@ -13,15 +13,16 @@ const buildQuery = (parameters, flag = '') => {
   sql += ' WHERE (length >= $1 AND elevation >= $2 AND elevationgain >= $3 AND rating >= $4)';
 
   //add upper range conditionals
-  if(parameters.lengthMax !== 50) {
+  if(Number.isInteger(parameters.lengthMax) && parameters.lengthMax !== 50) {
+    console.log('should fire');
     sql += ' AND (length <= ' + parameters.lengthMax + ')';
   }
 
-  if(parameters.elevationMax != 10000) {
+  if(Number.isInteger(parameters.elevationMax) && parameters.elevationMax != 10000) {
     sql += ' AND (elevation <= ' + parameters.elevationMax + ')';
   }
 
-  if(parameters.elevationGainMax != 10000) {
+  if(Number.isInteger(parameters.elevationGainMax) && parameters.elevationGainMax != 10000) {
     sql += ' AND (elevationgain <= ' + parameters.elevationGainMax + ')';
   }
 
