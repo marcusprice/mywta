@@ -153,24 +153,6 @@ const Map = (props) => {
 
 
 
-  //centers the user on the map when called
-  const centerUser = (location = usersLocation.current) => {
-    if(map) {
-      map.panTo(location);
-      if(window.innerWidth > 769 && props.contentWindowExpanded) {
-        map.panBy(-326, 0);
-      }
-
-      if(props.hikes.length > 500) {
-        getBounds();
-      }
-    }
-  }
-
-
-
-
-
   //manages map center offset for desktop UI
   useEffect(() => {
     if(map && window.innerWidth > 769) {  //only run in desktop mode
@@ -203,6 +185,7 @@ const Map = (props) => {
 
       if(props.hikes.length > 0) {
         addMarkers();
+        markerCluster.current.repaint();
 
         if(props.hikes.length > 500) {
           //we need to filter the markers to only show those in bounds
@@ -221,6 +204,10 @@ const Map = (props) => {
     return (() => {
       if(map) {
         window.google.maps.event.clearListeners(map, 'idle');
+        if(markerCluster.current) {
+          markerCluster.current.clearMarkers();
+          markerCluster.current = null;
+        }
       }
     });
 
@@ -258,7 +245,7 @@ const Map = (props) => {
           hikeMarkers.current[i].setAnimation(-1);
         }
 
-        centerUser({lat: hike.latitude, lng: hike.longitude});
+        map.panTo({lat: hike.latitude, lng: hike.longitude});
         hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
       });
 
@@ -278,9 +265,9 @@ const Map = (props) => {
           maxZoom: 12
         }
       );
+    } else {
+      markerCluster.current.addMarkers(hikeMarkers.current);
     }
-
-    markerCluster.current.addMarkers(hikeMarkers.current);
   }
 
 
@@ -363,6 +350,20 @@ const Map = (props) => {
           nearbyDistance: 40,
           circleSpiralSwitchover: 6
         });
+      }
+    }
+  }
+
+
+
+
+
+  //centers the user on the map when called
+  const centerUser = () => {
+    if(map) {
+      map.panTo(usersLocation.current);
+      if(window.innerWidth > 769 && props.contentWindowExpanded) {
+        map.panBy(-326, 0);
       }
     }
   }
