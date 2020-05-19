@@ -24,7 +24,7 @@ const DualRangeSlider = (props) => {
 
     if(newValue >= props.min + props.step) {
       setMaxValue(newValue);
-      
+
       if(newValue <= minValue) {
         setMinValue(newValue - props.step);
         props.setParameters({...props.parameters, [props.name + 'Min']: newValue - props.step, [props.name + 'Max']: newValue});
@@ -60,6 +60,7 @@ const DualRangeSlider = (props) => {
           step={props.step}
           value={maxValue}
           onChange={handleMaxChange}
+          className="transparent-slider"
         />
 
       </div>
