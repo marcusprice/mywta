@@ -154,15 +154,18 @@ const Map = (props) => {
 
 
   //centers the user on the map when called
-  const centerUser = () => {
+  const centerUser = (location = usersLocation.current) => {
     if(map) {
-      map.panTo(usersLocation.current);
+      map.panTo(location);
       if(window.innerWidth > 769 && props.contentWindowExpanded) {
         map.panBy(-326, 0);
       }
+
+      if(props.hikes.length > 500) {
+        getBounds();
+      }
     }
   }
-
 
 
 
@@ -193,91 +196,162 @@ const Map = (props) => {
   //adds hike markers to map
   useEffect(() => {
     if(map) {
+      //load oms limbrary
+      loadOMS();
+      //clear any old markers
+      clearMarkers();
 
-      if(!oms.current) {  //oms hasn't been set up yet
-        //load oms
-        const omsScript = document.createElement('script');
-        omsScript.id= 'omsScript';
-        omsScript.src = './js/oms.min.js';
-        document.body.appendChild(omsScript)
+      if(props.hikes.length > 0) {
+        if(props.hikes.length < 500) {
+          //if there are less than 500 markers, add them like normal
+          addMarkers();
+        } else {
+          //we need to filter the markers to only show those in bounds
+          const bounds = getBounds();
+          addMarkers(bounds);
 
-        //create new instance of oms after resources have loaded
-        omsScript.onload = () => {
-          oms.current = new window.OverlappingMarkerSpiderfier(map, {
-            markersWontMove: true,
-            markersWontHide: true,
-            basicFormatEvents: true,
-            keepSpiderfied: true,
-            nearbyDistance: 40,
-            circleSpiralSwitchover: 6
+          map.addListener('idle', () => {
+            //get new bounds
+            const updatedBounds = getBounds();
+            //clear and add new bounds
+            clearMarkers();
+            addMarkers(updatedBounds);
           });
         }
       }
-
-      //clean any old markers out before adding new set
-      if(hikeMarkers.current.length > 0) {
-
-        hikeMarkers.current.forEach(marker => {
-          marker.setMap(null);  //removes the marker from the map
-          marker = null;  //sets the marker to null for cleanup
-        });
-
-        hikeMarkers.current = []; //sets array to empty so null indexes don't appear in clusterer
-      }
-
-
-      //if there are hikes, loop through them and create location markers for them
-      if(props.hikes.length > 0) {
-        props.hikes.forEach(hike => {
-
-          //get google resources
-          const google = window.google;
-
-          //create a new marker for the hike
-          let hikeMarker = new google.maps.Marker({
-            position: {lat: hike.latitude, lng: hike.longitude},
-            map: map,
-            icon: hikeMarkerIcon
-          });
-
-          //add an event listener to each hike for animation and display queue
-          hikeMarker.addListener('spider_click', () => {
-
-            //removes other animations
-            for(let i = 0; i < hikeMarkers.current.length; i++){
-              hikeMarkers.current[i].setAnimation(-1);
-            }
-
-            //set animation to current marker and center the map over it
-            hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
-            map.panTo({lat: hike.latitude, lng: hike.longitude});
-          });
-
-          //add the marker to oms and the hikemarkers array
-          oms.current.addMarker(hikeMarker);
-          hikeMarkers.current.push(hikeMarker);
-        });
-      }
-
-      //manage marker clustering
-      if(!markerCluster.current) {  //marker clustering hasn't been set up yet
-        //instantiate markerclusterer and save it to current ref
-        markerCluster.current = new MarkerClusterer(
-          map,
-          hikeMarkers.current,
-          {
-            zoomOnClick: true,
-            maxZoom: 12
-          }
-        );
-      } else {  //marker clustering is aldrady set up
-        //clear old markers from the cluster and add the new ones
-        markerCluster.current.clearMarkers();
-        markerCluster.current.addMarkers(hikeMarkers.current);
-      }
-
     }
-  }, [props.hikes, map])
+
+    //remove the event listener on unmount/before new hikes are laoded
+    return (() => {
+      if(map) {
+        window.google.maps.event.clearListeners(map, 'idle');
+      }
+    });
+
+  }, [props.hikes, map]);
+
+
+
+
+
+  const addMarkers = (bounds = null) => {
+    props.hikes.forEach(hike => {
+
+      if(bounds) {  //only show hikes within bounds provided
+        if(hike.latitude >= bounds.latMax || hike.latitude <= bounds.latMin || hike.longitude >= bounds.lngMax || hike.longitude <= bounds.lngMin) {
+          //the marker is outside of the bounds so break from this iteration to skip the hike
+          return;
+        }
+      }
+
+      //get google resources
+      const google = window.google;
+
+      //create a new marker for the hike
+      let hikeMarker = new google.maps.Marker({
+        position: {lat: hike.latitude, lng: hike.longitude},
+        map: map,
+        icon: hikeMarkerIcon
+      });
+
+      //add an event listener to each hike for animation and display queue
+      hikeMarker.addListener('spider_click', () => {
+
+        //removes other animations
+        for(let i = 0; i < hikeMarkers.current.length; i++){
+          hikeMarkers.current[i].setAnimation(-1);
+        }
+
+        centerUser({lat: hike.latitude, lng: hike.longitude});
+        hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
+      });
+
+      //add the marker to oms and the hikemarkers array
+      oms.current.addMarker(hikeMarker);
+      hikeMarkers.current.push(hikeMarker);
+    });
+
+    //manage marker clustering
+    if(!markerCluster.current) {  //marker clustering hasn't been set up yet
+      //instantiate markerclusterer and save it to current ref
+      markerCluster.current = new MarkerClusterer(
+        map,
+        hikeMarkers.current,
+        {
+          zoomOnClick: true,
+          maxZoom: 12
+        }
+      );
+    }
+
+    markerCluster.current.addMarkers(hikeMarkers.current);
+  }
+
+
+
+
+
+  const clearMarkers = () => {
+    //clear cluster
+    if(markerCluster.current) {
+      markerCluster.current.clearMarkers();
+    }
+
+    //clean any old markers out before adding new set
+    if(hikeMarkers.current.length > 0) {
+
+      hikeMarkers.current.forEach(marker => {
+        marker.setMap(null);  //removes the marker from the map
+        marker = null;  //sets the marker to null for cleanup
+      });
+
+      hikeMarkers.current = []; //sets array to empty so null indexes don't appear in clusterer
+    }
+  }
+
+
+
+
+
+  const getBounds = () => {
+    //get the map bounds and create a readable format
+    const temp = map.getBounds();
+    // console.log(temp);
+    const bounds = {
+      latMin: temp.Ya.i,
+      latMax: temp.Ya.j,
+      lngMin: temp.Ua.i,
+      lngMax: temp.Ua.j,
+    }
+
+    return bounds;
+  }
+
+
+
+
+
+  const loadOMS = () => {
+    if(!oms.current) {  //oms hasn't been set up yet
+      //load oms
+      const omsScript = document.createElement('script');
+      omsScript.id= 'omsScript';
+      omsScript.src = './js/oms.min.js';
+      document.body.appendChild(omsScript)
+
+      //create new instance of oms after resources have loaded
+      omsScript.onload = () => {
+        oms.current = new window.OverlappingMarkerSpiderfier(map, {
+          markersWontMove: true,
+          markersWontHide: true,
+          basicFormatEvents: true,
+          keepSpiderfied: true,
+          nearbyDistance: 40,
+          circleSpiralSwitchover: 6
+        });
+      }
+    }
+  }
 
 
 
