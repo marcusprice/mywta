@@ -202,26 +202,22 @@ const Map = (props) => {
       clearMarkers();
 
       if(props.hikes.length > 0) {
-        if(props.hikes.length < 500) {
-          //if there are less than 500 markers, add them like normal
-          addMarkers();
-        } else {
+        addMarkers();
+
+        if(props.hikes.length > 500) {
           //we need to filter the markers to only show those in bounds
           const bounds = getBounds();
-          addMarkers(bounds);
+          hideMarkers(bounds);
 
           map.addListener('idle', () => {
-            //get new bounds
             const updatedBounds = getBounds();
-            //clear and add new bounds
-            clearMarkers();
-            addMarkers(updatedBounds);
+            hideMarkers(updatedBounds);
           });
         }
       }
     }
 
-    //remove the event listener on unmount/before new hikes are laoded
+    //remove the event listener on unmount/before new hikes are loaded
     return (() => {
       if(map) {
         window.google.maps.event.clearListeners(map, 'idle');
@@ -306,6 +302,24 @@ const Map = (props) => {
       });
 
       hikeMarkers.current = []; //sets array to empty so null indexes don't appear in clusterer
+    }
+  }
+
+
+
+
+
+  const hideMarkers = (bounds) => {
+    if(hikeMarkers.current.length > 0) {
+      hikeMarkers.current.forEach(marker => {
+        if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
+          marker.setVisible(true);
+        } else {
+          marker.setVisible(false);
+        }
+      });
+
+      markerCluster.current.repaint();
     }
   }
 
