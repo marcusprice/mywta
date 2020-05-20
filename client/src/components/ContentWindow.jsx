@@ -5,7 +5,6 @@ import Search from './Search';
 import HikeDetails from './HikeDetails';
 import trees from '../assets/img/trees.jpg';
 import search from '../assets/img/search.jpg';
-import oysterDome from '../assets/img/oyster-dome.jpeg';
 
 const ContentWindow = (props) => {
   useEffect(() => {
@@ -25,8 +24,18 @@ const ContentWindow = (props) => {
       alt = "Person Hiking";
       break;
     case 'hike-info':
-      view = <HikeDetails />;
-      image = oysterDome;
+      if(!props.selectedHike) {
+        view = <Search setHikes={props.setHikes} setContentWindowExpanded={props.setContentWindowExpanded} />;
+        image = search;
+        alt = "Person Hiking";
+      } else {
+        view = <HikeDetails hike={props.selectedHike} />;
+        if(props.selectedHike.imgurl === '') {
+          image = trees;
+        } else {
+          image = props.selectedHike.imgurl;
+        }
+      }
       alt = "Trail Image";
       break;
     default:
