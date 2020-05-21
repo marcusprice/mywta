@@ -28,6 +28,7 @@ html {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 18px;
+  text-overflow: ellipsis;
 }
 
 .info-icon {
@@ -89,6 +90,37 @@ html {
 
 .fa-star:first-child {
   margin-left: 0;
+}
+
+.region {
+  color: #666;
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.length {
+  color: #666;
+  font-weight: 400;
+}
+
+.coordinates {
+  color: #aaa;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.hike-features-container {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.hike-feature-icon {
+  height: 48px;
+  margin: 0 32px 16px 0;
 }
 
 nav {
@@ -344,25 +376,6 @@ span {
   font-family: 'Muli', sans-serif;
   display: block;
   color: #666;
-}
-
-.region {
-  color: #666;
-  font-size: 20px;
-  font-weight: 700;
-  margin-top: 8px;
-}
-
-.length {
-  color: #666;
-  font-weight: 400;
-}
-
-.coordinates {
-  color: #aaa;
-  font-weight: 400;
-  font-size: 14px;
-  margin-top: 8px;
 }
 
 /*Desktop Styles*/

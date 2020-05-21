@@ -16,7 +16,12 @@ const App = () => {
   return (
    <AppContainer className="app">
 
-    <HikeBar />
+    <HikeBar
+      selectedHike={selectedHike}
+      contentWindowExpanded={contentWindowExpanded}
+      setContentWindowExpanded={setContentWindowExpanded}
+      setView={setView}
+    />
 
     <Map
       contentWindowExpanded={contentWindowExpanded}
