@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const About = () => {
+
+  useEffect(() => {
+    document.querySelector('.content-window').scrollTop = 0;
+  })
+
   return(
     <div className="content-section">
       <h2>About mywta</h2>
