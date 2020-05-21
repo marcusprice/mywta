@@ -24,11 +24,15 @@ html {
 }
 
 .hike-bar-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
   color: #fff;
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 18px;
-  text-overflow: ellipsis;
+  margin: 0;
 }
 
 .info-icon {
@@ -116,6 +120,7 @@ html {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .hike-feature-icon {
