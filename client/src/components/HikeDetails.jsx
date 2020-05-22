@@ -17,10 +17,11 @@ const HikeDetails = (props) => {
     if(props.hike.length === 2000) {
       output = 'Unknown';
     } else {
+      let miles = (props.hike.length === 1) ? ' mile ' : ' miles ';
       if(props.hike.trailtype === 'trails') {
-        output = props.hike.length + ' miles of trails';
+        output = props.hike.length +  miles + 'of trails';
       } else {
-        output =  props.hike.length + ' miles ' + props.hike.trailtype;
+        output =  props.hike.length +  miles + props.hike.trailtype;
       }
     }
 
