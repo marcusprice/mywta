@@ -41,7 +41,7 @@ const buildQuery = (parameters, flag = '') => {
   if(!parameters.pugetSoundIslands) sql += ' AND (region != \'Puget Sound and Islands\')';
   if(!parameters.snoqualmieRegion) sql += ' AND (region != \'Snoqualmie Region\')';
   if(!parameters.southCascades) sql += ' AND (region != \'South Cascades\')';
-  if(!parameters.centralCascades) sql += ' AND (region != \'Southwest Washington\')';
+  if(!parameters.southwestWashington) sql += ' AND (region != \'Southwest Washington\')';
 
   //add pass requirement conditionals
   if(!parameters.discoverPass) sql += ' AND (passrequired != \'Discover Pass\')';
