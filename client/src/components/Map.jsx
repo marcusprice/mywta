@@ -4,7 +4,6 @@ import hikeMarkerIcon from '../assets/icons/hike-marker.png';
 
 const Map = (props) => {
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
-  const [contentWindowExpanded, setContentWindowExpanded] = useState(props.contentWindowExpanded);
   const markerCluster = useRef(null); //marker cluster utility
   const oms = useRef(null); //spiderfy overlapping markers
   const userLocationMarkers = useRef([]); //array to store location markers
@@ -169,7 +168,7 @@ const Map = (props) => {
         initialMapLoad.current = true;  //map has loaded, set to true for next render
       }
     }
-  }, [props.contentWindowExpanded, map]);
+  });
 
 
 
@@ -252,7 +251,7 @@ const Map = (props) => {
 
         if(window.innerWidth > 769) {
           props.setContentWindowExpanded(true);
-          map.panBy(-326, 0);
+          // map.panBy(-326, 0);
         }
 
         hikeMarker.setAnimation(google.maps.Animation.BOUNCE);

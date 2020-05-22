@@ -7,8 +7,6 @@ import Miscellaneous from './Miscellaneous';
 
 const Search = (props) => {
 
-  console.log(props.parameters);
-
   return(
     <div className="content-section">
       <h2>Search for Hikes</h2>

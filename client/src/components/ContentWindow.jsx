@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Img from 'react-image';
 import About from './About';
 import Search from './Search';
@@ -49,7 +49,6 @@ const ContentWindow = (props) => {
   });
 
   const searchHikes = (e) => {
-    //console.log('/getHikes?' + convertToURI(parameters));
     props.setContentWindowExpanded(false);
     e.preventDefault();
     fetch('/getHikes?' + convertToURI(parameters), {

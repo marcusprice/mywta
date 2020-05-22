@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import HikeRating from './HikeRating';
 import HikeFeatureIcons from './HikeFeatureIcons';
 import DOMPurify from 'dompurify';
-import coast from '../assets/icons/coast.svg';
 
 const HikeDetails = (props) => {
   useEffect(() => {
@@ -52,7 +51,6 @@ const HikeDetails = (props) => {
       <span className="region">{props.hike.region}</span>
       <span className="coordinates">{props.hike.latitude}, {props.hike.longitude}</span>
 
-      <h3>Features</h3>
       <HikeFeatureIcons hike={props.hike} />
 
       <h3>Length</h3>
