@@ -1,9 +1,17 @@
 const Hikes = require('../models/Hikes');
-const { parseBool } = require('../lib/tools');
+const { parseBool, getCoordinateBoundries } = require('../lib/tools');
 
 const getHikes = async (request, callback) => {
   const convertedRequest = convertParameters(request);
   const hikeData =  await Hikes.getHikes(convertedRequest);
+
+  callback(hikeData.rows);
+}
+
+const getHikesWithLocation = async (request, callback) => {
+  const convertedRequest = convertParameters(request);
+  const coordinateBoundries = getCoordinateBoundries({lat: convertedRequest.userLat, lng: convertedRequest.userLng}, convertedRequest.distance);
+  const hikeData = await Hikes.getHikesWithLocation(request, coordinateBoundries);
 
   callback(hikeData.rows);
 }
@@ -23,3 +31,4 @@ const convertParameters = (request) => {
 }
 
 exports.getHikes = getHikes;
+exports.getHikesWithLocation = getHikesWithLocation;

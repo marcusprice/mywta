@@ -4,21 +4,33 @@ import DualRangeSlider from './DualRangeSlider';
 
 const RangeParameters = (props) => {
 
+  const handleDistanceFromYou = () => {
+    let output;
+    if(props.locationEnabled) {
+      output = (
+        <RangeSlider
+          title="Distance From You"
+          name="distance"
+          unit="Mile"
+          min="1"
+          max="100"
+          step={1}
+          value={props.parameters.distance}
+          parameters={props.parameters}
+          setParameters={props.setParameters}
+        />
+      )
+    } else {
+      output = '';
+    }
+    return output;
+  }
+
   return(
     <div>
       <h3>Hike Range Parameters</h3>
 
-      <RangeSlider
-        title="Distance From You"
-        name="distance"
-        unit="Mile"
-        min="1"
-        max="100"
-        step={1}
-        value={props.parameters.distance}
-        parameters={props.parameters}
-        setParameters={props.setParameters}
-      />
+      {handleDistanceFromYou()}
 
       <DualRangeSlider
         title="Length"

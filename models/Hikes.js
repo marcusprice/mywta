@@ -6,7 +6,12 @@ const getHikes = (parameters) => {
   return pool.query(query.sql, query.values);
 }
 
-const buildQuery = (parameters, flag = '') => {
+const getHikesWithLocation = (paremeters, coordinateBoundries) => {
+  const query = buildQuery(paremeters, coordinateBoundries);
+  return pool.query(query.sql, query.values);
+}
+
+const buildQuery = (parameters, coordinateBoundries = null) => {
   let sql = 'SELECT * FROM hikes';
   let values = [parameters.lengthMin, parameters.elevationMin, parameters.elevationGainMin, parameters.minRating];
   //add lower range conditionals
@@ -26,8 +31,9 @@ const buildQuery = (parameters, flag = '') => {
     sql += ' AND (elevationgain <= ' + parameters.elevationGainMax + ')';
   }
 
-  if(flag === 'getHikesWithLocation') {
-    //add location/radius logic
+  if(coordinateBoundries) {
+    sql += ' AND (latitude <= $5) AND (latitude >= $6) AND (longitude <= $7) AND (longitude >=  $8)';
+    values = [...values, coordinateBoundries.maxLat, coordinateBoundries.minLat, coordinateBoundries.maxLng, coordinateBoundries.minLng];
   }
 
   //add region conditionals
@@ -74,3 +80,4 @@ const buildQuery = (parameters, flag = '') => {
 }
 
 exports.getHikes = getHikes;
+exports.getHikesWithLocation = getHikesWithLocation;

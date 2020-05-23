@@ -8,10 +8,84 @@ import Menu from './components/Menu';
 
 const App = () => {
   const [contentWindowExpanded, setContentWindowExpanded] = useState(false);
-  //const [userLocation, setUserLocation] = useState({ enabled: false, lat: 47.7511, lng: -120.7401, accuracy: 0 }); //defaults to washington coordinates
+  const [userLocation, setUserLocation] = useState({ enabled: false, lat: 47.7511, lng: -120.7401, accuracy: 0 }); //defaults to washington coordinates
   const [hikes, setHikes] = useState([]);
   const [selectedHike, setSelectedHike] = useState(null);
   const [view, setView] = useState('about');
+  const [parameters, setParameters] = useState({
+    distance: 50,
+    lengthMin: 0,
+    lengthMax: 50,
+    elevationMin: 0,
+    elevationMax: 10000,
+    elevationGainMin: 0,
+    elevationGainMax: 10000,
+    minRating: 0,
+    centralCascades: true,
+    centralWashington: true,
+    easternWashington: true,
+    issaquahAlps: true,
+    mountRainierArea: true,
+    northCascades: true,
+    olympicPeninsula: true,
+    pugetSoundIslands: true,
+    snoqualmieRegion: true,
+    southCascades: true,
+    southwestWashington: true,
+    coast: false,
+    rivers: false,
+    lakes: false,
+    waterfalls: false,
+    oldGrowth: false,
+    fallFoliage: false,
+    wildflowersMeadows: false,
+    mountainViews: false,
+    summits: false,
+    wildlife: false,
+    ridgesPasses: false,
+    establishedCampsites: false,
+    discoverPass: true,
+    nationalParkPass: true,
+    northwestForestPass: true,
+    oregonStateParksDayUse: true,
+    snoParksPermit: true,
+    kidFriendly: false,
+    dogFriendly: false
+  });
+
+  const searchHikes = (e) => {
+    setContentWindowExpanded(false);
+    e.preventDefault();
+
+    const requestParameters = parameters;
+    requestParameters.userLat = userLocation.lat;
+    requestParameters.userLng = userLocation.lng;
+
+    console.log(requestParameters);
+
+    const route = userLocation.enabled ? '/getHikesWithLocation?' : '/getHikes?';
+    fetch(route + convertToURI(parameters), {
+      headers : {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+     })
+      .then(response => response.json())
+      .then((result) => {
+        setHikes(result);
+      })
+  }
+
+  const convertToURI = (obj) => {
+    var str = '';
+    for (var key in obj) {
+      if (str !== '') {
+          str += '&';
+      }
+      str += key + "=" + encodeURIComponent(obj[key]);
+    }
+    return str;
+  }
 
   return (
    <AppContainer className="app">
@@ -26,6 +100,7 @@ const App = () => {
     <Map
       contentWindowExpanded={contentWindowExpanded}
       setContentWindowExpanded={setContentWindowExpanded}
+      setUserLocation={setUserLocation}
       hikes={hikes}
       setSelectedHike={setSelectedHike}
       setView={setView}
@@ -37,6 +112,10 @@ const App = () => {
       setContentWindowExpanded={setContentWindowExpanded}
       setHikes={setHikes}
       selectedHike={selectedHike}
+      parameters={parameters}
+      setParameters={setParameters}
+      searchHikes={searchHikes}
+      locationEnabled={userLocation.enabled}
     />
 
     <Menu

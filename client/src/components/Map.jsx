@@ -146,6 +146,8 @@ const Map = (props) => {
         map.setZoom(14);
         initialLocationLoad.current = true;
       }
+
+      props.setUserLocation({enabled: true, lat: userCoords.lat, lng: userCoords.lng});
     }
   });
 
@@ -168,7 +170,7 @@ const Map = (props) => {
         initialMapLoad.current = true;  //map has loaded, set to true for next render
       }
     }
-  });
+  }, [map, props.contentWindowExpanded]);
 
 
 
@@ -251,7 +253,7 @@ const Map = (props) => {
 
         if(window.innerWidth > 769) {
           props.setContentWindowExpanded(true);
-          // map.panBy(-326, 0);
+          map.panBy(-326, 0);
         }
 
         hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
