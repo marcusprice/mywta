@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar';
+import LoaderContainer from './components/LoaderContainer';
 import Map from './components/Map';
 import ContentWindow from './components/ContentWindow';
 import Menu from './components/Menu';
@@ -12,6 +13,7 @@ const App = () => {
   const [hikes, setHikes] = useState([]);
   const [selectedHike, setSelectedHike] = useState(null);
   const [view, setView] = useState('about');
+  const [displayLoader, setDisplayLoader] = useState(false);
   const [parameters, setParameters] = useState({
     distance: 50,
     lengthMin: 0,
@@ -57,11 +59,11 @@ const App = () => {
     setContentWindowExpanded(false);
     e.preventDefault();
 
+    setDisplayLoader(true);
+
     const requestParameters = parameters;
     requestParameters.userLat = userLocation.lat;
     requestParameters.userLng = userLocation.lng;
-
-    console.log(requestParameters);
 
     const route = userLocation.enabled ? '/getHikesWithLocation?' : '/getHikes?';
     fetch(route + convertToURI(parameters), {
@@ -72,6 +74,7 @@ const App = () => {
      })
       .then(response => response.json())
       .then((result) => {
+        setDisplayLoader(false);
         setHikes(result);
       })
   }
@@ -85,6 +88,16 @@ const App = () => {
       str += key + "=" + encodeURIComponent(obj[key]);
     }
     return str;
+  }
+
+  const handleLoader = () => {
+    let output;
+    if(displayLoader) {
+      output = <LoaderContainer />;
+    } else {
+      output = '';
+    }
+    return output;
   }
 
   return (
@@ -105,6 +118,8 @@ const App = () => {
       setSelectedHike={setSelectedHike}
       setView={setView}
     />
+
+    { handleLoader() }
 
     <ContentWindow
       view={view}

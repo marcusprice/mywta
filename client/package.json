@@ -13,6 +13,7 @@
     "react-div-100vh": "^0.3.8",
     "react-dom": "^16.13.0",
     "react-image": "^2.4.0",
+    "react-loader-spinner": "^3.1.14",
     "react-scripts": "3.4.0"
   },
   "scripts": {
