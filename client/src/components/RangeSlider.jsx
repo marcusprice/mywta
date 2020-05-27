@@ -6,7 +6,13 @@ const RangeSlider = (props) => {
   const handlePlural = () => {
     if(value > 1 && props.unit === "Mile") {
       return 's';
+    } else {
+      return '';
     }
+  }
+
+  const handlePlus = () => {
+    return (value === props.max) ? '+' : '';
   }
 
   const handleChange = (e) => {
@@ -20,7 +26,7 @@ const RangeSlider = (props) => {
     <div className="multi-range">
       <label className="multi-range-label">
         <span>{props.title}</span>
-        <span>{value} {props.unit}{handlePlural()}</span>
+        <span>{value + handlePlus() + ' ' + props.unit + handlePlural()}</span>
       </label>
       <div className="multi-range-input">
         <input

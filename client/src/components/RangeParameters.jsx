@@ -36,8 +36,8 @@ const RangeParameters = (props) => {
         title="Length"
         name="length"
         unit="Miles"
-        min="0"
-        max="50"
+        min={0}
+        max={50}
         step={1}
         minValue={props.parameters.lengthMin}
         maxValue={props.parameters.lengthMax}
@@ -49,8 +49,8 @@ const RangeParameters = (props) => {
         title="Elevation"
         name="elevation"
         unit="Feet"
-        min="0"
-        max="10000"
+        min={0}
+        max={10000}
         step={100}
         minValue={props.parameters.elevationMin}
         maxValue={props.parameters.elevationMax}
@@ -62,8 +62,8 @@ const RangeParameters = (props) => {
         title="Elevation Gain"
         name="elevationGain"
         unit="Feet"
-        min="0"
-        max="10000"
+        min={0}
+        max={10000}
         step={100}
         minValue={props.parameters.elevationGainMin}
         maxValue={props.parameters.elevationGainMax}
@@ -76,8 +76,8 @@ const RangeParameters = (props) => {
         title="Minimum Rating"
         name="minRating"
         unit="/ 5"
-        min="0.0"
-        max="5.0"
+        min={0.0}
+        max={5.0}
         step={.1}
         value={props.parameters.minRating}
         parameters={props.parameters}

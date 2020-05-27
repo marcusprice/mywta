@@ -180,6 +180,7 @@ const Map = (props) => {
   //adds hike markers to map
   useEffect(() => {
     if(map) {
+
       //load oms limbrary
       loadOMS();
       //clear any old markers
@@ -199,6 +200,15 @@ const Map = (props) => {
             hideMarkers(updatedBounds);
           });
         }
+      }
+
+      map.panTo(usersLocation.current);
+      map.setZoom(getZoom());
+
+      if(markerCluster.current) {
+        map.addListener('idle', () => {
+          markerCluster.current.repaint();
+        });  
       }
     }
 
@@ -321,6 +331,29 @@ const Map = (props) => {
 
       markerCluster.current.repaint();
     }
+  }
+
+
+
+
+
+  const getZoom = () => {
+    let zoom;
+    if(props.distance > 0 && props.distance < 5){
+      zoom = 11;
+    } else if(props.distance >= 4 && props.distance <= 8){
+      zoom = 10;
+    } else if(props.distance >= 9 && props.distance <= 18){
+      zoom = 9;
+    } else if(props.distance >= 19 && props.distance <= 29){
+      zoom = 8
+    } else if(props.distance >= 30 && props.distance <= 50){
+      zoom = 7
+    } else {
+      zoom = 6
+    }
+
+    return zoom;
   }
 
 

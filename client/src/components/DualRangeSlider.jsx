@@ -34,11 +34,15 @@ const DualRangeSlider = (props) => {
     }
   }
 
+  const handlePlus = () => {
+    return (maxValue === parseFloat(props.max)) ? '+' : '';
+  }
+
   return(
     <div className="multi-range">
       <label className="multi-range-label">
         <span>{props.title}</span>
-        <span>{minValue + ' - ' + maxValue + ' ' + props.unit}</span>
+        <span>{minValue + ' - ' + maxValue + handlePlus() + ' ' + props.unit}</span>
       </label>
 
       <div className="multi-range-input">
