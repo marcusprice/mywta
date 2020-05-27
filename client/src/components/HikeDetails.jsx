@@ -6,7 +6,7 @@ import DOMPurify from 'dompurify';
 const HikeDetails = (props) => {
   useEffect(() => {
     document.querySelector('.content-window').scrollTop = 0;
-  })
+  });
 
   //sanitize html to prevent XSS attacks
   let hikeInfoPurified = DOMPurify.sanitize(props.hike.info);
@@ -61,7 +61,7 @@ const HikeDetails = (props) => {
 
       <h3>Elevation</h3>
       <span>Elevation Gain {(props.hike.elevationgain === 15000) ? 'Unknown' : props.hike.elevationgain + ' ft.'}</span>
-      <span>Highest Point {(props.hike.elevationgain === 15000) ? 'Unknown' : props.hike.elevation + ' ft.'}</span>
+      <span>Highest Point {(props.hike.elevation === 15000) ? 'Unknown' : props.hike.elevation + ' ft.'}</span>
 
       <h3>Pass Requirements</h3>
       <span>{props.hike.passrequired}</span>

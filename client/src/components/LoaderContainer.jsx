@@ -7,7 +7,7 @@ const LoaderContainer = () => {
     <div className="loader-container">
       <Loader
          type="Circles"
-         color="#333"
+         color="#1abc9c"
          height={64}
          width={64}
       />
