@@ -395,20 +395,16 @@ span {
   color: #666;
 }
 
-/*Desktop Styles*/
+/*Laptop & horizontal tablet styles and larger*/
 @media only screen and (min-width: 769px) {
   .hike-bar {
     background-color: #333;
   }
 
-  .info-icon {
-    display: none;
-  }
-
   nav {
     position: absolute;
     left: 12px;
-    max-width: 450px;
+    max-width: 412px;
     background-color: #fff;
     bottom: 10px;
     border-top: 0;
@@ -425,9 +421,9 @@ span {
 
   .content-window {
     border-radius: 5px;
-    height: calc(100% - 238px); width: 640px;
+    height: calc(100% - 145px); width: 412px;
     position: absolute;
-    top: 100px;
+    top: 54px;
     left: -700px;
     transition: height 0s;
     transition: left .5s;
@@ -436,12 +432,69 @@ span {
     box-shadow: 0px 3px 31px 17px rgba(0,0,0,0.42);
   }
 
+  #map {
+    height: calc(100% - 36px);
+  }
+
+  .info-icon {
+    display: none;
+  }
+
   .expanded {
     left: 12px;
   }
 
-  #map {
-    height: calc(100% - 36px);
+  .multi-range {
+    width: 100%;
+  }
+
+  .content-image {
+    height: 192px;
+  }
+}
+
+/*styles only for laptop and horizontal tablets*/
+@media only screen and (min-width: 769px) and (max-width: 1400px) {
+  h2 {
+    font-size: 18px
+  }
+
+  .region, h3 {
+    font-size: 16px;
+  }
+
+  .coordinates {
+    font-size: 12px;
+  }
+
+  span, p {
+    font-size: 14px;
+  }
+
+  .hike-feature-icon {
+    height: 36px;
+  }
+
+  .content-section {
+    padding: 24px;
+  }
+
+  .checkbox label {
+    font-size: 14px;
+  }
+}
+
+/*Desktop Styles*/
+@media only screen and (min-width: 1400px) {
+
+  nav {
+    max-width: 450px;
+  }
+
+  .content-window {
+    width: 640px;
+    top: 100px;
+    height: calc(100% - 238px);
   }
 
   .content-section {
@@ -456,5 +509,9 @@ span {
 
   .multi-range {
     width: 100%;
+  }
+
+  .content-image {
+    height: 256px;
   }
 }
