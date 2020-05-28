@@ -11,6 +11,7 @@ const Map = (props) => {
   const initialMapLoad = useRef(false); //used to determine if the map has loaded once already
   const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
   const usersLocation = useRef({}); //user's coordinates
+  const contentWindowExpanded = useRef(false);
 
   //loads map after initial render (only runs once)
   useEffect(() => {
@@ -157,6 +158,7 @@ const Map = (props) => {
 
   //manages map center offset for desktop UI
   useEffect(() => {
+    contentWindowExpanded.current = props.contentWindowExpanded;
     if(map && window.innerWidth > 769) {  //only run in desktop mode
       if(initialMapLoad.current) {  //only run if the map has loaded at least once
         if(props.contentWindowExpanded) {
@@ -208,7 +210,7 @@ const Map = (props) => {
       if(markerCluster.current) {
         map.addListener('idle', () => {
           markerCluster.current.repaint();
-        });  
+        });
       }
     }
 
@@ -263,6 +265,9 @@ const Map = (props) => {
 
         if(window.innerWidth > 769) {
           props.setContentWindowExpanded(true);
+        }
+
+        if(contentWindowExpanded.current && window.innerWidth > 769) {
           map.panBy(-326, 0);
         }
 

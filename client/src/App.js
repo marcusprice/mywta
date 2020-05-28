@@ -66,7 +66,7 @@ const App = () => {
     requestParameters.userLng = userLocation.lng;
 
     const route = (userLocation.enabled && parameters.distance !== '100') ? '/getHikesWithLocation?' : '/getHikes?';
-    console.log(route);
+
     fetch(route + convertToURI(parameters), {
       headers : {
         'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const App = () => {
        }
      })
       .then(response => response.json())
-      .then((result) => {
+      .then(result => {
         setDisplayLoader(false);
         setHikes(result);
       })
