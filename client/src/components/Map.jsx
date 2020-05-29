@@ -212,7 +212,9 @@ const Map = (props) => {
       }
 
       map.panTo(usersLocation.current);
-      map.setZoom(getZoom());
+      if(props.locationEnabled) {
+        map.setZoom(getZoom());  
+      }
 
       if(markerCluster.current) {
         map.addListener('idle', () => {
@@ -233,7 +235,7 @@ const Map = (props) => {
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.hikes, map]);
+  }, [props.hikes, props.locationEnabled, map]);
 
 
 

@@ -119,6 +119,7 @@ const App = () => {
       setSelectedHike={setSelectedHike}
       setView={setView}
       distance={parameters.distance}
+      locationEnabled={userLocation.enabled}
     />
 
     { handleLoader() }
