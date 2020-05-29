@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar';
@@ -54,6 +54,17 @@ const App = () => {
     kidFriendly: false,
     dogFriendly: false
   });
+
+  useEffect(() => {
+    navigator.geolocation.watchPosition(position => {
+      setUserLocation({
+        enabled: true,
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        accuracy: position.coords.accuracy
+      });
+    })
+  }, []);
 
   const searchHikes = (e) => {
     setContentWindowExpanded(false);
@@ -115,6 +126,7 @@ const App = () => {
       contentWindowExpanded={contentWindowExpanded}
       setContentWindowExpanded={setContentWindowExpanded}
       setUserLocation={setUserLocation}
+      userLocation={userLocation}
       hikes={hikes}
       setSelectedHike={setSelectedHike}
       setView={setView}

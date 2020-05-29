@@ -65,94 +65,92 @@ const Map = (props) => {
   }, []);
 
 
-
-
-
-  //watches and updates user's location on map
-  navigator.geolocation.watchPosition((position) => {
+  useEffect(() => {
     if(map) {
+      console.log(props.userLocation);
       const google = window.google; //grab google resources from the window
-      const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude }; //user's coordinates
-      let accuracy = position.coords.accuracy;  //user's accuracy
+      const userCoords = { lat: props.userLocation.lat, lng: props.userLocation.lng }; //user's coordinates
+      let accuracy = props.userLocation.accuracy;  //user's accuracy
 
       //update component's global ref with the user's location
       usersLocation.current = userCoords;
       //empty array for the new location circles
       const locationCircles = [];
 
-      //add inner location circle to locationCircles array
-      locationCircles.push(new google.maps.Marker({
-        clickable: false,
-        cursor: 'pointer',
-        position: userCoords,
-        icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#C8D6EC',
-            fillOpacity: 0.7,
-            scale: 12,
-            strokeWeight: 0,
-        },
-        draggable: false,
-        map: map
-      }));
-
-      //add outer location circle to locationCircles array
-      locationCircles.push(new google.maps.Marker({
-        clickable: false,
-        cursor: 'pointer',
-        position: userCoords,
+      if(props.userLocation.enabled) {
+        //add inner location circle to locationCircles array
+        locationCircles.push(new google.maps.Marker({
+          clickable: false,
+          cursor: 'pointer',
+          position: userCoords,
           icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#4285F4',
-            fillOpacity: 1,
-            scale: 6,
-            strokeColor: 'white',
-            strokeWeight: 2,
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: '#C8D6EC',
+              fillOpacity: 0.7,
+              scale: 12,
+              strokeWeight: 0,
           },
           draggable: false,
           map: map
-      }));
+        }));
 
-      //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
-      if(accuracy < 1000) {
-        //accuracy range
-        locationCircles.push(new google.maps.Circle({
-          map: map,
-          center: userCoords,
+        //add outer location circle to locationCircles array
+        locationCircles.push(new google.maps.Marker({
           clickable: false,
           cursor: 'pointer',
-          radius: accuracy,
-          strokeColor: '1bb6ff',
-          strokeOpacity: .4,
-          fillColor: '61a0bf',
-          fillOpacity: .4,
-          strokeWeight: 1,
-          zIndex: 1
+          position: userCoords,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: '#4285F4',
+              fillOpacity: 1,
+              scale: 6,
+              strokeColor: 'white',
+              strokeWeight: 2,
+            },
+            draggable: false,
+            map: map
         }));
+
+        //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
+        if(accuracy < 1000) {
+          //accuracy range
+          locationCircles.push(new google.maps.Circle({
+            map: map,
+            center: userCoords,
+            clickable: false,
+            cursor: 'pointer',
+            radius: accuracy,
+            strokeColor: '1bb6ff',
+            strokeOpacity: .4,
+            fillColor: '61a0bf',
+            fillOpacity: .4,
+            strokeWeight: 1,
+            zIndex: 1
+          }));
+        }
+
+        //remove old markers if they are there
+        if(userLocationMarkers.current.length > 0) {
+          userLocationMarkers.current.forEach(marker => {
+            marker.setMap(null);  //removes the marker from the map
+            marker = null;  //sets the marker to null for cleanup
+          });
+        }
+
+        //add the user's marker to the array
+        userLocationMarkers.current = locationCircles;
+
+        //center the map over the user if it's the first time loading
+        if(!initialLocationLoad.current) {
+          map.setCenter(userCoords);
+          map.setZoom(14);
+          initialLocationLoad.current = true;
+        }
+
+        locationEnabled.current = true;  
       }
-
-      //remove old markers if they are there
-      if(userLocationMarkers.current.length > 0) {
-        userLocationMarkers.current.forEach(marker => {
-          marker.setMap(null);  //removes the marker from the map
-          marker = null;  //sets the marker to null for cleanup
-        });
-      }
-
-      //add the user's marker to the array
-      userLocationMarkers.current = locationCircles;
-
-      //center the map over the user if it's the first time loading
-      if(!initialLocationLoad.current) {
-        map.setCenter(userCoords);
-        map.setZoom(14);
-        initialLocationLoad.current = true;
-      }
-
-      props.setUserLocation({enabled: true, lat: userCoords.lat, lng: userCoords.lng});
-      locationEnabled.current = true;
     }
-  });
+  }, [map, props.userLocation])
 
 
 
@@ -214,7 +212,7 @@ const Map = (props) => {
       }
 
       map.panTo(usersLocation.current);
-      
+
       if(locationEnabled.current) {
         map.setZoom(getZoom());
       }
@@ -238,7 +236,7 @@ const Map = (props) => {
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.hikes, props.locationEnabled, map]);
+  }, [props.hikes, map]);
 
 
 
