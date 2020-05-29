@@ -12,6 +12,7 @@ const Map = (props) => {
   const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
   const usersLocation = useRef({}); //user's coordinates
   const contentWindowExpanded = useRef(false);
+  const locationEnabled = useRef(false);
 
   //loads map after initial render (only runs once)
   useEffect(() => {
@@ -149,6 +150,7 @@ const Map = (props) => {
       }
 
       props.setUserLocation({enabled: true, lat: userCoords.lat, lng: userCoords.lng});
+      locationEnabled.current = true;
     }
   });
 
@@ -212,7 +214,8 @@ const Map = (props) => {
       }
 
       map.panTo(usersLocation.current);
-      if(props.locationEnabled) {
+      
+      if(locationEnabled.current) {
         map.setZoom(getZoom());
       }
 
