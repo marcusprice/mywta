@@ -15,7 +15,7 @@ const App = () => {
   const [view, setView] = useState('about');
   const [displayLoader, setDisplayLoader] = useState(false);
   const [parameters, setParameters] = useState({
-    distance: 50,
+    distance: 25,
     lengthMin: 0,
     lengthMax: 50,
     elevationMin: 0,

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import checkmark from '../assets/icons/checkmark.svg';
 
 const About = () => {
 
@@ -22,12 +23,12 @@ const About = () => {
       for your location. Once the app has loaded it's as simple as:
       </p>
       <ul>
-        <li>Hitting the "Search" icon (bottom left corner)</li>
-        <li>Filling out the search form to meet your desired hiking attributes &amp; requirements, then pressing "Search Hikes"</li>
-        <li>Picking a hike on the map to learn more about (the hike name appears on top-most bar)</li>
-        <li>Pressing the "Hike Details" icon or "Information" icon in the top right corner</li>
-        <li>Study the hike (read the details on mywta &amp; WTA)</li>
-        <li>Go hike</li>
+        <li><img className="checkmark-icon" src={checkmark} alt="checkmark icon" />Hitting the "Search" icon (bottom left corner)</li>
+        <li><img className="checkmark-icon" src={checkmark} alt="checkmark icon" />Filling out the search form to meet your desired hiking attributes &amp; requirements, then pressing "Search Hikes"</li>
+        <li><img className="checkmark-icon" src={checkmark} alt="checkmark icon" />Picking a hike on the map to learn more about (the hike name appears on top-most bar)</li>
+        <li><img className="checkmark-icon" src={checkmark} alt="checkmark icon" />Pressing the "Hike Details" icon or "Information" icon in the top right corner</li>
+        <li><img className="checkmark-icon" src={checkmark} alt="checkmark icon" />Study the hike (read the details on mywta &amp; WTA)</li>
+        <li><img className="checkmark-icon" src={checkmark} alt="checkmark icon" />Go hike</li>
       </ul>
       <p>
       It's <strong>highly recommended</strong> that you visit the <strong>WTA Link</strong> before pursuing any hike,

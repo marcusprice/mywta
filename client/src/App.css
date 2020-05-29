@@ -190,8 +190,22 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
     display:none;
 }
 
+.checkmark-icon {
+  height: 18px;
+  margin-right: 16px;
+}
 
+ul {
+  margin-top: 24px;
+  padding-left: 16px;
+}
 
+ul li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
 
 
 
@@ -467,7 +481,7 @@ span {
     font-size: 12px;
   }
 
-  span, p {
+  span, p, ul li {
     font-size: 14px;
   }
 
