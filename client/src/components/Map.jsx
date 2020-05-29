@@ -213,7 +213,7 @@ const Map = (props) => {
 
       map.panTo(usersLocation.current);
       if(props.locationEnabled) {
-        map.setZoom(getZoom());  
+        map.setZoom(getZoom());
       }
 
       if(markerCluster.current) {

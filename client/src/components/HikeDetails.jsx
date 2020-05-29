@@ -47,10 +47,21 @@ const HikeDetails = (props) => {
   return(
     <div className="content-section">
       <h2>{props.hike.name}</h2>
+      <span className="region">{props.hike.region}</span>
       <HikeRating rating={props.hike.rating} />
 
-      <span className="region">{props.hike.region}</span>
-      <span className="coordinates">{props.hike.latitude}, {props.hike.longitude}</span>
+
+      <span className="wta-link">
+        <a href={props.hike.url} target="_blank" rel="noopener noreferrer">
+          WTA Link
+        </a>
+      </span>
+
+      <span className="coordinates">
+        <a href={'https://www.google.com/maps/search/?api=1&query=' + props.hike.latitude + ',' + props.hike.longitude} target="_blank" rel="noopener noreferrer">
+          {props.hike.latitude}, {props.hike.longitude}
+        </a>
+      </span>
 
       <HikeFeatureIcons hike={props.hike} />
 
