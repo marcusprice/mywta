@@ -15,7 +15,7 @@ const App = () => {
   const [view, setView] = useState('about');
   const [displayLoader, setDisplayLoader] = useState(false);
   const [parameters, setParameters] = useState({
-    distance: 25,
+    distance: 5,
     lengthMin: 0,
     lengthMax: 50,
     elevationMin: 0,
@@ -66,9 +66,20 @@ const App = () => {
     })
   }, []);
 
-  const searchHikes = (e) => {
+  useEffect(() => {
+    if(userLocation.enabled) {
+      searchHikes();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLocation.enabled]);
+
+  const searchHikes = (e = null) => {
     setContentWindowExpanded(false);
-    e.preventDefault();
+
+    if(e) {
+      e.preventDefault();
+    }
 
     setDisplayLoader(true);
 
@@ -90,6 +101,7 @@ const App = () => {
         setHikes(result);
       })
   }
+
 
   const convertToURI = (obj) => {
     var str = '';

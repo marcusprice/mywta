@@ -67,7 +67,6 @@ const Map = (props) => {
 
   useEffect(() => {
     if(map) {
-      console.log(props.userLocation);
       const google = window.google; //grab google resources from the window
       const userCoords = { lat: props.userLocation.lat, lng: props.userLocation.lng }; //user's coordinates
       let accuracy = props.userLocation.accuracy;  //user's accuracy
@@ -147,7 +146,7 @@ const Map = (props) => {
           initialLocationLoad.current = true;
         }
 
-        locationEnabled.current = true;  
+        locationEnabled.current = true;
       }
     }
   }, [map, props.userLocation])
@@ -211,11 +210,7 @@ const Map = (props) => {
         }
       }
 
-      map.panTo(usersLocation.current);
 
-      if(locationEnabled.current) {
-        map.setZoom(getZoom());
-      }
 
       if(markerCluster.current) {
         map.addListener('idle', () => {
@@ -228,6 +223,7 @@ const Map = (props) => {
     return (() => {
       if(map) {
         window.google.maps.event.clearListeners(map, 'idle');
+
         if(markerCluster.current) {
           markerCluster.current.clearMarkers();
           markerCluster.current = null;
@@ -310,6 +306,8 @@ const Map = (props) => {
     } else {
       markerCluster.current.addMarkers(hikeMarkers.current);
     }
+
+    markerCluster.current.fitMapToMarkers();
   }
 
 
@@ -355,25 +353,6 @@ const Map = (props) => {
 
 
 
-
-  const getZoom = () => {
-    let zoom;
-    if(props.distance > 0 && props.distance < 5){
-      zoom = 11;
-    } else if(props.distance >= 4 && props.distance <= 8){
-      zoom = 10;
-    } else if(props.distance >= 9 && props.distance <= 18){
-      zoom = 9;
-    } else if(props.distance >= 19 && props.distance <= 29){
-      zoom = 8
-    } else if(props.distance >= 30 && props.distance <= 50){
-      zoom = 7
-    } else {
-      zoom = 6
-    }
-
-    return zoom;
-  }
 
 
 
@@ -436,6 +415,7 @@ const Map = (props) => {
       }
     }
   }
+
 
 
 
