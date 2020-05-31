@@ -18,7 +18,7 @@ const getHikes = (parameters) => {
   return pool.query(query.sql, query.values);
 }
 
-/** gets hike info from db with locational arguments (hikes outside of range are filtered out)*/
+/** gets hike info from db with locational arguments (hikes outside of range are filtered out) */
 const getHikesWithLocation = (paremeters, coordinateBoundries) => {
   const query = buildQuery(paremeters, coordinateBoundries);
   return pool.query(query.sql, query.values);

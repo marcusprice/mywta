@@ -1,3 +1,5 @@
+/*SQL table schema for DB*/
+
 CREATE TABLE urls (
   index serial PRIMARY KEY,
   url varchar(1000) NOT NULL
