@@ -526,12 +526,6 @@ span {
     padding: 24px 36px;
   }
 
-  /*scrollbar styles*/
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
   .multi-range {
     width: 100%;
   }
