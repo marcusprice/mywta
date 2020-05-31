@@ -13,6 +13,8 @@ const Map = (props) => {
   const usersLocation = useRef({}); //user's coordinates
   const contentWindowExpanded = useRef(false);
   const locationEnabled = useRef(false);
+  const laptopRes = 769;
+  const desktopRes = 1800;
 
   //loads map after initial render (only runs once)
   useEffect(() => {
@@ -158,17 +160,17 @@ const Map = (props) => {
   //manages map center offset for desktop UI
   useEffect(() => {
     contentWindowExpanded.current = props.contentWindowExpanded;
-    if(map && window.innerWidth > 769) {  //only run in desktop mode
+    if(map && window.innerWidth > laptopRes) {  //only run in desktop mode
       if(initialMapLoad.current) {  //only run if the map has loaded at least once
         if(props.contentWindowExpanded) {
-          if(window.innerWidth < 1400) {
+          if(window.innerWidth < desktopRes) {
             map.panBy(-218, 0);
           } else {
             map.panBy(-326, 0);
           }
         } else {
           //if the content menu is closes, offset again 326 (bringing it to original center)
-          if(window.innerWidth < 1400) {
+          if(window.innerWidth < desktopRes) {
             map.panBy(218, 0);
           } else {
             map.panBy(326, 0);
@@ -269,12 +271,12 @@ const Map = (props) => {
 
         map.panTo({lat: hike.latitude, lng: hike.longitude});
 
-        if(window.innerWidth > 769) {
+        if(window.innerWidth > laptopRes) {
           props.setContentWindowExpanded(true);
         }
 
         if(contentWindowExpanded.current && window.innerWidth > 769) {
-          if(window.innerWidth < 1400) {
+          if(window.innerWidth < desktopRes) {
             map.panBy(-218, 0);
           } else {
             map.panBy(-326, 0);
@@ -406,7 +408,7 @@ const Map = (props) => {
   const centerUser = () => {
     if(map) {
       map.panTo(usersLocation.current);
-      if(window.innerWidth > 769 && props.contentWindowExpanded) {
+      if(window.innerWidth > laptopRes && props.contentWindowExpanded) {
         if(window.innerWidth < 1400) {
           map.panBy(-218, 0);
         } else {
