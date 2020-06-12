@@ -44,9 +44,7 @@ const About = () => {
       more information visit the <a href="https://github.com/marcusprice/mywta" target="_blank" rel="noopener noreferrer">
       mywta github repository.</a></p>
 
-
       <h3>Donate &amp; Join WTA</h3>
-
 
       <p className="bottom-paragraph">The Washington Trails Association is an invaluable resource to both Washintonians &amp;
       tourists visiting the PNW. WTA is a non-profit organization that advocates protection of

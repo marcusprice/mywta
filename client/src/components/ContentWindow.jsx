@@ -7,6 +7,7 @@ import trees from '../assets/img/trees.jpg';
 import search from '../assets/img/search.jpg';
 
 const ContentWindow = (props) => {
+  console.log('rendered');
   let image, alt, view;
   switch(props.view) {
     case 'about':
@@ -61,10 +62,8 @@ const ContentWindow = (props) => {
 
   return(
     <div className={"content-window " + (props.contentWindowExpanded ? 'expanded' : '')}>
-      <div>
-        <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
-        { view }
-      </div>
+      <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
+      { view }
     </div>
   )
 }

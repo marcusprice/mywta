@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar';
@@ -8,8 +8,9 @@ import ContentWindow from './components/ContentWindow';
 import Menu from './components/Menu';
 
 const App = () => {
+  const userLocation = useRef({lat: 47.7511, lng: -120.7401}); //defaults to washington coordinates
+  const [locationEnabled, setLocationEnabled] = useState(false);
   const [contentWindowExpanded, setContentWindowExpanded] = useState(false);
-  const [userLocation, setUserLocation] = useState({ enabled: false, lat: 47.7511, lng: -120.7401, accuracy: 0 }); //defaults to washington coordinates
   const [hikes, setHikes] = useState([]);
   const [selectedHike, setSelectedHike] = useState(null);
   const [view, setView] = useState('about');
@@ -55,24 +56,24 @@ const App = () => {
     dogFriendly: false
   });
 
-  useEffect(() => {
-    navigator.geolocation.watchPosition(position => {
-      setUserLocation({
-        enabled: true,
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        accuracy: position.coords.accuracy
-      });
-    })
-  }, []);
 
   useEffect(() => {
-    if(userLocation.enabled) {
+    if(locationEnabled) {
       searchHikes();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userLocation.enabled]);
+  }, [locationEnabled]);
+
+  const updateLocation = locationData => {
+    userLocation.current = {
+      lat: locationData.coords.latitude, 
+      lng: locationData.coords.longitude
+    };
+
+    if(!locationEnabled) {
+      setLocationEnabled(true);
+    }
+  }
 
   const searchHikes = (e = null) => {
     setContentWindowExpanded(false);
@@ -84,10 +85,10 @@ const App = () => {
     setDisplayLoader(true);
 
     const requestParameters = parameters;
-    requestParameters.userLat = userLocation.lat;
-    requestParameters.userLng = userLocation.lng;
+    requestParameters.userLat = userLocation.current.lat;
+    requestParameters.userLng = userLocation.current.lng;
 
-    const route = (userLocation.enabled && parameters.distance !== '100') ? '/getHikesWithLocation?' : '/getHikes?';
+    const route = (locationEnabled && parameters.distance !== '100') ? '/getHikesWithLocation?' : '/getHikes?';
 
     fetch(route + convertToURI(parameters), {
       headers : {
@@ -137,12 +138,10 @@ const App = () => {
     <Map
       contentWindowExpanded={contentWindowExpanded}
       setContentWindowExpanded={setContentWindowExpanded}
-      setUserLocation={setUserLocation}
-      userLocation={userLocation}
       hikes={hikes}
       setSelectedHike={setSelectedHike}
       setView={setView}
-      distance={parameters.distance}
+      updateLocation={updateLocation}
     />
 
     { handleLoader() }
@@ -156,7 +155,7 @@ const App = () => {
       parameters={parameters}
       setParameters={setParameters}
       searchHikes={searchHikes}
-      locationEnabled={userLocation.enabled}
+      locationEnabled={locationEnabled}
     />
 
     <Menu

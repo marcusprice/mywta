@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import MarkerClusterer from '@google/markerclustererplus';
 import hikeMarkerIcon from '../assets/icons/hike-marker.png';
 
 const Map = (props) => {
-  const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
   const markerCluster = useRef(null); //marker cluster utility
   const oms = useRef(null); //spiderfy overlapping markers
   const userLocationMarkers = useRef([]); //array to store location markers
@@ -13,6 +12,7 @@ const Map = (props) => {
   const usersLocation = useRef({}); //user's coordinates
   const contentWindowExpanded = useRef(false);
   const locationEnabled = useRef(false);
+  const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
   const laptopRes = 769;
   const desktopRes = 1800;
 
@@ -69,16 +69,17 @@ const Map = (props) => {
 
   useEffect(() => {
     if(map) {
-      const google = window.google; //grab google resources from the window
-      const userCoords = { lat: props.userLocation.lat, lng: props.userLocation.lng }; //user's coordinates
-      let accuracy = props.userLocation.accuracy;  //user's accuracy
+      navigator.geolocation.watchPosition(position => {  
+        const google = window.google; //grab google resources from the window
+        const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude }; //user's coordinates
+        let accuracy = position.coords.accuracy;  //user's accuracy
+  
+        //update component's global ref with the user's location
+        usersLocation.current = userCoords;
+        //empty array for the new location circles
+        const locationCircles = [];
+  
 
-      //update component's global ref with the user's location
-      usersLocation.current = userCoords;
-      //empty array for the new location circles
-      const locationCircles = [];
-
-      if(props.userLocation.enabled) {
         //add inner location circle to locationCircles array
         locationCircles.push(new google.maps.Marker({
           clickable: false,
@@ -149,11 +150,11 @@ const Map = (props) => {
         }
 
         locationEnabled.current = true;
-      }
+
+        props.updateLocation(position);
+      });
     }
-  }, [map, props.userLocation])
-
-
+  }, [map]);
 
 
 
