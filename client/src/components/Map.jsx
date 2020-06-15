@@ -2,7 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import MarkerClusterer from '@google/markerclustererplus';
 import hikeMarkerIcon from '../assets/icons/hike-marker.png';
 
-const Map = (props) => {
+const Map = ({ 
+  contentWindowExpanded,      //if content window is expanded or not
+  setContentWindowExpanded,   //function to open/close content window
+  hikes,                      //an array of hike data
+  setSelectedHike,            //function to set the selected hike
+  setView,                    //funciton to set the content window view
+  updateLocation              //function to update location coords in parent
+}) => {
   const markerCluster = useRef(null); //marker cluster utility
   const oms = useRef(null); //spiderfy overlapping markers
   const userLocationMarkers = useRef([]); //array to store location markers
@@ -10,7 +17,7 @@ const Map = (props) => {
   const initialMapLoad = useRef(false); //used to determine if the map has loaded once already
   const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
   const usersLocation = useRef({}); //user's coordinates
-  const contentWindowExpanded = useRef(false);
+  const contentWindowExpandedRef = useRef(false);
   const locationEnabled = useRef(false);
   const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
   const laptopRes = 769;
@@ -151,19 +158,19 @@ const Map = (props) => {
 
         locationEnabled.current = true;
 
-        props.updateLocation(position);
+        updateLocation(position);
       });
     }
-  }, [map]);
+  }, [map, updateLocation]);
 
 
 
   //manages map center offset for desktop UI
   useEffect(() => {
-    contentWindowExpanded.current = props.contentWindowExpanded;
+    contentWindowExpandedRef.current = contentWindowExpanded;
     if(map && window.innerWidth > laptopRes) {  //only run in desktop mode
       if(initialMapLoad.current) {  //only run if the map has loaded at least once
-        if(props.contentWindowExpanded) {
+        if(contentWindowExpanded) {
           if(window.innerWidth < desktopRes) {
             map.panBy(-218, 0);
           } else {
@@ -181,7 +188,7 @@ const Map = (props) => {
         initialMapLoad.current = true;  //map has loaded, set to true for next render
       }
     }
-  }, [map, props.contentWindowExpanded]);
+  }, [map, contentWindowExpanded]);
 
 
 
@@ -197,11 +204,11 @@ const Map = (props) => {
       //clear any old markers
       clearMarkers();
 
-      if(props.hikes.length > 0) {
+      if(hikes.length > 0) {
         addMarkers();
         markerCluster.current.repaint();
 
-        if(props.hikes.length > 500) {
+        if(hikes.length > 500) {
           //we need to filter the markers to only show those in bounds
           const bounds = getBounds();
           hideMarkers(bounds);
@@ -235,14 +242,14 @@ const Map = (props) => {
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.hikes, map]);
+  }, [hikes, map]);
 
 
 
 
 
   const addMarkers = (bounds = null) => {
-    props.hikes.forEach(hike => {
+    hikes.forEach(hike => {
 
       if(bounds) {  //only show hikes within bounds provided
         if(hike.latitude >= bounds.latMax || hike.latitude <= bounds.latMin || hike.longitude >= bounds.lngMax || hike.longitude <= bounds.lngMin) {
@@ -263,7 +270,7 @@ const Map = (props) => {
 
       //add an event listener to each hike for animation and display queue
       hikeMarker.addListener('spider_click', () => {
-        props.setSelectedHike(hike);
+        setSelectedHike(hike);
 
         //removes other animations
         for(let i = 0; i < hikeMarkers.current.length; i++){
@@ -273,10 +280,10 @@ const Map = (props) => {
         map.panTo({lat: hike.latitude, lng: hike.longitude});
 
         if(window.innerWidth > laptopRes) {
-          props.setContentWindowExpanded(true);
+          setContentWindowExpanded(true);
         }
 
-        if(contentWindowExpanded.current && window.innerWidth > 769) {
+        if(contentWindowExpandedRef.current && window.innerWidth > 769) {
           if(window.innerWidth < desktopRes) {
             map.panBy(-218, 0);
           } else {
@@ -287,7 +294,7 @@ const Map = (props) => {
         hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
 
         //set content window to hike info
-        props.setView('hike-info');
+        setView('hike-info');
       });
 
       //add the marker to oms and the hikemarkers array
@@ -409,7 +416,7 @@ const Map = (props) => {
   const centerUser = () => {
     if(map) {
       map.panTo(usersLocation.current);
-      if(window.innerWidth > laptopRes && props.contentWindowExpanded) {
+      if(window.innerWidth > laptopRes && contentWindowExpanded) {
         if(window.innerWidth < 1400) {
           map.panBy(-218, 0);
         } else {

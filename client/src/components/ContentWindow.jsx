@@ -6,64 +6,72 @@ import HikeDetails from './HikeDetails';
 import trees from '../assets/img/trees.jpg';
 import search from '../assets/img/search.jpg';
 
-const ContentWindow = (props) => {
-  console.log('rendered');
-  let image, alt, view;
-  switch(props.view) {
+const ContentWindow = ({
+  view,                       //current view to display
+  contentWindowExpanded,      //whether the content window is expanded or not
+  setContentWindowExpanded,   //function to set the content window
+  selectedHike,               //the selected hike
+  parameters,                 //an object of search parameters
+  setParameters,              //function to update the parameters
+  locationEnabled,            //whether the user allowed location or not
+  searchHikes                 //function called when a search is executed
+}) => {
+
+  let image, alt, display;
+
+  switch(view) {
     case 'about':
-      view = <About />;
+      display = <About />;
       image = trees;
       alt = "PNW Trees";
       break;
     case 'search':
-      view = (
+      display = (
         <Search
-          parameters={props.parameters}
-          setParameters={props.setParameters}
-          setHikes={props.setHikes}
-          setContentWindowExpanded={props.setContentWindowExpanded}
-          searchHikes={props.searchHikes}
-          locationEnabled={props.locationEnabled}
+          parameters={parameters}
+          setParameters={setParameters}
+          setContentWindowExpanded={setContentWindowExpanded}
+          locationEnabled={locationEnabled}
+          searchHikes={searchHikes}
         />
       );
       image = search;
       alt = "Person Hiking";
       break;
     case 'hike-info':
-      if(!props.selectedHike) {
-        view = (
+      if(!selectedHike) {
+        display = (
           <Search
-            parameters={props.parameters}
-            setParameters={props.setParameters}
-            setHikes={props.setHikes}
-            setContentWindowExpanded={props.setContentWindowExpanded}
-            searchHikes={props.searchHikes}
-            locationEnabled={props.locationEnabled}
+            parameters={parameters}
+            setParameters={setParameters}
+            setContentWindowExpanded={setContentWindowExpanded}
+            locationEnabled={locationEnabled}
+            searchHikes={searchHikes}
           />
         );
         image = search;
         alt = "Person Hiking";
       } else {
-        view = <HikeDetails hike={props.selectedHike} />;
-        if(props.selectedHike.imgurl === '') {
+        display = <HikeDetails hike={selectedHike} />;
+        if(selectedHike.imgurl === '') {
           image = trees;
         } else {
-          image = props.selectedHike.imgurl;
+          image = selectedHike.imgurl;
         }
       }
       alt = "Trail Image";
       break;
     default:
-      view = <About />;
+      display = <About />;
       image = trees;
       alt = "PNW Trees";
       break;
   }
 
   return(
-    <div className={"content-window " + (props.contentWindowExpanded ? 'expanded' : '')}>
+    <div className={"content-window " + (contentWindowExpanded ? 'expanded' : '')}>
       <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
-      { view }
+      { display }
     </div>
   )
 }

@@ -3,25 +3,28 @@ import HikeRating from './HikeRating';
 import HikeFeatureIcons from './HikeFeatureIcons';
 import DOMPurify from 'dompurify';
 
-const HikeDetails = (props) => {
+const HikeDetails = ({
+  hike  //the selected hike
+}) => {
+  
   useEffect(() => {
     document.querySelector('.content-window').scrollTop = 0;
   });
 
   //sanitize html to prevent XSS attacks
-  let hikeInfoPurified = DOMPurify.sanitize(props.hike.info);
-  let drivingDirectionsPurified = DOMPurify.sanitize(props.hike.drivingdirections);
+  let hikeInfoPurified = DOMPurify.sanitize(hike.info);
+  let drivingDirectionsPurified = DOMPurify.sanitize(hike.drivingdirections);
 
   const handleTrailType = () => {
     let output;
-    if(props.hike.length === 2000) {
+    if(hike.length === 2000) {
       output = 'Unknown';
     } else {
-      let miles = (props.hike.length === 1) ? ' mile ' : ' miles ';
-      if(props.hike.trailtype === 'trails') {
-        output = props.hike.length +  miles + 'of trails';
+      let miles = (hike.length === 1) ? ' mile ' : ' miles ';
+      if(hike.trailtype === 'trails') {
+        output = hike.length +  miles + 'of trails';
       } else {
-        output =  props.hike.length +  miles + props.hike.trailtype;
+        output =  hike.length +  miles + hike.trailtype;
       }
     }
 
@@ -46,24 +49,24 @@ const HikeDetails = (props) => {
 
   return(
     <div className="content-section">
-      <h2>{props.hike.name}</h2>
-      <span className="region">{props.hike.region}</span>
-      <HikeRating rating={props.hike.rating} />
+      <h2>{hike.name}</h2>
+      <span className="region">{hike.region}</span>
+      <HikeRating rating={hike.rating} />
 
 
       <span className="wta-link">
-        <a href={props.hike.url} target="_blank" rel="noopener noreferrer">
+        <a href={hike.url} target="_blank" rel="noopener noreferrer">
           WTA Link
         </a>
       </span>
 
       <span className="coordinates">
-        <a href={'https://www.google.com/maps/search/?api=1&query=' + props.hike.latitude + ',' + props.hike.longitude} target="_blank" rel="noopener noreferrer">
-          {props.hike.latitude}, {props.hike.longitude}
+        <a href={'https://www.google.com/maps/search/?api=1&query=' + hike.latitude + ',' + hike.longitude} target="_blank" rel="noopener noreferrer">
+          {hike.latitude}, {hike.longitude}
         </a>
       </span>
 
-      <HikeFeatureIcons hike={props.hike} />
+      <HikeFeatureIcons hike={hike} />
 
       <h3>Length</h3>
       <span className="length">
@@ -71,14 +74,14 @@ const HikeDetails = (props) => {
       </span>
 
       <h3>Elevation</h3>
-      <span>Elevation Gain {(props.hike.elevationgain === 15000) ? 'Unknown' : props.hike.elevationgain + ' ft.'}</span>
-      <span>Highest Point {(props.hike.elevation === 15000) ? 'Unknown' : props.hike.elevation + ' ft.'}</span>
+      <span>Elevation Gain {(hike.elevationgain === 15000) ? 'Unknown' : hike.elevationgain + ' ft.'}</span>
+      <span>Highest Point {(hike.elevation === 15000) ? 'Unknown' : hike.elevation + ' ft.'}</span>
 
       <h3>Pass Requirements</h3>
-      <span>{props.hike.passrequired}</span>
+      <span>{hike.passrequired}</span>
 
-      {handleText('About', props.hike.info, hikeInfoPurified)}
-      {handleText('Directions', props.hike.drivingdirections, drivingDirectionsPurified)}
+      {handleText('About', hike.info, hikeInfoPurified)}
+      {handleText('Directions', hike.drivingdirections, drivingDirectionsPurified)}
     </div>
   );
 }

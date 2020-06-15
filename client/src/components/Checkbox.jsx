@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
 
-const Checkbox = (props) => {
-  const [checked, setChecked] = useState(props.value);
+const Checkbox = ({
+  name,             //the name of the checkbox item
+  inputName,        //the parameter name
+  value,            //the value 
+  setParameters,    //function to set the parameter
+  parameters        //the search parameters
+}) => {
+  
+  const [checked, setChecked] = useState(value);
 
   const handleChange = (e) => {
     setChecked(e.target.checked);
-    props.setParameters({...props.parameters, [props.inputName]: e.target.checked});
+    setParameters({...parameters, [inputName]: e.target.checked});
   }
 
   return(
-    <div>
-      <div className="checkbox">
-        <label>{props.name}</label>
-        <input
-          name={props.inputName}
-          checked={checked}
-          className="hike-switch"
-          type="checkbox"
-          onChange={handleChange}
-        />
-      </div>
-  </div>
+    <div className="checkbox">
+      <label>{name}</label>
+      <input
+        name={inputName}
+        checked={checked}
+        className="hike-switch"
+        type="checkbox"
+        onChange={handleChange}
+      />
+    </div>
   );
 }
 

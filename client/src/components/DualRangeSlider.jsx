@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 
-const DualRangeSlider = (props) => {
-  const [minValue, setMinValue] = useState(props.min);
-  const [maxValue, setMaxValue] = useState(props.max);
+const DualRangeSlider = ({
+  title,          //title of slider
+  name,           //parameter name (in parent)
+  unit,           //unit (either miles or feet)
+  min,            //minimum accepted value
+  max,            //maxiumum accepted value
+  step,           //how much the slider should increment/decrement
+  parameters,     //the parameters
+  setParameters   //function to set the parameters
+}) => {
+  
+  const [minSliderValue, setMinSliderValue] = useState(min);
+  const [maxSliderValue, setMaxSliderValue] = useState(max);
 
   const handleMinChange = (e) => {
     const newValue = parseInt(e.target.value);
 
-    if(newValue <= (props.max - props.step)) {
-      setMinValue(newValue);
+    if(newValue <= (max - step)) {
+      setMinSliderValue(newValue);
 
-      if(newValue >= maxValue) {
-        setMaxValue(newValue + props.step);
-        props.setParameters({...props.parameters, [props.name + 'Min']: newValue, [props.name + 'Max']: newValue + props.step});
+      if(newValue >= maxSliderValue) {
+        setMaxSliderValue(newValue + step);
+        setParameters({...parameters, [name + 'Min']: newValue, [name + 'Max']: newValue + step});
       } else {
-        props.setParameters({...props.parameters, [props.name + 'Min']: newValue});
+        setParameters({...parameters, [name + 'Min']: newValue});
       }
     }
   }
@@ -22,47 +32,47 @@ const DualRangeSlider = (props) => {
   const handleMaxChange = (e) => {
     const newValue = parseInt(e.target.value);
 
-    if(newValue >= props.min + props.step) {
-      setMaxValue(newValue);
+    if(newValue >= min + step) {
+      setMaxSliderValue(newValue);
 
-      if(newValue <= minValue) {
-        setMinValue(newValue - props.step);
-        props.setParameters({...props.parameters, [props.name + 'Min']: newValue - props.step, [props.name + 'Max']: newValue});
+      if(newValue <= minSliderValue) {
+        setMinSliderValue(newValue - step);
+        setParameters({...parameters, [name + 'Min']: newValue - step, [name + 'Max']: newValue});
       } else {
-        props.setParameters({...props.parameters, [props.name + 'Max']: newValue});
+        setParameters({...parameters, [name + 'Max']: newValue});
       }
     }
   }
 
   const handlePlus = () => {
-    return (maxValue === parseFloat(props.max)) ? '+' : '';
+    return (maxSliderValue === parseFloat(max)) ? '+' : '';
   }
 
   return(
     <div className="multi-range">
       <label className="multi-range-label">
-        <span>{props.title}</span>
-        <span>{minValue + ' - ' + maxValue + handlePlus() + ' ' + props.unit}</span>
+        <span>{title}</span>
+        <span>{minSliderValue + ' - ' + maxSliderValue + handlePlus() + ' ' + unit}</span>
       </label>
 
       <div className="multi-range-input">
         <input
           type="range"
-          name={props.name + 'Min'}
-          min={props.min}
-          max={props.max}
-          step={props.step}
-          value={minValue}
+          name={name + 'Min'}
+          min={min}
+          max={max}
+          step={step}
+          value={minSliderValue}
           onChange={handleMinChange}
         />
 
         <input
           type="range"
-          name={props.name + 'Max'}
-          min={props.min}
-          max={props.max}
-          step={props.step}
-          value={maxValue}
+          name={name + 'Max'}
+          min={min}
+          max={max}
+          step={step}
+          value={maxSliderValue}
           onChange={handleMaxChange}
           className="transparent-slider"
         />

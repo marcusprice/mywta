@@ -1,8 +1,11 @@
 import React from 'react';
 
-const HikeRating = (props) => {
+const HikeRating = ({
+  rating  //the hike rating
+}) => {
+  
   //convert rating to percentage
-  let rating = (props.rating / 5) * 100;
+  let convertedRating = (rating / 5) * 100;
 
   return(
     <div className="rating-container">
@@ -12,7 +15,7 @@ const HikeRating = (props) => {
       <i className="far fa-star"></i>
       <i className="far fa-star"></i>
       <i className="far fa-star"></i>
-        <div className="stars-inner" style={{width: rating + '%'}}>
+        <div className="stars-inner" style={{width: convertedRating + '%'}}>
           <i className="fas fa-star"></i>
           <i className="fas fa-star"></i>
           <i className="fas fa-star"></i>

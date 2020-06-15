@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 
-const RangeSlider = (props) => {
-  const [value, setValue] = useState(props.value);
+const RangeSlider = ({
+  title,          //title of slider
+  name,           //parameter name (in parent)
+  unit,           //unit (either miles or feet)
+  min,            //minimum accepted value
+  max,            //maxiumum accepted value
+  step,           //how much the slider should increment/decrement
+  value,          //value of the slider
+  parameters,     //the parameters
+  setParameters   //function to set the parameters
+}) => {
+
+  const [sliderValue, setSliderValue] = useState(value);
 
   const handlePlural = () => {
-    if(value > 1 && props.unit === "Mile") {
+    if(value > 1 && unit === "Mile") {
       return 's';
     } else {
       return '';
@@ -12,29 +23,29 @@ const RangeSlider = (props) => {
   }
 
   const handlePlus = () => {
-    return (value === props.max) ? '+' : '';
+    return (value === max) ? '+' : '';
   }
 
   const handleChange = (e) => {
     //update the slider's value
-    setValue(e.target.value);
+    setSliderValue(e.target.value);
     //update the parameters' property
-    props.setParameters({...props.parameters, [props.name]: e.target.value})
+    setParameters({...parameters, [name]: e.target.value})
   }
 
   return(
     <div className="multi-range">
       <label className="multi-range-label">
-        <span>{props.title}</span>
-        <span>{value + handlePlus() + ' ' + props.unit + handlePlural()}</span>
+        <span>{title}</span>
+        <span>{sliderValue + handlePlus() + ' ' + unit + handlePlural()}</span>
       </label>
       <div className="multi-range-input">
         <input
           type="range"
-          min={props.min}
-          max={props.max}
-          step={props.step}
-          value={value}
+          min={min}
+          max={max}
+          step={step}
+          value={sliderValue}
           onChange={handleChange}
         />
       </div>

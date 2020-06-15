@@ -57,6 +57,9 @@ const App = () => {
   });
 
 
+  console.log(parameters.distance);
+  
+
   useEffect(() => {
     if(locationEnabled) {
       searchHikes();
@@ -76,12 +79,12 @@ const App = () => {
   }
 
   const searchHikes = (e = null) => {
-    setContentWindowExpanded(false);
 
     if(e) {
       e.preventDefault();
     }
 
+    setContentWindowExpanded(false);
     setDisplayLoader(true);
 
     const requestParameters = parameters;
@@ -89,7 +92,8 @@ const App = () => {
     requestParameters.userLng = userLocation.current.lng;
 
     const route = (locationEnabled && parameters.distance !== '100') ? '/getHikesWithLocation?' : '/getHikes?';
-
+    console.log(route + convertToURI(parameters));
+    
     fetch(route + convertToURI(parameters), {
       headers : {
         'Content-Type': 'application/json',
@@ -130,7 +134,6 @@ const App = () => {
 
     <HikeBar
       selectedHike={selectedHike}
-      contentWindowExpanded={contentWindowExpanded}
       setContentWindowExpanded={setContentWindowExpanded}
       setView={setView}
     />

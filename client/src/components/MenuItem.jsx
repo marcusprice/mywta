@@ -5,10 +5,19 @@ import location from '../assets/icons/location.svg';
 import map from '../assets/icons/map.svg';
 import about from '../assets/icons/about.svg';
 
-const MenuItem = (props) => {
+const MenuItem = ({
+  item,                       //the menu item
+  setView,                    //function to set view
+  contentWindowExpanded,      //if the content window is expanded
+  setContentWindowExpanded,   //function to open and close content window
+  view                        //the current view
+}) => {
+
+  //items to be add img tag
   let icon, alt;
   let className = '';
-  switch(props.icon) {
+
+  switch(item) {
     case 'search':
       icon = search;
       alt = 'search icon';
@@ -20,7 +29,7 @@ const MenuItem = (props) => {
     case 'location':
       icon = location;
       alt = 'location pin icon';
-      className = 'location';
+      className = 'location'; //location class added for map event listener
       break;
     case 'map':
       icon = map;
@@ -37,21 +46,21 @@ const MenuItem = (props) => {
   }
 
   const handleClick = () => {
-    if(props.icon === 'search' || props.icon === 'hike-info' || props.icon === 'about') {
-      if(props.icon === 'search') {  props.setView('search') }
-      if(props.icon === 'hike-info') {  props.setView('hike-info') }
-      if(props.icon === 'about') {  props.setView('about') }
+    if(item === 'search' || item === 'hike-info' || item === 'about') {
+      if(item === 'search') {  setView('search') }
+      if(item === 'hike-info') {  setView('hike-info') }
+      if(item === 'about') {  setView('about') }
 
-      if(props.view === props.icon && props.contentWindowExpanded) {
-        props.setContentWindowExpanded(false);
+      if(view === item && contentWindowExpanded) {
+        setContentWindowExpanded(false);
       } else {
-        props.setContentWindowExpanded(true);
+        setContentWindowExpanded(true);
       }
     } else {
-      if(props.icon === 'location' && window.innerWidth > 769 && props.contentWindowExpanded) {
-        props.setContentWindowExpanded(true);
+      if(item === 'location' && window.innerWidth > 769 && contentWindowExpanded) {
+        setContentWindowExpanded(true);
       } else {
-        props.setContentWindowExpanded(false);
+        setContentWindowExpanded(false);
       }
     }
   }

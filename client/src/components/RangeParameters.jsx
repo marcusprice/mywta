@@ -2,11 +2,15 @@ import React from 'react';
 import RangeSlider from './RangeSlider';
 import DualRangeSlider from './DualRangeSlider';
 
-const RangeParameters = (props) => {
+const RangeParameters = ({
+  locationEnabled,    //whether location is enabled or not
+  parameters,         //the search parameters
+  setParameters       //function to set the search parameters
+}) => {
 
   const handleDistanceFromYou = () => {
     let output;
-    if(props.locationEnabled) {
+    if(locationEnabled) {
       output = (
         <RangeSlider
           title="Distance From You"
@@ -15,9 +19,9 @@ const RangeParameters = (props) => {
           min="1"
           max="100"
           step={1}
-          value={props.parameters.distance}
-          parameters={props.parameters}
-          setParameters={props.setParameters}
+          value={parameters.distance}
+          parameters={parameters}
+          setParameters={setParameters}
         />
       )
     } else {
@@ -39,10 +43,8 @@ const RangeParameters = (props) => {
         min={0}
         max={50}
         step={1}
-        minValue={props.parameters.lengthMin}
-        maxValue={props.parameters.lengthMax}
-        parameters={props.parameters}
-        setParameters={props.setParameters}
+        parameters={parameters}
+        setParameters={setParameters}
       />
 
       <DualRangeSlider
@@ -52,10 +54,8 @@ const RangeParameters = (props) => {
         min={0}
         max={10000}
         step={100}
-        minValue={props.parameters.elevationMin}
-        maxValue={props.parameters.elevationMax}
-        parameters={props.parameters}
-        setParameters={props.setParameters}
+        parameters={parameters}
+        setParameters={setParameters}
       />
 
       <DualRangeSlider
@@ -65,10 +65,8 @@ const RangeParameters = (props) => {
         min={0}
         max={10000}
         step={100}
-        minValue={props.parameters.elevationGainMin}
-        maxValue={props.parameters.elevationGainMax}
-        parameters={props.parameters}
-        setParameters={props.setParameters}
+        parameters={parameters}
+        setParameters={setParameters}
       />
 
 
@@ -79,9 +77,9 @@ const RangeParameters = (props) => {
         min={0.0}
         max={5.0}
         step={.1}
-        value={props.parameters.minRating}
-        parameters={props.parameters}
-        setParameters={props.setParameters}
+        value={parameters.minRating}
+        parameters={parameters}
+        setParameters={setParameters}
       />
     </div>
   )

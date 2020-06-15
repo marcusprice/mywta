@@ -1,23 +1,28 @@
 import React from 'react';
 import info from '../assets/icons/info.svg';
 
-const HikeBar = (props) => {
+const HikeBar = ({
+  selectedHike,               //the selected hike
+  setContentWindowExpanded,   //set content window expanded
+  setView                     //to set the view
+}) => {
+  
   let title;
-  if(!props.selectedHike || window.innerWidth > 769) {
+  if(!selectedHike || window.innerWidth > 769) {
     title = 'mywta';
   } else {
-    title = props.selectedHike.name;
+    title = selectedHike.name;
   }
 
   const handleClick = () => {
 
-    if(props.selectedHike) {
-      props.setView('hike-info');
+    if(selectedHike) {
+      setView('hike-info');
     } else {
-      props.setView('about');
+      setView('about');
     }
 
-    props.setContentWindowExpanded(true);
+    setContentWindowExpanded(true);
   }
 
   return(

@@ -5,22 +5,24 @@ import HikeFeatures from './HikeFeatures';
 import PassRequirements from './PassRequirements';
 import Miscellaneous from './Miscellaneous';
 
-const Search = (props) => {
-
-  return(
-    <div className="content-section">
-      <h2>Search for Hikes</h2>
-      <p>Use the form below to search for hikes.</p>
-      <form>
-        <RangeParameters locationEnabled={props.locationEnabled} parameters={props.parameters} setParameters={props.setParameters} />
-        <HikeRegions parameters={props.parameters} setParameters={props.setParameters} />
-        <HikeFeatures parameters={props.parameters} setParameters={props.setParameters} />
-        <PassRequirements parameters={props.parameters} setParameters={props.setParameters} />
-        <Miscellaneous parameters={props.parameters} setParameters={props.setParameters} />
-        <button onClick={props.searchHikes}>Search Hikes</button>
-      </form>
-    </div>
-  )
-}
+const Search = ({
+  parameters,       //search parameters
+  setParameters,    //function to set parameters
+  searchHikes,      //function to trigger hike search
+  locationEnabled   //whether user has allowed location or not
+}) => (
+  <div className="content-section">
+    <h2>Search for Hikes</h2>
+    <p>Use the form below to search for hikes.</p>
+    <form>
+      <RangeParameters locationEnabled={locationEnabled} parameters={parameters} setParameters={setParameters} />
+      <HikeRegions parameters={parameters} setParameters={setParameters} />
+      <HikeFeatures parameters={parameters} setParameters={setParameters} />
+      <PassRequirements parameters={parameters} setParameters={setParameters} />
+      <Miscellaneous parameters={parameters} setParameters={setParameters} />
+      <button onClick={searchHikes}>Search Hikes</button>
+    </form>
+  </div>
+)
 
 export default Search;
