@@ -56,10 +56,6 @@ const App = () => {
     dogFriendly: false
   });
 
-
-  console.log(parameters.distance);
-  
-
   useEffect(() => {
     if(locationEnabled) {
       searchHikes();
@@ -92,7 +88,6 @@ const App = () => {
     requestParameters.userLng = userLocation.current.lng;
 
     const route = (locationEnabled && parameters.distance !== '100') ? '/getHikesWithLocation?' : '/getHikes?';
-    console.log(route + convertToURI(parameters));
     
     fetch(route + convertToURI(parameters), {
       headers : {

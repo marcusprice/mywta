@@ -1,12 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import checkmark from '../assets/icons/checkmark.svg';
 
 const About = () => {
-
-  useEffect(() => {
-    document.querySelector('.content-window').scrollTop = 0;
-  })
-
   return(
     <>
       <h2>About mywta</h2>

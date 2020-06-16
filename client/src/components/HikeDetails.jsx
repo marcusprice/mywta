@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import HikeRating from './HikeRating';
 import HikeFeatureIcons from './HikeFeatureIcons';
 import DOMPurify from 'dompurify';
@@ -7,10 +7,6 @@ const HikeDetails = ({
   hike  //the selected hike
 }) => {
   
-  useEffect(() => {
-    document.querySelector('.content-window').scrollTop = 0;
-  });
-
   //sanitize html to prevent XSS attacks
   let hikeInfoPurified = DOMPurify.sanitize(hike.info);
   let drivingDirectionsPurified = DOMPurify.sanitize(hike.drivingdirections);

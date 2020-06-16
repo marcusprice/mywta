@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Img from 'react-image';
 import About from './About';
 import Search from './Search';
@@ -16,6 +16,10 @@ const ContentWindow = ({
   locationEnabled,            //whether the user allowed location or not
   searchHikes                 //function called when a search is executed
 }) => {
+
+  useEffect(() => {
+    document.querySelector('.content-window').scrollTop = 0;
+  });
 
   let image, alt, display;
 
