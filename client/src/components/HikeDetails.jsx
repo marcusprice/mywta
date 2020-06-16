@@ -48,7 +48,7 @@ const HikeDetails = ({
   }
 
   return(
-    <div className="content-section">
+    <>
       <h2>{hike.name}</h2>
       <span className="region">{hike.region}</span>
       <HikeRating rating={hike.rating} />
@@ -82,7 +82,7 @@ const HikeDetails = ({
 
       {handleText('About', hike.info, hikeInfoPurified)}
       {handleText('Directions', hike.drivingdirections, drivingDirectionsPurified)}
-    </div>
+    </>
   );
 }
 

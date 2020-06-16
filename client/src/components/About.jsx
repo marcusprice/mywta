@@ -8,7 +8,7 @@ const About = () => {
   })
 
   return(
-    <div className="content-section">
+    <>
       <h2>About mywta</h2>
       <p>Designed to be user-friendly and lightweight, mywta is a web application
       to make finding hiking trails in Washington State as easy as possible. It is by
@@ -54,7 +54,7 @@ const About = () => {
       visiting <a href="https://www.wta.org/get-involved/join" target="_blank" rel="noopener noreferrer">
       https://www.wta.org/get-involved/join</a>
       </p>
-    </div>
+    </>
   )
 }
 

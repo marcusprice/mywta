@@ -11,7 +11,7 @@ const Search = ({
   searchHikes,      //function to trigger hike search
   locationEnabled   //whether user has allowed location or not
 }) => (
-  <div className="content-section">
+  <>
     <h2>Search for Hikes</h2>
     <p>Use the form below to search for hikes.</p>
     <form>
@@ -22,7 +22,7 @@ const Search = ({
       <Miscellaneous parameters={parameters} setParameters={setParameters} />
       <button onClick={searchHikes}>Search Hikes</button>
     </form>
-  </div>
+  </>
 )
 
 export default Search;

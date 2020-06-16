@@ -71,7 +71,9 @@ const ContentWindow = ({
   return(
     <div className={"content-window " + (contentWindowExpanded ? 'expanded' : '')}>
       <Img className="content-image" src={image} alt={alt} loader={<div className="content-image"/>}/>
-      { display }
+      <div className="content-section">
+        { display }
+      </div>
     </div>
   )
 }
