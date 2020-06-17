@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './dualRangeSlider.css';
 
 const DualRangeSlider = ({
   title,          //title of slider

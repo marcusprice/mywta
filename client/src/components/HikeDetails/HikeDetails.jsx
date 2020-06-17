@@ -2,6 +2,7 @@ import React from 'react';
 import HikeRating from '../HikeRating/';
 import HikeFeatureIcons from '../HikeFeatureIcons/';
 import DOMPurify from 'dompurify';
+import './hikeDetails.css';
 
 const HikeDetails = ({
   hike  //the selected hike

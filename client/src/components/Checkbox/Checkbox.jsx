@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './checkbox.css';
 
 const Checkbox = ({
   name,             //the name of the checkbox item

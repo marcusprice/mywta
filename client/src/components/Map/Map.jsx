@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import MarkerClusterer from '@google/markerclustererplus';
 import hikeMarkerIcon from '../../assets/icons/hike-marker.png';
+import './map.css';
 
 const Map = ({ 
   contentWindowExpanded,      //if content window is expanded or not

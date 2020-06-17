@@ -1,5 +1,6 @@
 import React from 'react';
 import checkmark from '../../assets/icons/checkmark.svg';
+import './about.css';
 
 const About = () => (
     <>
@@ -50,5 +51,4 @@ const About = () => (
       </p>
     </>
   );
-
 export default About;

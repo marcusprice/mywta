@@ -1,0 +1,11 @@
+.hike-feature-icon {
+    height: 48px;
+    margin: 16px 32px 0px 0px;
+}
+
+/*styles only for laptop and horizontal tablets*/
+@media only screen and (min-width: 769px) and (max-width: 1800px) {
+    .hike-feature-icon {
+      height: 36px;
+    }
+}

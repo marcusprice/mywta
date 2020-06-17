@@ -1,0 +1,18 @@
+#map {
+    height: calc(100% - 100px);
+    width: 100%;
+}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+  display:none;
+}
+
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+
+/*Laptop & horizontal tablet styles and larger*/
+@media only screen and (min-width: 769px) {
+    #map {
+      height: calc(100% - 36px);
+    }
+}

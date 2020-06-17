@@ -4,6 +4,7 @@ import hikeInfo from '../../assets/icons/hike-info.svg';
 import location from '../../assets/icons/location.svg';
 import map from '../../assets/icons/map.svg';
 import about from '../../assets/icons/about.svg';
+import './menuItem.css';
 
 const MenuItem = ({
   item,                       //the menu item

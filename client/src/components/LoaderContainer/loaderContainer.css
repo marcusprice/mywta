@@ -1,0 +1,18 @@
+.loader-container {
+    height: calc(100% - 100px);
+    top: 36px;
+    position: absolute;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Laptop & horizontal tablet styles and larger*/
+@media only screen and (min-width: 769px) {  
+    .loader-container {
+      height: calc(100% - 36px);
+      top: 32px;
+    }
+}

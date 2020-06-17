@@ -5,6 +5,7 @@ import Search from '../Search/';
 import HikeDetails from '../HikeDetails/';
 import trees from '../../assets/img/trees.jpg';
 import search from '../../assets/img/search.jpg';
+import './contentWindow.css';
 
 const ContentWindow = ({
   view,                       //current view to display
@@ -18,7 +19,9 @@ const ContentWindow = ({
 }) => {
 
   useEffect(() => {
-    document.querySelector('.content-window').scrollTop = 0;
+    if(view !== 'search') {
+      document.querySelector('.content-window').scrollTop = 0;
+    }
   });
 
   let image, alt, display;
