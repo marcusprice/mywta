@@ -1,5 +1,5 @@
 import React from 'react';
-import info from '../assets/icons/info.svg';
+import info from '../../assets/icons/info.svg';
 
 const HikeBar = ({
   selectedHike,               //the selected hike

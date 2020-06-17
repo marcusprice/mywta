@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuItem from './MenuItem';
+import MenuItem from '../MenuItem/';
 
 const Menu = ({
   contentWindowExpanded,      //whether content window is expanded or not

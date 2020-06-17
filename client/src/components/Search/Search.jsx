@@ -1,9 +1,9 @@
 import React from 'react';
-import RangeParameters from './RangeParameters';
-import HikeRegions from './HikeRegions';
-import HikeFeatures from './HikeFeatures';
-import PassRequirements from './PassRequirements';
-import Miscellaneous from './Miscellaneous';
+import RangeParameters from '../RangeParameters/';
+import HikeRegions from '../HikeRegions/';
+import HikeFeatures from '../HikeFeatures/';
+import PassRequirements from '../PassRequirements/';
+import Miscellaneous from '../Miscellaneous/';
 
 const Search = ({
   parameters,       //search parameters
