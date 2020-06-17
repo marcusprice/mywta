@@ -4,7 +4,7 @@ import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar';
 import LoaderContainer from './components/LoaderContainer';
 import Map from './components/Map';
-import ContentWindow from './components/ContentWindow';
+import ContentWindow from './components/ContentWindow/';
 import Menu from './components/Menu';
 
 const App = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import checkmark from '../assets/icons/checkmark.svg';
+import checkmark from '../../assets/icons/checkmark.svg';
 
 const About = () => {
   return(

@@ -1,6 +1,6 @@
 import React from 'react';
 import RangeSlider from './RangeSlider';
-import DualRangeSlider from './DualRangeSlider';
+import DualRangeSlider from './DualRangeSlider/';
 
 const RangeParameters = ({
   locationEnabled,    //whether location is enabled or not

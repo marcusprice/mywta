@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import Img from 'react-image';
-import About from './About';
-import Search from './Search';
-import HikeDetails from './HikeDetails';
-import trees from '../assets/img/trees.jpg';
-import search from '../assets/img/search.jpg';
+import About from '../About/';
+import Search from '../Search';
+import HikeDetails from '../HikeDetails';
+import trees from '../../assets/img/trees.jpg';
+import search from '../../assets/img/search.jpg';
 
 const ContentWindow = ({
   view,                       //current view to display
