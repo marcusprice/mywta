@@ -1,6 +1,6 @@
 require('dotenv').config();                   //environment variables
 const express = require('express');           //express app
-const port = process.env.PORT || 5000         //in development the client/CRA runs on port 3000
+const port = process.env.PORT || 5000;        //in development the client/CRA runs on port 3000
 
 //instantiate express and set the static directory
 const app = express();
