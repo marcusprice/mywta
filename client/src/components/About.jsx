@@ -1,8 +1,7 @@
 import React from 'react';
 import checkmark from '../assets/icons/checkmark.svg';
 
-const About = () => {
-  return(
+const About = () => (
     <>
       <h2>About mywta</h2>
       <p>Designed to be user-friendly and lightweight, mywta is a web application
@@ -50,7 +49,6 @@ const About = () => {
       https://www.wta.org/get-involved/join</a>
       </p>
     </>
-  )
-}
+  );
 
 export default About;
