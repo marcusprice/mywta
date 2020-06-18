@@ -24,8 +24,7 @@ const RangeParameters = props => {
           step={1}
           value={parameters.distance}
           parameters={parameters}
-          setParameters={setParameters}
-        />
+          setParameters={setParameters} />
       )
     } else {
       output = '';
@@ -47,8 +46,7 @@ const RangeParameters = props => {
         max={50}
         step={1}
         parameters={parameters}
-        setParameters={setParameters}
-      />
+        setParameters={setParameters} />
 
       <DualRangeSlider
         title="Elevation"
@@ -58,8 +56,7 @@ const RangeParameters = props => {
         max={10000}
         step={100}
         parameters={parameters}
-        setParameters={setParameters}
-      />
+        setParameters={setParameters} />
 
       <DualRangeSlider
         title="Elevation Gain"
@@ -69,8 +66,7 @@ const RangeParameters = props => {
         max={10000}
         step={100}
         parameters={parameters}
-        setParameters={setParameters}
-      />
+        setParameters={setParameters} />
 
 
       <RangeSlider
@@ -82,8 +78,7 @@ const RangeParameters = props => {
         step={.1}
         value={parameters.minRating}
         parameters={parameters}
-        setParameters={setParameters}
-      />
+        setParameters={setParameters} />
     </>
   );
 }

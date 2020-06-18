@@ -16,8 +16,10 @@ const RangeSlider = props => {
     setParameters   //function to set the parameters
   } = props;
 
+  //state
   const [sliderValue, setSliderValue] = useState(value);
 
+  //adds an s if the value is mile and > 1
   const handlePlural = () => {
     if(value > 1 && unit === "Mile") {
       return 's';
@@ -26,6 +28,7 @@ const RangeSlider = props => {
     }
   }
 
+  //adds an + if value is at max
   const handlePlus = () => {
     return (value === max) ? '+' : '';
   }
