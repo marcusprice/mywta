@@ -1,26 +1,33 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MarkerClusterer from '@google/markerclustererplus';
 import hikeMarkerIcon from '../../assets/icons/hike-marker.png';
 import './map.css';
 
-const Map = ({ 
-  contentWindowExpanded,      //if content window is expanded or not
-  setContentWindowExpanded,   //function to open/close content window
-  hikes,                      //an array of hike data
-  setSelectedHike,            //function to set the selected hike
-  setView,                    //funciton to set the content window view
-  updateLocation              //function to update location coords in parent
-}) => {
-  const markerCluster = useRef(null); //marker cluster utility
-  const oms = useRef(null); //spiderfy overlapping markers
-  const userLocationMarkers = useRef([]); //array to store location markers
-  const hikeMarkers = useRef([]); //array to store hike markers
-  const initialMapLoad = useRef(false); //used to determine if the map has loaded once already
-  const initialLocationLoad = useRef(false); //used to determine if it's the first time pinning the user on the map
-  const usersLocation = useRef({}); //user's coordinates
+const Map = props => {
+  //props
+  const { 
+    contentWindowExpanded,      //if content window is expanded or not
+    setContentWindowExpanded,   //function to open/close content window
+    hikes,                      //an array of hike data
+    setSelectedHike,            //function to set the selected hike
+    setView,                    //funciton to set the content window view
+    updateLocation              //function to update location coords in parent
+  } = props;
+
+  //state
+  const [map, setMap] = useState(null);                    //the map
+  const [userLocation, setUserLocation] = useState({});    //user's coordinates
+
+  //refs
+  const markerCluster = useRef(null);               //marker cluster utility
+  const oms = useRef(null);                         //spiderfy overlapping markers
+  const userLocationMarkers = useRef([]);           //array to store location markers
+  const hikeMarkers = useRef([]);                   //array to store hike markers
+  const initialMapLoad = useRef(false);             //used to determine if the map has loaded once already
+  const initialLocationLoad = useRef(false);        //used to determine if it's the first time pinning the user on the map
   const contentWindowExpandedRef = useRef(false);
-  const locationEnabled = useRef(false);
-  const [map, setMap] = useState(null); //this never really changes after it's set, but state is the best solution to maintain the map on rerender
+
+  //resolution
   const laptopRes = 769;
   const desktopRes = 1800;
 
@@ -32,7 +39,6 @@ const Map = ({
       const google = window.google;
       //intialize with WA coordinates
       const wa = { lat: 47.7511, lng: -120.7401 };
-      usersLocation.current = wa;
       //turn off places of interest and trasit data
       const styles = [{
         featureType: "poi",
@@ -72,128 +78,104 @@ const Map = ({
     googleScript.defer = true;
     googleScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY + '&callback=initMap';  //calls initMap onload
     document.getElementsByTagName('body')[0].appendChild(googleScript);
+
+    //watch the user's location
+    navigator.geolocation.watchPosition(position => {
+      //update location in parent component
+      updateLocation(position);
+
+      //update location state in this component
+      setUserLocation({
+        enabled: true,
+        lat: position.coords.latitude, 
+        lng: position.coords.longitude,
+        accuracy: position.coords.accuracy
+      });
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
+  //add user's location marker to the map
   useEffect(() => {
-    if(map) {
-      navigator.geolocation.watchPosition(position => {  
-        const google = window.google; //grab google resources from the window
-        const userCoords = { lat: position.coords.latitude, lng: position.coords.longitude }; //user's coordinates
-        let accuracy = position.coords.accuracy;  //user's accuracy
-  
-        //update component's global ref with the user's location
-        usersLocation.current = userCoords;
-        //empty array for the new location circles
-        const locationCircles = [];
-  
+    if(userLocation.enabled && map) {
+      const google = window.google; //grab google resources from the window
+      const userCoords = { lat: userLocation.lat, lng: userLocation.lng }; //user's coordinates
+      let accuracy = userLocation.accuracy;  //user's accuracy
 
-        //add inner location circle to locationCircles array
-        locationCircles.push(new google.maps.Marker({
-          clickable: false,
-          cursor: 'pointer',
-          position: userCoords,
+      //empty array for the new location circles
+      const locationCircles = [];
+
+      //add inner location circle to locationCircles array
+      locationCircles.push(new google.maps.Marker({
+        clickable: false,
+        cursor: 'pointer',
+        position: userCoords,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#C8D6EC',
+            fillOpacity: 0.7,
+            scale: 12,
+            strokeWeight: 0,
+        },
+        draggable: false,
+        map: map
+      }));
+
+      //add outer location circle to locationCircles array
+      locationCircles.push(new google.maps.Marker({
+        clickable: false,
+        cursor: 'pointer',
+        position: userCoords,
           icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: '#C8D6EC',
-              fillOpacity: 0.7,
-              scale: 12,
-              strokeWeight: 0,
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#4285F4',
+            fillOpacity: 1,
+            scale: 6,
+            strokeColor: 'white',
+            strokeWeight: 2,
           },
           draggable: false,
           map: map
-        }));
+      }));
 
-        //add outer location circle to locationCircles array
-        locationCircles.push(new google.maps.Marker({
+      //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
+      if(accuracy < 1000) {
+        //accuracy range
+        locationCircles.push(new google.maps.Circle({
+          map: map,
+          center: userCoords,
           clickable: false,
           cursor: 'pointer',
-          position: userCoords,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: '#4285F4',
-              fillOpacity: 1,
-              scale: 6,
-              strokeColor: 'white',
-              strokeWeight: 2,
-            },
-            draggable: false,
-            map: map
+          radius: accuracy,
+          strokeColor: '1bb6ff',
+          strokeOpacity: .4,
+          fillColor: '61a0bf',
+          fillOpacity: .4,
+          strokeWeight: 1,
+          zIndex: 1
         }));
+      }
 
-        //only make an accuracy range if the accuracy is reasonable (to avoid massive circle on map)
-        if(accuracy < 1000) {
-          //accuracy range
-          locationCircles.push(new google.maps.Circle({
-            map: map,
-            center: userCoords,
-            clickable: false,
-            cursor: 'pointer',
-            radius: accuracy,
-            strokeColor: '1bb6ff',
-            strokeOpacity: .4,
-            fillColor: '61a0bf',
-            fillOpacity: .4,
-            strokeWeight: 1,
-            zIndex: 1
-          }));
-        }
+      //remove old markers if they are there
+      if(userLocationMarkers.current.length > 0) {
+        userLocationMarkers.current.forEach(marker => {
+          marker.setMap(null);  //removes the marker from the map
+          marker = null;  //sets the marker to null for cleanup
+        });
+      }
 
-        //remove old markers if they are there
-        if(userLocationMarkers.current.length > 0) {
-          userLocationMarkers.current.forEach(marker => {
-            marker.setMap(null);  //removes the marker from the map
-            marker = null;  //sets the marker to null for cleanup
-          });
-        }
+      //add the user's marker to the array
+      userLocationMarkers.current = locationCircles;
 
-        //add the user's marker to the array
-        userLocationMarkers.current = locationCircles;
-
-        //center the map over the user if it's the first time loading
-        if(!initialLocationLoad.current) {
-          map.setCenter(userCoords);
-          map.setZoom(14);
-          initialLocationLoad.current = true;
-        }
-
-        locationEnabled.current = true;
-
-        updateLocation(position);
-      });
-    }
-  }, [map, updateLocation]);
-
-
-
-  //manages map center offset for desktop UI
-  useEffect(() => {
-    contentWindowExpandedRef.current = contentWindowExpanded;
-    if(map && window.innerWidth > laptopRes) {  //only run in desktop mode
-      if(initialMapLoad.current) {  //only run if the map has loaded at least once
-        if(contentWindowExpanded) {
-          if(window.innerWidth < desktopRes) {
-            map.panBy(-218, 0);
-          } else {
-            map.panBy(-326, 0);
-          }
-        } else {
-          //if the content menu is closes, offset again 326 (bringing it to original center)
-          if(window.innerWidth < desktopRes) {
-            map.panBy(218, 0);
-          } else {
-            map.panBy(326, 0);
-          }
-        }
-      } else {
-        initialMapLoad.current = true;  //map has loaded, set to true for next render
+      //center the map over the user if it's the first time loading
+      if(!initialLocationLoad.current) {
+        map.setCenter(userCoords);
+        map.setZoom(14);
+        initialLocationLoad.current = true;
       }
     }
-  }, [map, contentWindowExpanded]);
-
-
-
-
+  }, [map, userLocation]);
 
 
   //adds hike markers to map
@@ -221,8 +203,6 @@ const Map = ({
         }
       }
 
-
-
       if(markerCluster.current) {
         map.addListener('idle', () => {
           markerCluster.current.repaint();
@@ -246,9 +226,32 @@ const Map = ({
   }, [hikes, map]);
 
 
+  //manages map center offset for desktop UI
+  useEffect(() => {
+    contentWindowExpandedRef.current = contentWindowExpanded;
+    if(map && window.innerWidth > laptopRes) {  //only run in desktop mode
+      if(initialMapLoad.current) {  //only run if the map has loaded at least once
+        if(contentWindowExpanded) {
+          if(window.innerWidth < desktopRes) {
+            map.panBy(-218, 0);
+          } else {
+            map.panBy(-326, 0);
+          }
+        } else {
+          //if the content menu is closes, offset again 326 (bringing it to original center)
+          if(window.innerWidth < desktopRes) {
+            map.panBy(218, 0);
+          } else {
+            map.panBy(326, 0);
+          }
+        }
+      } else {
+        initialMapLoad.current = true;  //map has loaded, set to true for next render
+      }
+    }
+  }, [map, contentWindowExpanded]);
 
-
-
+  
   const addMarkers = (bounds = null) => {
     hikes.forEach(hike => {
 
@@ -322,9 +325,6 @@ const Map = ({
   }
 
 
-
-
-
   const clearMarkers = () => {
     //clear cluster
     if(markerCluster.current) {
@@ -344,9 +344,6 @@ const Map = ({
   }
 
 
-
-
-
   const hideMarkers = (bounds) => {
     if(hikeMarkers.current.length > 0) {
       hikeMarkers.current.forEach(marker => {
@@ -362,13 +359,6 @@ const Map = ({
   }
 
 
-
-
-
-
-
-
-
   const getBounds = () => {
     //get the map bounds and create a readable format
     const temp = map.getBounds();
@@ -382,9 +372,6 @@ const Map = ({
 
     return bounds;
   }
-
-
-
 
 
   const loadOMS = () => {
@@ -410,13 +397,10 @@ const Map = ({
   }
 
 
-
-
-
   //centers the user on the map when called
   const centerUser = () => {
     if(map) {
-      map.panTo(usersLocation.current);
+      map.panTo({lat: userLocation.lat, lng: userLocation.lng});
       if(window.innerWidth > laptopRes && contentWindowExpanded) {
         if(window.innerWidth < 1400) {
           map.panBy(-218, 0);
@@ -426,10 +410,6 @@ const Map = ({
       }
     }
   }
-
-
-
-
 
 
   //used to add an event listener to center user after the component mounts
