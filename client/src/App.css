@@ -27,8 +27,6 @@ ul li {
   margin-bottom: 24px;
 }
 
-
-
 /*form styles*/
 input[type=range] {
   width: 100%;
@@ -70,83 +68,10 @@ input[type=range]::-webkit-slider-thumb {
   z-index: 2;
 }
 
-.multi-range input::-webkit-slider-thumb {
-  pointer-events: all;
-  position: relative;
-  z-index: 1;
-  outline: 0;
-}
-
 input[type=range]::-webkit-slider-runnable-track {
   width: 300px;
   height: 4px;
   background: #ddd;
-}
-
-.range, .multi-range {
-  display: block;
-  position: relative;
-  margin-bottom: 32px;
-  width: 100%;
-}
-
-.range-title, .multi-range-title {
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  font-size: 16px;
-}
-
-.multi-range-input {
-  background-color: #fff;
-  text-align: center;
-  /* border-top: solid #1abc9c 2px;
-  border-bottom: solid #1abc9c 2px; */
-  height: 50px;
-}
-
-.multi-range-input input {
-  pointer-events: none;
-  position: absolute;
-  overflow: hidden;
-  height: 50px;
-  margin: 0;
-  width: 100%;
-  left: 0px;
-}
-
-input.hike-switch {
-  position: relative;
-  -webkit-appearance: none;
-  outline: none;
-  width: 50px;
-  height: 30px;
-  background-color: #fff;
-  border: 1px solid #D9DADC;
-  border-radius: 50px;
-  box-shadow: inset -20px 0 0 0 #fff;
-}
-
-input.hike-switch:after {
-  content: "";
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  background: transparent;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  box-shadow: 2px 4px 6px rgba(0,0,0,0.2);
-}
-
-input.hike-switch:checked {
-  box-shadow: inset 20px 0 0 0 #1abc9c;
-  border-color: #1abc9c;
-}
-
-input.hike-switch:checked:after {
-  left: 20px;
-  box-shadow: -2px 4px 3px rgba(0,0,0,0.05);
 }
 
 button {
@@ -215,13 +140,6 @@ a {
   text-decoration: underline;
 }
 
-/*Laptop & horizontal tablet styles and larger*/
-@media only screen and (min-width: 769px) {
-  .multi-range {
-    width: 100%;
-  }
-}
-
 /*styles only for laptop and horizontal tablets*/
 @media only screen and (min-width: 769px) and (max-width: 1800px) {
   h2 {
@@ -234,12 +152,5 @@ a {
 
   span, p, ul li {
     font-size: 14px;
-  }
-}
-
-/*Desktop Styles*/
-@media only screen and (min-width: 1800px) {
-  .multi-range {
-    width: 100%;
   }
 }

@@ -53,13 +53,13 @@ const DualRangeSlider = props => {
   }
 
   return(
-    <label className="multi-range">
-      <div className="multi-range-title">
+    <label className="dual-range">
+      <div className="dual-range-title">
         <span>{title}</span>
         <span>{minSliderValue + ' - ' + maxSliderValue + handlePlus() + ' ' + unit}</span>
       </div>
 
-      <div className="multi-range-input">
+      <div className="dual-range-input">
         <input
           type="range"
           name={name + 'Min'}

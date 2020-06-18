@@ -1,18 +1,18 @@
-.dual-range {
+.range {
     display: block;
     position: relative;
     margin-bottom: 32px;
     width: 100%;
 }
 
-.dual-range-title {
+.range-title {
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
     font-size: 16px;
 }
 
-.dual-range-input {
+.range-input {
     background-color: #fff;
     text-align: center;
     /* border-top: solid #1abc9c 2px;
@@ -20,7 +20,7 @@
     height: 50px;
 }
   
-.dual-range-input input {
+.range-input input {
     pointer-events: none;
     position: absolute;
     overflow: hidden;
@@ -30,20 +30,16 @@
     left: 0px;
 }
 
-.dual-range input::-webkit-slider-thumb {
+.range input::-webkit-slider-thumb {
     pointer-events: all;
     position: relative;
     z-index: 1;
     outline: 0;
   }
 
-.transparent-slider[type=range]::-moz-range-track {
-    background: transparent;
-}
-
 /*Laptop & horizontal tablet styles and larger*/
 @media only screen and (min-width: 769px) {
-    .dual-range {
+    .range {
       width: 100%;
     }
 }
