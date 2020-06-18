@@ -83,13 +83,14 @@ input[type=range]::-webkit-slider-runnable-track {
   background: #ddd;
 }
 
-.multi-range {
+.range, .multi-range {
+  display: block;
   position: relative;
   margin-bottom: 32px;
   width: 100%;
 }
 
-.multi-range-label {
+.range-title, .multi-range-title {
   padding: 10px 0;
   display: flex;
   justify-content: space-between;

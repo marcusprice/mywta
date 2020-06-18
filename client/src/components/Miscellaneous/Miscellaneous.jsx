@@ -10,7 +10,7 @@ const Miscellaneous = props => {
   } = props;
 
   return (
-    <div>
+    <>
       <h3>Miscellaneous</h3>
 
       <Checkbox
@@ -27,7 +27,7 @@ const Miscellaneous = props => {
         setParameters={setParameters}
         parameters={parameters} />
 
-    </div>
+    </>
   );
 }
 

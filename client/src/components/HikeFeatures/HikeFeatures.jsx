@@ -10,7 +10,7 @@ const HikeFeatures = props => {
   } = props;
   
   return (
-    <div>
+    <>
       <h3>Hike Features</h3>
 
       <Checkbox
@@ -89,7 +89,7 @@ const HikeFeatures = props => {
         value={parameters.establishedCampsites}
         setParameters={setParameters}
         parameters={parameters} />
-    </div>
+    </>
   );
 }
 

@@ -20,8 +20,8 @@ const Checkbox = props => {
   }
 
   return(
-    <div className="checkbox">
-      <label>{name}</label>
+    <label className="checkbox">
+      { name }
       <input
         name={inputName}
         checked={checked}
@@ -29,7 +29,7 @@ const Checkbox = props => {
         type="checkbox"
         onChange={handleChange}
       />
-    </div>
+    </label>
   );
 }
 

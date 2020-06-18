@@ -10,7 +10,7 @@ const HikeRegions = props => {
   } = props;
 
   return (
-    <div>
+    <>
       <h3>Hike Regions</h3>
       <Checkbox
         name="Central Cascades"
@@ -87,7 +87,7 @@ const HikeRegions = props => {
         value={parameters.southwestWashington}
         setParameters={setParameters}
         parameters={parameters} />
-    </div>
+    </>
   );
 }
 

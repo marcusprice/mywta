@@ -4,7 +4,7 @@ import './dualRangeSlider.css';
 const DualRangeSlider = props => {
   
   //props
-  const {
+  const{
     title,          //title of slider
     name,           //parameter name (in parent)
     unit,           //unit (either miles or feet)
@@ -53,11 +53,11 @@ const DualRangeSlider = props => {
   }
 
   return(
-    <div className="multi-range">
-      <label className="multi-range-label">
+    <label className="multi-range">
+      <div className="multi-range-title">
         <span>{title}</span>
         <span>{minSliderValue + ' - ' + maxSliderValue + handlePlus() + ' ' + unit}</span>
-      </label>
+      </div>
 
       <div className="multi-range-input">
         <input
@@ -82,7 +82,7 @@ const DualRangeSlider = props => {
         />
 
       </div>
-    </div>
+    </label>
   )
 }
 

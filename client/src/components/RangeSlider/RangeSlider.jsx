@@ -37,12 +37,12 @@ const RangeSlider = props => {
   }
 
   return(
-    <div className="multi-range">
-      <label className="multi-range-label">
+    <label className="range">
+      <div className="range-title">
         <span>{title}</span>
         <span>{sliderValue + handlePlus() + ' ' + unit + handlePlural()}</span>
-      </label>
-      <div className="multi-range-input">
+      </div>
+      <div className="range-input">
         <input
           type="range"
           min={min}
@@ -52,7 +52,7 @@ const RangeSlider = props => {
           onChange={handleChange}
         />
       </div>
-    </div>
+    </label>
   );
 }
 

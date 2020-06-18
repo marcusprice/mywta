@@ -34,7 +34,7 @@ const RangeParameters = props => {
   }
 
   return(
-    <div>
+    <>
       <h3>Hike Range Parameters</h3>
 
       {handleDistanceFromYou()}
@@ -84,7 +84,7 @@ const RangeParameters = props => {
         parameters={parameters}
         setParameters={setParameters}
       />
-    </div>
+    </>
   );
 }
 

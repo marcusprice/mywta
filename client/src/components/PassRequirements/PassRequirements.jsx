@@ -10,7 +10,7 @@ const PassRequirements = props => {
   } = props;
   
   return (
-    <div>
+    <>
       <h3>Pass Requirements</h3>
 
       <Checkbox
@@ -48,7 +48,7 @@ const PassRequirements = props => {
         setParameters={setParameters}
         parameters={parameters} />
 
-    </div>
+    </>
   );
 }
 
