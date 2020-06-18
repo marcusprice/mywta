@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import './checkbox.css';
 
-const Checkbox = ({
-  name,             //the name of the checkbox item
-  inputName,        //the parameter name
-  value,            //the value 
-  setParameters,    //function to set the parameter
-  parameters        //the search parameters
-}) => {
+const Checkbox = props => {
   
+  //props
+  const {
+    name,             //the name of the checkbox item
+    inputName,        //the parameter name
+    value,            //the value 
+    setParameters,    //function to set the parameter
+    parameters        //the search parameters
+  } = props;
+
   const [checked, setChecked] = useState(value);
 
   const handleChange = (e) => {

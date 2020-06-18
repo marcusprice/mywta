@@ -6,15 +6,18 @@ import map from '../../assets/icons/map.svg';
 import about from '../../assets/icons/about.svg';
 import './menuItem.css';
 
-const MenuItem = ({
-  item,                       //the menu item
-  setView,                    //function to set view
-  contentWindowExpanded,      //if the content window is expanded
-  setContentWindowExpanded,   //function to open and close content window
-  view                        //the current view
-}) => {
+const MenuItem = props => {
 
-  //items to be add img tag
+  //props
+  const {
+    item,                       //the menu item
+    setView,                    //function to set view
+    contentWindowExpanded,      //if the content window is expanded
+    setContentWindowExpanded,   //function to open and close content window
+    view                        //the current view
+  } = props;
+
+  //img tag attributes
   let icon, alt;
   let className = '';
 

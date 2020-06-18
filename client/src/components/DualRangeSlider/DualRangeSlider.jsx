@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import './dualRangeSlider.css';
 
-const DualRangeSlider = ({
-  title,          //title of slider
-  name,           //parameter name (in parent)
-  unit,           //unit (either miles or feet)
-  min,            //minimum accepted value
-  max,            //maxiumum accepted value
-  step,           //how much the slider should increment/decrement
-  parameters,     //the parameters
-  setParameters   //function to set the parameters
-}) => {
+const DualRangeSlider = props => {
   
+  //props
+  const {
+    title,          //title of slider
+    name,           //parameter name (in parent)
+    unit,           //unit (either miles or feet)
+    min,            //minimum accepted value
+    max,            //maxiumum accepted value
+    step,           //how much the slider should increment/decrement
+    parameters,     //the parameters
+    setParameters   //function to set the parameters
+  } = props;
+
   const [minSliderValue, setMinSliderValue] = useState(min);
   const [maxSliderValue, setMaxSliderValue] = useState(max);
 

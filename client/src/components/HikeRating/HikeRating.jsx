@@ -1,10 +1,13 @@
 import React from 'react';
 import './hikeRating.css';
 
-const HikeRating = ({
-  rating  //the hike rating
-}) => {
+const HikeRating = props => {
   
+  //props
+  const {
+    rating  //the hike rating
+  } = props;
+
   //convert rating to percentage
   let convertedRating = (rating / 5) * 100;
 

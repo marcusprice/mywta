@@ -4,10 +4,12 @@ import HikeFeatureIcons from '../HikeFeatureIcons/';
 import DOMPurify from 'dompurify';
 import './hikeDetails.css';
 
-const HikeDetails = ({
-  hike  //the selected hike
-}) => {
-  
+const HikeDetails = props => {
+  //props
+  const {
+    hike  //the selected hike
+  } = props;
+
   //sanitize html to prevent XSS attacks
   let hikeInfoPurified = DOMPurify.sanitize(hike.info);
   let drivingDirectionsPurified = DOMPurify.sanitize(hike.drivingdirections);

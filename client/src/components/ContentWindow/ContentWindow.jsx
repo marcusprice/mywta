@@ -7,16 +7,19 @@ import trees from '../../assets/img/trees.jpg';
 import search from '../../assets/img/search.jpg';
 import './contentWindow.css';
 
-const ContentWindow = ({
-  view,                       //current view to display
-  contentWindowExpanded,      //whether the content window is expanded or not
-  setContentWindowExpanded,   //function to set the content window
-  selectedHike,               //the selected hike
-  parameters,                 //an object of search parameters
-  setParameters,              //function to update the parameters
-  locationEnabled,            //whether the user allowed location or not
-  searchHikes                 //function called when a search is executed
-}) => {
+const ContentWindow = props => {
+
+  //props
+  const {
+    view,                       //current view to display
+    contentWindowExpanded,      //whether the content window is expanded or not
+    setContentWindowExpanded,   //function to set the content window
+    selectedHike,               //the selected hike
+    parameters,                 //an object of search parameters
+    setParameters,              //function to update the parameters
+    locationEnabled,            //whether the user allowed location or not
+    searchHikes                 //function called when a search is executed
+  } = props;
 
   useEffect(() => {
     if(view !== 'search') {

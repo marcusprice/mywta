@@ -15,10 +15,13 @@ import wildflowersMeadows from '../../assets/icons/wildflowersMeadows.svg';
 import wildlife from '../../assets/icons/wildlife.svg';
 import './hikeFeatureIcon.css';
 
-const HikeFeatureIcons = ({
-  hike //the selected hike
-}) => {
+const HikeFeatureIcons = props => {
 
+  //props
+  const {
+    hike //the selected hike
+  } = props;
+  
   const handleFeatures = () => {
     const featureTags = [];
     let output;

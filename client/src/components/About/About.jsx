@@ -50,5 +50,6 @@ const About = () => (
       https://www.wta.org/get-involved/join</a>
       </p>
     </>
-  );
+);
+
 export default About;

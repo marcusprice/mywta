@@ -2,11 +2,14 @@ import React from 'react';
 import RangeSlider from '../RangeSlider/';
 import DualRangeSlider from '../DualRangeSlider/';
 
-const RangeParameters = ({
-  locationEnabled,    //whether location is enabled or not
-  parameters,         //the search parameters
-  setParameters       //function to set the search parameters
-}) => {
+const RangeParameters = props => {
+
+  //props
+  const {
+    locationEnabled,    //whether location is enabled or not
+    parameters,         //the search parameters
+    setParameters       //function to set the search parameters
+  } = props;
 
   const handleDistanceFromYou = () => {
     let output;
@@ -82,7 +85,7 @@ const RangeParameters = ({
         setParameters={setParameters}
       />
     </div>
-  )
+  );
 }
 
 export default RangeParameters;

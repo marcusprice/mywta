@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 
-const RangeSlider = ({
-  title,          //title of slider
-  name,           //parameter name (in parent)
-  unit,           //unit (either miles or feet)
-  min,            //minimum accepted value
-  max,            //maxiumum accepted value
-  step,           //how much the slider should increment/decrement
-  value,          //value of the slider
-  parameters,     //the parameters
-  setParameters   //function to set the parameters
-}) => {
+const RangeSlider = props => {
+
+  //props
+  const {
+    title,          //title of slider
+    name,           //parameter name (in parent)
+    unit,           //unit (either miles or feet)
+    min,            //minimum accepted value
+    max,            //maxiumum accepted value
+    step,           //how much the slider should increment/decrement
+    value,          //value of the slider
+    parameters,     //the parameters
+    setParameters   //function to set the parameters
+  } = props;
 
   const [sliderValue, setSliderValue] = useState(value);
 

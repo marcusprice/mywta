@@ -2,12 +2,15 @@ import React from 'react';
 import info from '../../assets/icons/info.svg';
 import './hikeBar.css';
 
-const HikeBar = ({
-  selectedHike,               //the selected hike
-  setContentWindowExpanded,   //set content window expanded
-  setView                     //to set the view
-}) => {
+const HikeBar = props => {
   
+  //props
+  const {
+    selectedHike,               //the selected hike
+    setContentWindowExpanded,   //set content window expanded
+    setView                     //to set the view
+  } = props;
+
   let title;
   if(!selectedHike || window.innerWidth > 769) {
     title = 'mywta';

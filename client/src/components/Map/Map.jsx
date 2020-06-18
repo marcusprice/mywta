@@ -27,7 +27,7 @@ const Map = props => {
   const initialLocationLoad = useRef(false);        //used to determine if it's the first time pinning the user on the map
   const contentWindowExpandedRef = useRef(false);
 
-  //resolution
+  //resolutions
   const laptopRes = 769;
   const desktopRes = 1800;
 
@@ -95,6 +95,7 @@ const Map = props => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   //add user's location marker to the map
   useEffect(() => {
@@ -325,6 +326,7 @@ const Map = props => {
   }
 
 
+  //clears markers from the map & markercluster
   const clearMarkers = () => {
     //clear cluster
     if(markerCluster.current) {
@@ -344,7 +346,8 @@ const Map = props => {
   }
 
 
-  const hideMarkers = (bounds) => {
+  //hides markers out of bounds on the map
+  const hideMarkers = bounds => {
     if(hikeMarkers.current.length > 0) {
       hikeMarkers.current.forEach(marker => {
         if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
@@ -359,6 +362,7 @@ const Map = props => {
   }
 
 
+  //gets a human readable object of the map's current bounds
   const getBounds = () => {
     //get the map bounds and create a readable format
     const temp = map.getBounds();
@@ -374,6 +378,7 @@ const Map = props => {
   }
 
 
+  //loads overlapping marker spiderfier library
   const loadOMS = () => {
     if(!oms.current) {  //oms hasn't been set up yet
       //load oms

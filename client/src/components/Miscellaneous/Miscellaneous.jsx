@@ -1,28 +1,34 @@
 import React from 'react';
 import Checkbox from '../Checkbox/';
 
-const Miscellaneous = ({
-  parameters,       //search parameters
-  setParameters     //function to set search parameters
-}) => (
-  <div>
-    <h3>Miscellaneous</h3>
+const Miscellaneous = props => {
 
-    <Checkbox
-      name="Kid Friendly"
-      inputName="kidFriendly"
-      value={parameters.kidFriendly}
-      setParameters={setParameters}
-      parameters={parameters} />
+  //props
+  const {
+    parameters,       //search parameters
+    setParameters     //function to set search parameters
+  } = props;
 
-    <Checkbox
-      name="Dog Friendly"
-      inputName="dogFriendly"
-      value={parameters.dogFriendly}
-      setParameters={setParameters}
-      parameters={parameters} />
+  return (
+    <div>
+      <h3>Miscellaneous</h3>
 
-  </div>
-)
+      <Checkbox
+        name="Kid Friendly"
+        inputName="kidFriendly"
+        value={parameters.kidFriendly}
+        setParameters={setParameters}
+        parameters={parameters} />
+
+      <Checkbox
+        name="Dog Friendly"
+        inputName="dogFriendly"
+        value={parameters.dogFriendly}
+        setParameters={setParameters}
+        parameters={parameters} />
+
+    </div>
+  );
+}
 
 export default Miscellaneous;

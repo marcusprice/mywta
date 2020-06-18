@@ -56,6 +56,7 @@ const App = () => {
     dogFriendly: false
   });
 
+  //searches for hikes when locationenabled is set to true
   useEffect(() => {
     if(locationEnabled) {
       searchHikes();
@@ -63,32 +64,40 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationEnabled]);
 
+  //function to update the user's location ref
   const updateLocation = locationData => {
     userLocation.current = {
       lat: locationData.coords.latitude, 
       lng: locationData.coords.longitude
     };
 
+    //only update the location enabled state if it was previously false
     if(!locationEnabled) {
       setLocationEnabled(true);
     }
   }
 
+  //function to search hikes
   const searchHikes = (e = null) => {
 
+    //if an event was passed to the function prevent default reload
     if(e) {
       e.preventDefault();
     }
 
+    //close the content window and display loader
     setContentWindowExpanded(false);
     setDisplayLoader(true);
 
+    //make a copy of the requestParameters and add the user's location to it
     const requestParameters = parameters;
     requestParameters.userLat = userLocation.current.lat;
     requestParameters.userLng = userLocation.current.lng;
 
+    //if location is enabled and the user isn't searching 100+ miles use getHikesWithLocation route, otherwise use getHikes
     const route = (locationEnabled && parameters.distance !== '100') ? '/getHikesWithLocation?' : '/getHikes?';
     
+    //get hikes from server
     fetch(route + convertToURI(parameters), {
       headers : {
         'Content-Type': 'application/json',
@@ -97,12 +106,13 @@ const App = () => {
      })
       .then(response => response.json())
       .then(result => {
+        //hide the loader and set the hikes state
         setDisplayLoader(false);
         setHikes(result);
       })
   }
 
-
+  //convert an object to URI string (for get requests)
   const convertToURI = (obj) => {
     var str = '';
     for (var key in obj) {
@@ -114,6 +124,7 @@ const App = () => {
     return str;
   }
 
+  //handles loader display
   const handleLoader = () => {
     let output;
     if(displayLoader) {
@@ -130,8 +141,7 @@ const App = () => {
     <HikeBar
       selectedHike={selectedHike}
       setContentWindowExpanded={setContentWindowExpanded}
-      setView={setView}
-    />
+      setView={setView} />
 
     <Map
       contentWindowExpanded={contentWindowExpanded}
@@ -139,8 +149,7 @@ const App = () => {
       hikes={hikes}
       setSelectedHike={setSelectedHike}
       setView={setView}
-      updateLocation={updateLocation}
-    />
+      updateLocation={updateLocation} />
 
     { handleLoader() }
 
@@ -153,15 +162,13 @@ const App = () => {
       parameters={parameters}
       setParameters={setParameters}
       searchHikes={searchHikes}
-      locationEnabled={locationEnabled}
-    />
+      locationEnabled={locationEnabled} />
 
     <Menu
       contentWindowExpanded={contentWindowExpanded}
       setContentWindowExpanded={setContentWindowExpanded}
       setView={setView}
-      view={view}
-    />
+      view={view} />
 
   </AppContainer>
   );
