@@ -32,6 +32,25 @@ const Map = props => {
   const desktopRes = 1800;
   
   //map functions
+  //determines if the user is in or arounf WA
+  const isUserInWA = position => {
+    let output = true;
+
+    const bounds = {
+      northBound: 50.1163,
+      southBound: 44.0521,
+      eastBound: -113.9940,
+      westBound: -124.8234	
+    }
+
+    if(position.coords.latitude > bounds.northBound) output = false;
+    if(position.coords.latitude < bounds.southBound) output = false;
+    if(position.coords.longitude < bounds.westBound) output = false;
+    if(position.coords.longitude > bounds.eastBound) output = false;
+
+    return output;
+  }
+
   //add markers to map
   const addMarkers = () => {
     hikes.forEach(hike => {
@@ -239,16 +258,18 @@ const Map = props => {
 
     //watch the user's location
     navigator.geolocation.watchPosition(position => {
-      //update location in parent component
-      updateLocation(position);
+      if(isUserInWA(position)) {
+        //update location in parent component
+        updateLocation(position);
 
-      //update location state in this component
-      setUserLocation({
-        enabled: true,
-        lat: position.coords.latitude, 
-        lng: position.coords.longitude,
-        accuracy: position.coords.accuracy
-      });
+        //update location state in this component
+        setUserLocation({
+          enabled: true,
+          lat: position.coords.latitude, 
+          lng: position.coords.longitude,
+          accuracy: position.coords.accuracy
+        });
+      }
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
