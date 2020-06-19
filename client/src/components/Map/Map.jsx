@@ -30,8 +30,166 @@ const Map = props => {
   //resolutions
   const laptopRes = 769;
   const desktopRes = 1800;
+  
+  //map functions
+  //add markers to map
+  const addMarkers = () => {
+    hikes.forEach(hike => {
+      //get google resources
+      const google = window.google;
 
-  //loads map after initial render (only runs once)
+      //create a new marker for the hike
+      let hikeMarker = new google.maps.Marker({
+        position: {lat: hike.latitude, lng: hike.longitude},
+        map: map,
+        icon: hikeMarkerIcon
+      });
+
+      //add an event listener to each hike for animation and view in parent
+      hikeMarker.addListener('spider_click', () => {
+        setSelectedHike(hike);
+
+        map.panTo({lat: hike.latitude, lng: hike.longitude});
+
+        if(window.innerWidth > laptopRes) {
+          setContentWindowExpanded(true);
+        }
+
+        if(contentWindowExpandedRef.current && window.innerWidth > laptopRes) {
+          if(window.innerWidth < desktopRes) {
+            map.panBy(-218, 0);
+          } else {
+            map.panBy(-326, 0);
+          }
+        }
+
+        //remove other animations
+        for(let i = 0; i < hikeMarkers.current.length; i++){
+          hikeMarkers.current[i].setAnimation(-1);
+        }
+
+        //set bounce animation
+        hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
+
+        //set content window to hike info
+        setView('hike-info');
+      });
+
+      //add the marker to oms and the hikemarkers array
+      oms.current.addMarker(hikeMarker);
+      hikeMarkers.current.push(hikeMarker);
+    });
+
+    //manage marker clustering
+    if(!markerCluster.current) {  //marker clustering hasn't been set up yet
+      //instantiate markerclusterer and save it to current ref
+      markerCluster.current = new MarkerClusterer(
+        map,
+        hikeMarkers.current,
+        {
+          zoomOnClick: true,
+          maxZoom: 12
+        }
+      );
+    } else {
+      markerCluster.current.addMarkers(hikeMarkers.current);
+    }
+
+    markerCluster.current.fitMapToMarkers();
+  }
+
+
+  //clears markers from the map & markercluster
+  const clearMarkers = () => {
+    //clear cluster
+    if(markerCluster.current) {
+      markerCluster.current.clearMarkers();
+    }
+
+    //clean any old markers out before adding new set
+    if(hikeMarkers.current.length > 0) {
+
+      hikeMarkers.current.forEach(marker => {
+        marker.setMap(null);  //removes the marker from the map
+        marker = null;  //sets the marker to null for cleanup
+      });
+
+      hikeMarkers.current = []; //sets array to empty so null indexes don't appear in clusterer
+    }
+  }
+
+
+  //hides markers out of bounds on the map
+  const hideMarkers = bounds => {
+    if(hikeMarkers.current.length > 0) {
+      hikeMarkers.current.forEach(marker => {
+        if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
+          marker.setVisible(true);
+        } else {
+          marker.setVisible(false);
+        }
+      });
+
+      markerCluster.current.repaint();
+    }
+  }
+
+
+  //gets a human readable object of the map's current bounds
+  const getBounds = () => {
+    //get the map bounds and create a readable format
+    const temp = map.getBounds();
+    const bounds = {
+      latMin: temp.Ya.i,
+      latMax: temp.Ya.j,
+      lngMin: temp.Ua.i,
+      lngMax: temp.Ua.j,
+    }
+
+    return bounds;
+  }
+
+
+  //loads overlapping marker spiderfier library
+  const loadOMS = () => {
+    if(!oms.current) {  //oms hasn't been set up yet
+      //load oms
+      const omsScript = document.createElement('script');
+      omsScript.id= 'omsScript';
+      omsScript.src = './js/oms.min.js';
+      document.body.appendChild(omsScript)
+
+      //create new instance of oms after resources have loaded
+      omsScript.onload = () => {
+        oms.current = new window.OverlappingMarkerSpiderfier(map, {
+          markersWontMove: true,
+          markersWontHide: true,
+          basicFormatEvents: true,
+          keepSpiderfied: true,
+          nearbyDistance: 40,
+          circleSpiralSwitchover: 6
+        });
+      }
+    }
+  }
+
+
+  //centers the user on the map when called
+  const centerUser = () => {
+    if(map) {
+      map.panTo({lat: userLocation.lat, lng: userLocation.lng});
+      if(window.innerWidth > laptopRes && contentWindowExpanded) {
+        if(window.innerWidth < 1400) {
+          map.panBy(-218, 0);
+        } else {
+          map.panBy(-326, 0);
+        }
+      }
+    }
+  }
+
+  //map effects
+  //loads map after initial render and watches user's poistion (only runs once)
   useEffect(() => {
     //first add initMap method to the window object (called later by google maps uri callback)
     window.initMap = () => {
@@ -97,7 +255,7 @@ const Map = props => {
   }, []);
 
 
-  //add user's location marker to the map
+  //add user's location marker to the map when userLocation is updated from watch position method
   useEffect(() => {
     if(userLocation.enabled && map) {
       const google = window.google; //grab google resources from the window
@@ -204,6 +362,7 @@ const Map = props => {
         }
       }
 
+      //repaint map so the clusters are correct
       if(markerCluster.current) {
         map.addListener('idle', () => {
           markerCluster.current.repaint();
@@ -251,170 +410,6 @@ const Map = props => {
       }
     }
   }, [map, contentWindowExpanded]);
-
-  
-  const addMarkers = (bounds = null) => {
-    hikes.forEach(hike => {
-
-      if(bounds) {  //only show hikes within bounds provided
-        if(hike.latitude >= bounds.latMax || hike.latitude <= bounds.latMin || hike.longitude >= bounds.lngMax || hike.longitude <= bounds.lngMin) {
-          //the marker is outside of the bounds so break from this iteration to skip the hike
-          return;
-        }
-      }
-
-      //get google resources
-      const google = window.google;
-
-      //create a new marker for the hike
-      let hikeMarker = new google.maps.Marker({
-        position: {lat: hike.latitude, lng: hike.longitude},
-        map: map,
-        icon: hikeMarkerIcon
-      });
-
-      //add an event listener to each hike for animation and display queue
-      hikeMarker.addListener('spider_click', () => {
-        setSelectedHike(hike);
-
-        //removes other animations
-        for(let i = 0; i < hikeMarkers.current.length; i++){
-          hikeMarkers.current[i].setAnimation(-1);
-        }
-
-        map.panTo({lat: hike.latitude, lng: hike.longitude});
-
-        if(window.innerWidth > laptopRes) {
-          setContentWindowExpanded(true);
-        }
-
-        if(contentWindowExpandedRef.current && window.innerWidth > 769) {
-          if(window.innerWidth < desktopRes) {
-            map.panBy(-218, 0);
-          } else {
-            map.panBy(-326, 0);
-          }
-        }
-
-        hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
-
-        //set content window to hike info
-        setView('hike-info');
-      });
-
-      //add the marker to oms and the hikemarkers array
-      oms.current.addMarker(hikeMarker);
-      hikeMarkers.current.push(hikeMarker);
-    });
-
-    //manage marker clustering
-    if(!markerCluster.current) {  //marker clustering hasn't been set up yet
-      //instantiate markerclusterer and save it to current ref
-      markerCluster.current = new MarkerClusterer(
-        map,
-        hikeMarkers.current,
-        {
-          zoomOnClick: true,
-          maxZoom: 12
-        }
-      );
-    } else {
-      markerCluster.current.addMarkers(hikeMarkers.current);
-    }
-
-    markerCluster.current.fitMapToMarkers();
-  }
-
-
-  //clears markers from the map & markercluster
-  const clearMarkers = () => {
-    //clear cluster
-    if(markerCluster.current) {
-      markerCluster.current.clearMarkers();
-    }
-
-    //clean any old markers out before adding new set
-    if(hikeMarkers.current.length > 0) {
-
-      hikeMarkers.current.forEach(marker => {
-        marker.setMap(null);  //removes the marker from the map
-        marker = null;  //sets the marker to null for cleanup
-      });
-
-      hikeMarkers.current = []; //sets array to empty so null indexes don't appear in clusterer
-    }
-  }
-
-
-  //hides markers out of bounds on the map
-  const hideMarkers = bounds => {
-    if(hikeMarkers.current.length > 0) {
-      hikeMarkers.current.forEach(marker => {
-        if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
-          marker.setVisible(true);
-        } else {
-          marker.setVisible(false);
-        }
-      });
-
-      markerCluster.current.repaint();
-    }
-  }
-
-
-  //gets a human readable object of the map's current bounds
-  const getBounds = () => {
-    //get the map bounds and create a readable format
-    const temp = map.getBounds();
-    // console.log(temp);
-    const bounds = {
-      latMin: temp.Ya.i,
-      latMax: temp.Ya.j,
-      lngMin: temp.Ua.i,
-      lngMax: temp.Ua.j,
-    }
-
-    return bounds;
-  }
-
-
-  //loads overlapping marker spiderfier library
-  const loadOMS = () => {
-    if(!oms.current) {  //oms hasn't been set up yet
-      //load oms
-      const omsScript = document.createElement('script');
-      omsScript.id= 'omsScript';
-      omsScript.src = './js/oms.min.js';
-      document.body.appendChild(omsScript)
-
-      //create new instance of oms after resources have loaded
-      omsScript.onload = () => {
-        oms.current = new window.OverlappingMarkerSpiderfier(map, {
-          markersWontMove: true,
-          markersWontHide: true,
-          basicFormatEvents: true,
-          keepSpiderfied: true,
-          nearbyDistance: 40,
-          circleSpiralSwitchover: 6
-        });
-      }
-    }
-  }
-
-
-  //centers the user on the map when called
-  const centerUser = () => {
-    if(map) {
-      map.panTo({lat: userLocation.lat, lng: userLocation.lng});
-      if(window.innerWidth > laptopRes && contentWindowExpanded) {
-        if(window.innerWidth < 1400) {
-          map.panBy(-218, 0);
-        } else {
-          map.panBy(-326, 0);
-        }
-      }
-    }
-  }
 
 
   //used to add an event listener to center user after the component mounts
