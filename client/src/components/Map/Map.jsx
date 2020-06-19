@@ -4,35 +4,36 @@ import hikeMarkerIcon from '../../assets/icons/hike-marker.png';
 import './map.css';
 
 const Map = props => {
+
   //props
   const { 
-    contentWindowExpanded,      //if content window is expanded or not
-    setContentWindowExpanded,   //function to open/close content window
-    hikes,                      //an array of hike data
-    setSelectedHike,            //function to set the selected hike
-    setView,                    //funciton to set the content window view
-    updateLocation              //function to update location coords in parent
+    contentWindowExpanded,                                  //if content window is expanded or not
+    setContentWindowExpanded,                               //function to open/close content window
+    hikes,                                                  //an array of hike data
+    setSelectedHike,                                        //function to set the selected hike
+    setView,                                                //funciton to set the content window view
+    updateLocation                                          //function to update location coords in parent
   } = props;
 
   //state
-  const [map, setMap] = useState(null);                    //the map
-  const [userLocation, setUserLocation] = useState({});    //user's coordinates
+  const [map, setMap] = useState(null);                     //the map
+  const [userLocation, setUserLocation] = useState({});     //user's coordinates
 
   //refs
-  const markerCluster = useRef(null);               //marker cluster utility
-  const oms = useRef(null);                         //spiderfy overlapping markers
-  const userLocationMarkers = useRef([]);           //array to store location markers
-  const hikeMarkers = useRef([]);                   //array to store hike markers
-  const initialMapLoad = useRef(false);             //used to determine if the map has loaded once already
-  const initialLocationLoad = useRef(false);        //used to determine if it's the first time pinning the user on the map
-  const contentWindowExpandedRef = useRef(false);
+  const markerCluster = useRef(null);                       //marker cluster utility
+  const oms = useRef(null);                                 //spiderfy overlapping markers utility
+  const userLocationMarkers = useRef([]);                   //array to store location markers
+  const hikeMarkers = useRef([]);                           //array to store hike markers
+  const initialMapLoad = useRef(false);                     //used to determine if the map has loaded once already
+  const initialLocationLoad = useRef(false);                //used to determine if it's the first time pinning the user on the map
+  const contentWindowExpandedRef = useRef(false);           //used to to track the content window state within this component
 
   //resolutions
   const laptopRes = 769;
   const desktopRes = 1800;
   
   //map functions
-  //determines if the user is in or arounf WA
+  //determines if the user is in or around WA
   const isUserInWA = position => {
     let output = true;
 
@@ -45,8 +46,8 @@ const Map = props => {
 
     if(position.coords.latitude > bounds.northBound) output = false;
     if(position.coords.latitude < bounds.southBound) output = false;
-    if(position.coords.longitude < bounds.westBound) output = false;
     if(position.coords.longitude > bounds.eastBound) output = false;
+    if(position.coords.longitude < bounds.westBound) output = false;
 
     return output;
   }
@@ -117,9 +118,8 @@ const Map = props => {
     markerCluster.current.fitMapToMarkers();
   }
 
-
-  //clears markers from the map & markercluster
-  const clearMarkers = () => {
+  //removes markers from the map & markercluster
+  const removeMarkers = () => {
     //clear cluster
     if(markerCluster.current) {
       markerCluster.current.clearMarkers();
@@ -137,7 +137,6 @@ const Map = props => {
     }
   }
 
-
   //hides markers out of bounds on the map
   const hideMarkers = bounds => {
     if(hikeMarkers.current.length > 0) {
@@ -153,7 +152,6 @@ const Map = props => {
     }
   }
 
-
   //gets a human readable object of the map's current bounds
   const getBounds = () => {
     //get the map bounds and create a readable format
@@ -162,12 +160,11 @@ const Map = props => {
       latMin: temp.Ya.i,
       latMax: temp.Ya.j,
       lngMin: temp.Ua.i,
-      lngMax: temp.Ua.j,
+      lngMax: temp.Ua.j
     }
 
     return bounds;
   }
-
 
   //loads overlapping marker spiderfier library
   const loadOMS = () => {
@@ -191,7 +188,6 @@ const Map = props => {
       }
     }
   }
-
 
   //centers the user on the map when called
   const centerUser = () => {
@@ -275,7 +271,6 @@ const Map = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   //add user's location marker to the map when userLocation is updated from watch position method
   useEffect(() => {
     if(userLocation.enabled && map) {
@@ -292,11 +287,11 @@ const Map = props => {
         cursor: 'pointer',
         position: userCoords,
         icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#C8D6EC',
-            fillOpacity: 0.7,
-            scale: 12,
-            strokeWeight: 0,
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: '#C8D6EC',
+          fillOpacity: 0.7,
+          scale: 12,
+          strokeWeight: 0,
         },
         draggable: false,
         map: map
@@ -357,7 +352,6 @@ const Map = props => {
     }
   }, [map, userLocation]);
 
-
   //adds hike markers to map
   useEffect(() => {
     if(map) {
@@ -365,7 +359,7 @@ const Map = props => {
       //load oms limbrary
       loadOMS();
       //clear any old markers
-      clearMarkers();
+      removeMarkers();
 
       if(hikes.length > 0) {
         addMarkers();
@@ -406,7 +400,6 @@ const Map = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hikes, map]);
 
-
   //manages map center offset for desktop UI
   useEffect(() => {
     contentWindowExpandedRef.current = contentWindowExpanded;
@@ -431,7 +424,6 @@ const Map = props => {
       }
     }
   }, [map, contentWindowExpanded]);
-
 
   //used to add an event listener to center user after the component mounts
   useEffect(() => {
