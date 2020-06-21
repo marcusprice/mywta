@@ -46,7 +46,6 @@ const buildQuery = (parameters, coordinateBoundries = null) => {
 
   //upper range conditionals (only added if it is a number value and below the set maximum value)
   if(Number.isInteger(parameters.lengthMax) && parameters.lengthMax !== LENGTH_MAX) {
-    console.log('should fire');
     sql += ' AND (length <= ' + parameters.lengthMax + ')';
   }
 
