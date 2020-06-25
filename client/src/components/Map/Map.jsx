@@ -7,26 +7,28 @@ const Map = props => {
 
   //props
   const { 
-    contentWindowExpanded,                                  //if content window is expanded or not
-    setContentWindowExpanded,                               //function to open/close content window
-    hikes,                                                  //an array of hike data
-    setSelectedHike,                                        //function to set the selected hike
-    setView,                                                //funciton to set the content window view
-    updateLocation                                          //function to update location coords in parent
+    contentWindowExpanded,                                                     //if content window is expanded or not
+    setContentWindowExpanded,                                                  //function to open/close content window
+    hikes,                                                                     //an array of hike data
+    setSelectedHike,                                                           //function to set the selected hike
+    setView,                                                                   //funciton to set the content window view
+    updateLocation                                                             //function to update location coords in parent
   } = props;
 
   //state
-  const [map, setMap] = useState(null);                     //the map
-  const [userLocation, setUserLocation] = useState({});     //user's coordinates
+  const [map, setMap] = useState(null);                                        //the map
+  const [userLocation, setUserLocation] = useState({});                        //user's coordinates
+  const [markerClustererLoaded, setMarkerClusterLoaded] = useState(false);     //state for mc library loaded
+  const [omsLoaded, setOmsLoaded] = useState(false);                           //state for oms library loaded
 
   //refs
-  const markerCluster = useRef(null);                       //marker cluster utility
-  const oms = useRef(null);                                 //spiderfy overlapping markers utility
-  const userLocationMarkers = useRef([]);                   //array to store location markers
-  const hikeMarkers = useRef([]);                           //array to store hike markers
-  const initialMapLoad = useRef(false);                     //used to determine if the map has loaded once already
-  const initialLocationLoad = useRef(false);                //used to determine if it's the first time pinning the user on the map
-  const contentWindowExpandedRef = useRef(false);           //used to to track the content window state within this component
+  const markerCluster = useRef(null);                                          //marker cluster utility
+  const oms = useRef(null);                                                    //spiderfy overlapping markers utility
+  const userLocationMarkers = useRef([]);                                      //array to store location markers
+  const hikeMarkers = useRef([]);                                              //array to store hike markers
+  const initialMapLoad = useRef(false);                                        //used to determine if the map has loaded once already
+  const initialLocationLoad = useRef(false);                                   //used to determine if it's the first time pinning the user on the map
+  const contentWindowExpandedRef = useRef(false);                              //used to to track the content window state within this component
 
   //resolutions
   const laptopRes = 769;
@@ -156,6 +158,7 @@ const Map = props => {
   const getBounds = () => {
     //get the map bounds and create a readable format
     const retrievedBounds = map.getBounds();
+
     const bounds = {
       latMin: retrievedBounds.getSouthWest().lat(),
       latMax: retrievedBounds.getNorthEast().lat(),
@@ -163,10 +166,21 @@ const Map = props => {
       lngMax: retrievedBounds.getSouthWest().lng()
     }
 
-    console.log(bounds);
-    
-
     return bounds;
+  }
+
+  const loadMarkerCluster = () => {
+    markerCluster.current = new MarkerClusterer(
+      map,
+      hikeMarkers.current,
+      {
+        zoomOnClick: true,
+        maxZoom: 12
+      }
+    );
+    
+    setMarkerClusterLoaded(true);
+
   }
 
   //loads overlapping marker spiderfier library
@@ -188,6 +202,8 @@ const Map = props => {
           nearbyDistance: 40,
           circleSpiralSwitchover: 6
         });
+
+        setOmsLoaded(true);
       }
     }
   }
@@ -274,6 +290,14 @@ const Map = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //loads libraries that are dependent on the map
+  useEffect(() => {
+    if(map) {
+      loadMarkerCluster();
+      loadOMS();
+    }
+  }, [map]);
+
   //add user's location marker to the map when userLocation is updated from watch position method
   useEffect(() => {
     if(userLocation.enabled && map) {
@@ -357,10 +381,12 @@ const Map = props => {
 
   //adds hike markers to map
   useEffect(() => {
-    if(map) {
-
-      //load oms limbrary
-      loadOMS();
+    // console.log(hikes);
+    console.log(markerClustererLoaded);
+    
+    if(map && markerClustererLoaded && omsLoaded) {
+      console.log(hikes);
+      
       //clear any old markers
       removeMarkers();
 
@@ -369,10 +395,11 @@ const Map = props => {
         markerCluster.current.repaint();
 
         if(hikes.length > 500) {
-          //we need to filter the markers to only show those in bounds
+          //filter the markers to only show those in bounds
           const bounds = getBounds();
           hideMarkers(bounds);
 
+          //add listener which fires every time the map is idle after movement
           map.addListener('idle', () => {
             const updatedBounds = getBounds();
             hideMarkers(updatedBounds);
@@ -401,7 +428,7 @@ const Map = props => {
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hikes, map]);
+  }, [map, omsLoaded, markerClustererLoaded, hikes]);
 
   //manages map center offset for desktop UI
   useEffect(() => {
