@@ -103,21 +103,13 @@ const Map = props => {
     });
 
     //manage marker clustering
-    if(!markerCluster.current) {  //marker clustering hasn't been set up yet
-      //instantiate markerclusterer and save it to current ref
-      markerCluster.current = new MarkerClusterer(
-        map,
-        hikeMarkers.current,
-        {
-          zoomOnClick: true,
-          maxZoom: 12
-        }
-      );
-    } else {
-      markerCluster.current.addMarkers(hikeMarkers.current);
+    markerCluster.current.addMarkers(hikeMarkers.current);
+    if(userLocationMarkers.current.length > 0) {
+      markerCluster.current.addMarker(userLocationMarkers.current[0]);
     }
-
+  
     markerCluster.current.fitMapToMarkers();
+    markerCluster.current.removeMarker(userLocationMarkers.current[0]);
   }
 
   //removes markers from the map & markercluster
@@ -417,7 +409,6 @@ const Map = props => {
 
         if(markerCluster.current) {
           markerCluster.current.clearMarkers();
-          markerCluster.current = null;
         }
       }
     });
