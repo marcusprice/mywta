@@ -42,7 +42,7 @@ const Map = props => {
       southBound: 44.0521,
       eastBound: -113.9940,
       westBound: -124.8234	
-    }
+    };
 
     if(position.coords.latitude > bounds.northBound) output = false;
     if(position.coords.latitude < bounds.southBound) output = false;
@@ -155,13 +155,16 @@ const Map = props => {
   //gets a human readable object of the map's current bounds
   const getBounds = () => {
     //get the map bounds and create a readable format
-    const temp = map.getBounds();
+    const retrievedBounds = map.getBounds();
     const bounds = {
-      latMin: temp.Ya.i,
-      latMax: temp.Ya.j,
-      lngMin: temp.Ua.i,
-      lngMax: temp.Ua.j
+      latMin: retrievedBounds.getSouthWest().lat(),
+      latMax: retrievedBounds.getNorthEast().lat(),
+      lngMin: retrievedBounds.getNorthEast().lng(),
+      lngMax: retrievedBounds.getSouthWest().lng()
     }
+
+    console.log(bounds);
+    
 
     return bounds;
   }
