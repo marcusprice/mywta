@@ -380,10 +380,7 @@ const Map = props => {
   }, [map, userLocation]);
 
   //adds hike markers to map
-  useEffect(() => {
-    // console.log(hikes);
-    console.log(markerClustererLoaded);
-    
+  useEffect(() => {    
     if(map && markerClustererLoaded && omsLoaded) {
       console.log(hikes);
       
