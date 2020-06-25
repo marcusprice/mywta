@@ -382,8 +382,6 @@ const Map = props => {
   //adds hike markers to map
   useEffect(() => {    
     if(map && markerClustererLoaded && omsLoaded) {
-      console.log(hikes);
-      
       //clear any old markers
       removeMarkers();
 
