@@ -133,6 +133,8 @@ const Map = props => {
 
   //hides markers out of bounds on the map
   const hideMarkers = bounds => {
+    console.log(bounds);
+    
     if(hikeMarkers.current.length > 0) {
       hikeMarkers.current.forEach(marker => {
         if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
@@ -154,8 +156,8 @@ const Map = props => {
     const bounds = {
       latMin: retrievedBounds.getSouthWest().lat(),
       latMax: retrievedBounds.getNorthEast().lat(),
-      lngMin: retrievedBounds.getNorthEast().lng(),
-      lngMax: retrievedBounds.getSouthWest().lng()
+      lngMin: retrievedBounds.getSouthWest().lng(),
+      lngMax: retrievedBounds.getNorthEast().lng()
     }
 
     return bounds;
@@ -170,7 +172,12 @@ const Map = props => {
         maxZoom: 12
       }
     );
-    
+
+    markerCluster.current.addListener('click', () => {
+      setContentWindowExpanded(false);
+      contentWindowExpandedRef.current = false;
+    });
+
     setMarkerClusterLoaded(true);
 
   }
