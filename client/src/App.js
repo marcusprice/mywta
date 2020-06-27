@@ -10,6 +10,7 @@ import Menu from './components/Menu/';
 const App = () => {
   const userLocation = useRef({lat: 47.7511, lng: -120.7401}); //defaults to washington coordinates
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const [locationChecked, setLocationChecked] = useState(false);
   const [contentWindowExpanded, setContentWindowExpanded] = useState(false);
   const [hikes, setHikes] = useState([]);
   const [selectedHike, setSelectedHike] = useState(null);
@@ -58,22 +59,26 @@ const App = () => {
 
   //searches for hikes when locationenabled is set to true
   useEffect(() => {
-    if(locationEnabled) {
+    if(locationChecked) {
       searchHikes();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationEnabled]);
+  }, [locationChecked]);
 
   //function to update the user's location ref
-  const updateLocation = locationData => {
-    userLocation.current = {
-      lat: locationData.coords.latitude, 
-      lng: locationData.coords.longitude
-    };
+  const updateLocation = locationData => {    
+    setLocationEnabled(locationData.enabled);
+
+    if(locationData.enabled) {
+      userLocation.current = {
+        lat: locationData.lat, 
+        lng: locationData.lng
+      };
+    }
 
     //only update the location enabled state if it was previously false
-    if(!locationEnabled) {
-      setLocationEnabled(true);
+    if(!locationChecked) {
+      setLocationChecked(true);
     }
   }
 

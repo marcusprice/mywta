@@ -30,9 +30,10 @@ const Map = props => {
   const initialLocationLoad = useRef(false);                                   //used to determine if it's the first time pinning the user on the map
   const contentWindowExpandedRef = useRef(false);                              //used to to track the content window state within this component
 
-  //resolutions
+  //vars
   const laptopRes = 769;
   const desktopRes = 1800;
+  const wa = { lat: 47.7511, lng: -120.7401 };
   
   //map functions
   //determines if the user is in or around WA
@@ -132,9 +133,7 @@ const Map = props => {
   }
 
   //hides markers out of bounds on the map
-  const hideMarkers = bounds => {
-    console.log(bounds);
-    
+  const hideMarkers = bounds => {    
     if(hikeMarkers.current.length > 0) {
       hikeMarkers.current.forEach(marker => {
         if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
@@ -210,7 +209,17 @@ const Map = props => {
   //centers the user on the map when called
   const centerUser = () => {
     if(map) {
-      map.panTo({lat: userLocation.lat, lng: userLocation.lng});
+      if(userLocation.enabled) {
+        map.panTo({lat: userLocation.lat, lng: userLocation.lng});
+      } else {
+        if(hikes.length > 0) {
+          markerCluster.current.fitMapToMarkers();
+        } else {
+          map.panTo(wa);
+          map.setZoom(6);
+        }
+      }
+
       if(window.innerWidth > laptopRes && contentWindowExpanded) {
         if(window.innerWidth < 1400) {
           map.panBy(-218, 0);
@@ -228,8 +237,6 @@ const Map = props => {
     window.initMap = () => {
       //initMap creates a google map after the google maps resources have been loaded from the api
       const google = window.google;
-      //intialize with WA coordinates
-      const wa = { lat: 47.7511, lng: -120.7401 };
       //turn off places of interest and trasit data
       const styles = [{
         featureType: "poi",
@@ -274,7 +281,13 @@ const Map = props => {
     navigator.geolocation.watchPosition(position => {
       if(isUserInWA(position)) {
         //update location in parent component
-        updateLocation(position);
+        const locationData = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          enabled: true
+        };
+
+        updateLocation(locationData);
 
         //update location state in this component
         setUserLocation({
@@ -283,6 +296,15 @@ const Map = props => {
           lng: position.coords.longitude,
           accuracy: position.coords.accuracy
         });
+      } else {
+        const locationData = { enabled: false };
+        updateLocation(locationData);
+      }
+    }, () => {
+      if(!userLocation.enabled) {
+        //not able to get location data - send notification data to parent
+        const locationData = { enabled: false };
+        updateLocation(locationData);
       }
     });
 
