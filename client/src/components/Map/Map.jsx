@@ -7,39 +7,42 @@ const Map = props => {
 
   //props
   const { 
-    contentWindowExpanded,                                                     //if content window is expanded or not
-    setContentWindowExpanded,                                                  //function to open/close content window
-    hikes,                                                                     //an array of hike data
-    setSelectedHike,                                                           //function to set the selected hike
-    setView,                                                                   //funciton to set the content window view
-    updateLocation                                                             //function to update location coords in parent
+    contentWindowExpanded,                                                      //if content window is expanded or not
+    setContentWindowExpanded,                                                   //function to open/close content window
+    hikes,                                                                      //an array of hike data
+    setSelectedHike,                                                            //function to set the selected hike
+    setView,                                                                    //funciton to set the content window view
+    updateLocation,                                                             //function to update location coords in parent
+    waCoords                                                                    //WA coordinates
   } = props;
 
   //state
-  const [map, setMap] = useState(null);                                        //the map
-  const [userLocation, setUserLocation] = useState({});                        //user's coordinates
-  const [markerClustererLoaded, setMarkerClusterLoaded] = useState(false);     //state for mc library loaded
-  const [omsLoaded, setOmsLoaded] = useState(false);                           //state for oms library loaded
+  const [map, setMap] = useState(null);                                         //the map
+  const [userLocation, setUserLocation] = useState({});                         //user's coordinates
+  const [markerClustererLoaded, setMarkerClusterLoaded] = useState(false);      //state for mc library loaded
+  const [omsLoaded, setOmsLoaded] = useState(false);                            //state for oms library loaded
 
   //refs
-  const markerCluster = useRef(null);                                          //marker cluster utility
-  const oms = useRef(null);                                                    //spiderfy overlapping markers utility
-  const userLocationMarkers = useRef([]);                                      //array to store location markers
-  const hikeMarkers = useRef([]);                                              //array to store hike markers
-  const initialMapLoad = useRef(false);                                        //used to determine if the map has loaded once already
-  const initialLocationLoad = useRef(false);                                   //used to determine if it's the first time pinning the user on the map
-  const contentWindowExpandedRef = useRef(false);                              //used to to track the content window state within this component
+  const markerCluster = useRef(null);                                           //marker cluster utility
+  const oms = useRef(null);                                                     //spiderfy overlapping markers utility
+  const userLocationMarkers = useRef([]);                                       //array to store location markers
+  const hikeMarkers = useRef([]);                                               //array to store hike markers
+  const initialMapLoad = useRef(false);                                         //used to determine if the map has loaded once already
+  const initialLocationLoad = useRef(false);                                    //used to determine if it's the first time pinning the user on the map
+  const contentWindowExpandedRef = useRef(false);                               //used to to track the content window state within this component
 
   //vars
-  const laptopRes = 769;
-  const desktopRes = 1800;
-  const wa = { lat: 47.7511, lng: -120.7401 };
+  const laptopRes = 769;                                                        //laptop breakpoint
+  const desktopRes = 1800;                                                      //desktop breakpoint
   
   //map functions
   //determines if the user is in or around WA
   const isUserInWA = position => {
+    //set output to true and set user coords
     let output = true;
+    const userCoords = position.coords;
 
+    //set the bounds what what is considered WA
     const bounds = {
       northBound: 50.1163,
       southBound: 44.0521,
@@ -47,22 +50,23 @@ const Map = props => {
       westBound: -124.8234	
     };
 
-    if(position.coords.latitude > bounds.northBound) output = false;
-    if(position.coords.latitude < bounds.southBound) output = false;
-    if(position.coords.longitude > bounds.eastBound) output = false;
-    if(position.coords.longitude < bounds.westBound) output = false;
+    //test the position, if it is outside any of the bounds set output to false
+    if(userCoords.latitude > bounds.northBound) output = false;
+    if(userCoords.latitude < bounds.southBound) output = false;
+    if(userCoords.longitude > bounds.eastBound) output = false;
+    if(userCoords.longitude < bounds.westBound) output = false;
 
     return output;
   }
 
-  //initializes the map and sets up geolocation
+  //initializes the map and sets up geolocation to watch position
   const initializeMap = () => {
-    //first add initMap method to the window object (called later by google maps uri callback)
+    //add initMap method to the window object (called later by google maps uri callback)
     window.initMap = () => {
       //initMap creates a google map after the google maps resources have been loaded from the api
       const google = window.google;
       //turn off places of interest and trasit data
-      const styles = [{
+      const mapPoiTransitStyles = [{
         featureType: "poi",
         elementType: "labels",
         stylers: [
@@ -76,14 +80,14 @@ const Map = props => {
         ]
       }];
 
-      //the map
+      //create the map
       const googleMap = new google.maps.Map(
         document.getElementById('map'), {
           disableDefaultUI: true,
           zoomControl: true,
           zoom: 6,
-          center: wa,
-          styles: styles
+          center: waCoords,
+          styles: mapPoiTransitStyles
         }
       );
 
@@ -103,7 +107,9 @@ const Map = props => {
 
     //watch the user's location
     navigator.geolocation.watchPosition(position => {
+      //check if user is in WA
       if(isUserInWA(position)) {
+        //user is in WA
         //update location in parent component
         const locationData = {
           lat: position.coords.latitude,
@@ -121,6 +127,7 @@ const Map = props => {
           accuracy: position.coords.accuracy
         });
       } else {
+        //user is not in WA
         const locationData = { enabled: false };
         updateLocation(locationData);
       }
@@ -131,11 +138,10 @@ const Map = props => {
         updateLocation(locationData);
       }
     });
-  }
+  } //end initializeMap()
 
   const addUserMarkers = () => {
     const google = window.google; //grab google resources from the window
-    const userCoords = { lat: userLocation.lat, lng: userLocation.lng }; //user's coordinates
     let accuracy = userLocation.accuracy;  //user's accuracy
 
     //empty array for the new location circles
@@ -145,7 +151,7 @@ const Map = props => {
     locationCircles.push(new google.maps.Marker({
       clickable: false,
       cursor: 'pointer',
-      position: userCoords,
+      position: userLocation,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
         fillColor: '#C8D6EC',
@@ -161,7 +167,7 @@ const Map = props => {
     locationCircles.push(new google.maps.Marker({
       clickable: false,
       cursor: 'pointer',
-      position: userCoords,
+      position: userLocation,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           fillColor: '#4285F4',
@@ -179,7 +185,7 @@ const Map = props => {
       //accuracy range
       locationCircles.push(new google.maps.Circle({
         map: map,
-        center: userCoords,
+        center: userLocation,
         clickable: false,
         cursor: 'pointer',
         radius: accuracy,
@@ -205,18 +211,21 @@ const Map = props => {
 
     //center the map over the user if it's the first time loading
     if(!initialLocationLoad.current) {
-      map.setCenter(userCoords);
+      map.setCenter(userLocation);
       map.setZoom(14);
       initialLocationLoad.current = true;
     }
-  }
+  } //end addUserMarkers()
 
+  //closes content window and updates ref
   const closeContentWindow = () => {
     setContentWindowExpanded(false);
     contentWindowExpandedRef.current = false;
   }
 
+  //loads marker cluster utility
   const loadMarkerCluster = () => {
+    //create new marker cluster
     markerCluster.current = new MarkerClusterer(
       map,
       hikeMarkers.current,
@@ -226,6 +235,7 @@ const Map = props => {
       }
     );
 
+    //close content window when user clicks on marker cluster
     markerCluster.current.addListener('click', () => {
       closeContentWindow();
     });
@@ -233,7 +243,7 @@ const Map = props => {
     setMarkerClusterLoaded(true);
   }
 
-  //loads overlapping marker spiderfier library
+  //loads overlapping marker spiderfier utility
   const loadOMS = () => {
     if(!oms.current) {  //oms hasn't been set up yet
       //load oms
@@ -258,7 +268,7 @@ const Map = props => {
     }
   }
 
-  //gets a human readable object of the map's current bounds
+  //convert get google bounds to mywta bounds
   const getBounds = () => {
     //get the map bounds and create a readable format
     const retrievedBounds = map.getBounds();
@@ -273,6 +283,7 @@ const Map = props => {
     return bounds;
   }
 
+  //orients the user by centering them on the map around the hike markers
   const orientUser = () => {
     //manage marker clustering
     markerCluster.current.addMarkers(hikeMarkers.current);
@@ -333,7 +344,7 @@ const Map = props => {
     });
 
     orientUser();
-  }
+  } //end addMarkers()
 
   //removes markers from the map & markercluster
   const removeMarkers = () => {
@@ -437,7 +448,7 @@ const Map = props => {
           closeContentWindow();
           markerCluster.current.fitMapToMarkers();
         } else {
-          map.panTo(wa);
+          map.panTo(waCoords);
           map.setZoom(6);
         }
       }

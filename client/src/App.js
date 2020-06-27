@@ -8,7 +8,8 @@ import ContentWindow from './components/ContentWindow/';
 import Menu from './components/Menu/';
 
 const App = () => {
-  const userLocation = useRef({lat: 47.7511, lng: -120.7401}); //defaults to washington coordinates
+  const waCoords = { lat: 47.7511, lng: -120.7401 };
+  const userLocation = useRef(waCoords);
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [locationChecked, setLocationChecked] = useState(false);
   const [contentWindowExpanded, setContentWindowExpanded] = useState(false);
@@ -154,7 +155,8 @@ const App = () => {
       hikes={hikes}
       setSelectedHike={setSelectedHike}
       setView={setView}
-      updateLocation={updateLocation} />
+      updateLocation={updateLocation}
+      waCoords={waCoords} />
 
     { handleLoader() }
 
