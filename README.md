@@ -3,26 +3,30 @@ WA state hiking guide & trail finder
 
 [Live Example](https://mywta.glitch.me)
 
-## About
-mywta is an application for finding hikes and trails in Washington state with a map and geolocation being a core feature of the UI. Hike data is regularly scraped from the [Washington Trails Association](https://www.wta.org) (WTA) website to ensure the best accuracy for hike information. Scraping the WTA website is the only option since the WTA has no API available for obtaining hike data.
+## Overview
+mywta is an application for finding hiking trails in Washington state with a map and geolocation being the core feature of the UI. Hike data is regularly scraped from the [Washington Trails Association](https://www.wta.org) (WTA) website to ensure the best accuracy for hike information. Scraping the WTA website is the only option since the WTA has no API available for obtaining trail data.
 
-There is also an API available for developers wanting to obtain the hike data used for this application. For more information see the API section below in this document.
+There will soon be an API available for developers wanting to obtain the hike data used for this application. For more information see the API section below in this document.
 
 ## Dependencies 
+mywta is built on a PERN stack (PostgreSQL, Express, React, Node js). The client is bootstrapped with [Create React App](https://create-react-app.dev/). There are very few dependenices for this project and I would like to keep it that way.
 
-### Backend 
+### Backend Dependencies
 * Cheerio
+* Nodemon
 * dotenv
 * express
 * got
 * pg
 
-### Frontend (beyond CRA bootstrap)
+### Frontend (beyond the Create React App bootstrap)
 * @google/markerclustererplus
 * dompurify
 * react-div-100vh
 * react-image
 * react-loader-spinner
+
+There is also a non-npm module library for separating map markers that overlay on each other. More details on this in the client readme in the client directory.
 
 ## Installation
 
@@ -49,9 +53,7 @@ cd client && touch .env && npm i
 
 Next you will need to set up the database. The database used for mywta is [PostgreSQL](https://www.postgresql.org/). If PostgreSQL isn't already installed on your machine you will need to install it and create a database name of your choosing (or simply "mywta").
 
-Once you have your database created, you will need to grab the [schema file](https://github.com/marcusprice/mywta/blob/master/models/schema.sql) from the models directory. This sql file sets up all the necessary db tables for the app to run.
-
-Depending on your db management system, you can either import the sql file into the mywta database directly or copy and paste the code into a sql command input.
+Once you have your database created, you will need to grab the [schema file](https://github.com/marcusprice/mywta/blob/master/models/schema.sql) from the models directory. This  file provides the sql to create the db tables for the app to run.
 
 ### 3. Setting environment variables
 
@@ -90,32 +92,48 @@ npm run get-hike-data-initial
 
 This command takes a lot of time to run.
 
-TODO: create a utility to handle most of installation
+TODO: create a utility to handle most of installation in 1 command.
 
 ## Starting the development environment
-Now that the installation is complete, you are ready to start the development environment. The development environment is ran on 2 ports: port 5000 for the backend env and port 3000 for the frontend env (via CRA). It's important that the backend environment is initialized before the front end, as the API calls from the frontend are proxied to the backend.
+Now that the installation is complete, you are ready to start the development environment. The development environment is ran on 2 ports: port 5000 for the backend environment and port 3000 for the frontend environment (via CRA). It's important that the backend environment is started before the frontend, as the API calls from the frontend are proxied to the backend.
+
+Open a terminal and from the root directory of the app run the following command:
 
 ```
-cd mywta
 nodemon app
 ```
 
-Then, open a new terminal (or a new tab in the current terminal) and run the following commands to start the frontend env:
+This starts the backend server, and restarts it each time a file in the poject is changed. Then, open a new terminal (or a new tab in the current terminal) and run the following commands to start the frontend env:
 
 ```
 cd client
 npm run start
 ```
 
-TODO: create a utility that starts the envs in the right order
+TODO: create a utility that starts the environments in one command.
 
 ## App Arcitecture 
-mywta follows somewhat of an MVC architecture - logic related to db transactions is found in the models directory, logic related to processing the api requests is found in the controllers directory and request routes are found in the routes directory. The frontend/client is bootstrapped with [Create React App (CRA)](https://create-react-app.dev/) and requests are proxied to the backend server (see the client's [package.json file](https://github.com/marcusprice/mywta/blob/master/client/package.json)). More detail on the frontend development can be found in the client directory.
+mywta follows somewhat of an MVC architecture: 
+
+* logic related to db transactions is found in the models directory
+* logic related to processing the api requests is found in the controllers directory
+* request routes are found in the routes directory. 
+
+The frontend/client is found in the client directory and is bootstrapped with [Create React App](https://create-react-app.dev/) and requests are proxied to the backend server (see the client's [package.json file](https://github.com/marcusprice/mywta/blob/master/client/package.json)). More detail on the frontend development can be found in the client directory.
 
 ## Contributions
-If anyone is interested, I would love to collaborate on this project and add more features to it. In addition to that, any help with discovering and fixing bugs is totally welcomed. I don't have any protocol in place for contributing/collaborating since this is a relitively low-key project at the moment. 
+If anyone is interested, I would love to collaborate on this project and add more features to it. In addition to that, any help with discovering and fixing bugs is totally welcomed. I don't have any detailed protocol in place for contributing/collaborating since this is a relitively low-key project at the moment. 
 
-For bugs I would ask that a new issue is created and we can go from there. Same for feature requests. For anyone interested in collaborating, please send me an email at [marcusprice88@gmail.com](mailto:marcusprice88@gmail.com) and we can work out a protocol that keeps things simple & organized.
+For bugs I would ask that a new issue be created and we can go from there. Same for feature requests. For anyone interested in collaborating, please send me an email at [marcusprice88@gmail.com](mailto:marcusprice88@gmail.com) and we can work out a protocol that keeps things simple & organized.
+
+## Wants
+Here are some potential features that might be cool to add in future releases in no particular order:
+
+* A way for users to share specific hikes on social media or with friends (probably requires react router and some open graph logic so it share's nicely)
+* Simple user accounts where they can save their favorite hikes or something like a to-hike list
+* SEO improvements?
+* Add the ability for user comments on hikes (could be hard to manage without moderation of some sort)
+* Weather data for the hikes? 
 
 ## API
 The API for mywta is coming very soon. Keep an eye here and the wiki pages for more info related to the API.
