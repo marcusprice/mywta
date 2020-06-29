@@ -75,7 +75,7 @@ REACT_APP_GOOGLE_MAPS_API_KEY={replace with google maps API key}
 Now that the dependencies and database are set up, you are ready to scrape the hike data from the WTA website. This operation is done in 2 steps with 2 utilities.
 
 #### Scraping all hike URLs
-Open a terminal and navigate to the root directory of the project and run the following command:
+To scrape the hike URLS run the following commands from the app's root directory:
 
 ```
 npm run get-hike-urls
@@ -90,5 +90,32 @@ npm run get-hike-data-initial
 
 This command takes a lot of time to run.
 
-## Starting the app
+TODO: create a utility to handle most of installation
 
+## Starting the development environment
+Now that the installation is complete, you are ready to start the development environment. The development environment is ran on 2 ports: port 5000 for the backend env and port 3000 for the frontend env (via CRA). It's important that the backend environment is initialized before the front end, as the API calls from the frontend are proxied to the backend.
+
+```
+cd mywta
+nodemon app
+```
+
+Then, open a new terminal (or a new tab in the current terminal) and run the following commands to start the frontend env:
+
+```
+cd client
+npm run start
+```
+
+TODO: create a utility that starts the envs in the right order
+
+## App Arcitecture 
+mywta follows somewhat of an MVC architecture - logic related to db transactions is found in the models directory, logic related to processing the api requests is found in the controllers directory and request routes are found in the routes directory. The frontend/client is bootstrapped with [Create React App (CRA)](https://create-react-app.dev/) and requests are proxied to the backend server (see the client's [package.json file](https://github.com/marcusprice/mywta/blob/master/client/package.json)). More detail on the frontend development can be found in the client directory.
+
+## Contributions
+If anyone is interested, I would love to collaborate on this project and add more features to it. In addition to that, any help with discovering and fixing bugs is totally welcomed. I don't have any protocol in place for contributing/collaborating since this is a relitively low-key project at the moment. 
+
+For bugs I would ask that a new issue is created and we can go from there. Same for feature requests. For anyone interested in collaborating, please send me an email at [marcusprice88@gmail.com](mailto:marcusprice88@gmail.com) and we can work out a protocol that keeps things simple & organized.
+
+## API
+The API for mywta is coming very soon. Keep an eye here and the wiki pages for more info related to the API.
