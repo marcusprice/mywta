@@ -9,7 +9,7 @@ mywta is an application for finding hiking trails in Washington state with a map
 There will soon be an API available for developers wanting to obtain the hike data used for this application. For more information see the API section below in this document.
 
 ## Dependencies 
-mywta is built on a PERN stack (PostgreSQL, Express, React, Node js). The client is bootstrapped with [Create React App](https://create-react-app.dev/). There are very few dependenices for this project and I would like to keep it that way.
+mywta is built on a PERN stack (PostgreSQL, Express, React, Node js). The client is bootstrapped with [Create React App](https://create-react-app.dev/). Here is a brief overview of the dependencies: 
 
 ### Backend Dependencies
 * Cheerio
@@ -49,7 +49,7 @@ cd mywta && touch .env && npm i
 cd client && touch .env && npm i
 ```
 
-### 2. Setting up the Database
+### 2. Setting up the database
 
 Next you will need to set up the database. The database used for mywta is [PostgreSQL](https://www.postgresql.org/). If PostgreSQL isn't already installed on your machine you will need to install it and create a database name of your choosing (or simply "mywta").
 
@@ -112,7 +112,7 @@ npm run start
 
 TODO: create a utility that starts the environments in one command.
 
-## App Arcitecture 
+## App arcitecture 
 mywta follows somewhat of an MVC architecture: 
 
 * logic related to db transactions is found in the models directory
