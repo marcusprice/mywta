@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
 import AppContainer from 'react-div-100vh';
 import HikeBar from './components/HikeBar/';
@@ -8,16 +8,21 @@ import ContentWindow from './components/ContentWindow/';
 import Menu from './components/Menu/';
 
 const App = () => {
-  const waCoords = { lat: 47.7511, lng: -120.7401 };
-  const userLocation = useRef(waCoords);
-  const [locationEnabled, setLocationEnabled] = useState(false);
-  const [locationChecked, setLocationChecked] = useState(false);
-  const [contentWindowExpanded, setContentWindowExpanded] = useState(false);
-  const [hikes, setHikes] = useState([]);
-  const [selectedHike, setSelectedHike] = useState(null);
-  const [view, setView] = useState('about');
-  const [displayLoader, setDisplayLoader] = useState(false);
-  const [parameters, setParameters] = useState({
+  //vars
+  const waCoords = { lat: 47.7511, lng: -120.7401 };                              //WA coords
+
+  //refs
+  const userLocation = useRef(waCoords);                                          //user's location (defaults to WA coords)
+
+  //state
+  const [locationEnabled, setLocationEnabled] = useState(false);                  //keeps track of the user's location enabled state (should only change once)
+  const [locationChecked, setLocationChecked] = useState(false);                  //keeps track if the location has been checked (should only change once)
+  const [contentWindowExpanded, setContentWindowExpanded] = useState(false);      //whether the content window is expanded or not
+  const [hikes, setHikes] = useState([]);                                         //the hike data
+  const [selectedHike, setSelectedHike] = useState(null);                         //the selected hike
+  const [view, setView] = useState('about');                                      //the current view
+  const [displayLoader, setDisplayLoader] = useState(false);                      //whether or not to display the loader (when waiting for server response w/hikes)
+  const [parameters, setParameters] = useState({                                  //object of search parameters
     distance: 5,
     lengthMin: 0,
     lengthMax: 50,
@@ -58,7 +63,8 @@ const App = () => {
     dogFriendly: false
   });
 
-  //searches for hikes when locationenabled is set to true
+  //searches for hikes when locationChecked is set to true
+  //TODO: this is somewhat confusing, rename the state variable
   useEffect(() => {
     if(locationChecked) {
       searchHikes();
@@ -86,12 +92,12 @@ const App = () => {
   //function to search hikes
   const searchHikes = (e = null) => {
 
-    //if an event was passed to the function prevent default reload
+    //if an event was passed to the function prevent default refresh
     if(e) {
       e.preventDefault();
     }
 
-    //close the content window and display loader
+    //close the content window and show the display loader
     setContentWindowExpanded(false);
     setDisplayLoader(true);
 

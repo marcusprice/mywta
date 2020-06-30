@@ -140,6 +140,7 @@ const Map = props => {
     });
   } //end initializeMap()
 
+  //adds user location circle to the map
   const addUserMarkers = () => {
     const google = window.google; //grab google resources from the window
     let accuracy = userLocation.accuracy;  //user's accuracy
@@ -268,7 +269,7 @@ const Map = props => {
     }
   }
 
-  //convert get google bounds to mywta bounds
+  //convert google bounds to mywta bounds
   const getBounds = () => {
     //get the map bounds and create a readable format
     const retrievedBounds = map.getBounds();
@@ -285,18 +286,22 @@ const Map = props => {
 
   //orients the user by centering them on the map around the hike markers
   const orientUser = () => {
-    //manage marker clustering
+    //add current hike markers to markercluster
     markerCluster.current.addMarkers(hikeMarkers.current);
+
+    //if the user has their location enabled, add it to the cluster temporarily so we can include them when centering
     if(userLocationMarkers.current.length > 0) {
       markerCluster.current.addMarker(userLocationMarkers.current[0]);
     }
   
+    //orient the user and remove their position from the cluster
     markerCluster.current.fitMapToMarkers();
     markerCluster.current.removeMarker(userLocationMarkers.current[0]);
   }
 
   //add markers to map
   const addMarkers = () => {
+    //loop through each hike to create marker and event listener
     hikes.forEach(hike => {
       //get google resources
       const google = window.google;
@@ -312,13 +317,17 @@ const Map = props => {
       hikeMarker.addListener('spider_click', () => {
         setSelectedHike(hike);
 
+        //center the map on the marker when clicked
         map.panTo({lat: hike.latitude, lng: hike.longitude});
 
+        //expand the content window if res is laptop or greater
         if(window.innerWidth > laptopRes) {
           setContentWindowExpanded(true);
         }
 
+        //manage the offset
         if(contentWindowExpandedRef.current && window.innerWidth > laptopRes) {
+          //content window is expanded, offset is needed
           if(window.innerWidth < desktopRes) {
             map.panBy(-218, 0);
           } else {
@@ -326,7 +335,7 @@ const Map = props => {
           }
         }
 
-        //remove other animations
+        //remove other marker animations
         for(let i = 0; i < hikeMarkers.current.length; i++){
           hikeMarkers.current[i].setAnimation(-1);
         }
@@ -334,7 +343,7 @@ const Map = props => {
         //set bounce animation
         hikeMarker.setAnimation(google.maps.Animation.BOUNCE);
 
-        //set content window to hike info
+        //set content window view to hike info
         setView('hike-info');
       });
 
@@ -343,6 +352,7 @@ const Map = props => {
       hikeMarkers.current.push(hikeMarker);
     });
 
+    //orient the user after the the hike markers have been added to the map
     orientUser();
   } //end addMarkers()
 
@@ -368,10 +378,13 @@ const Map = props => {
   //hides markers out of bounds on the map
   const hideMarkers = bounds => {    
     if(hikeMarkers.current.length > 0) {
+      //loop through each marker
       hikeMarkers.current.forEach(marker => {
         if(marker.getPosition().lat() <= bounds.latMax && marker.getPosition().lat() >= bounds.latMin && marker.getPosition().lng() <= bounds.lngMax && marker.getPosition().lng() >= bounds.lngMin) {
+          //the marker is in the viewable bounds
           marker.setVisible(true);
         } else {
+          //the marker is not in the viewable bounds, so hide it
           marker.setVisible(false);
         }
       });
@@ -380,14 +393,17 @@ const Map = props => {
     }
   }
 
+  //add new hikes to the map
   const addNewHikes = () => {
     //clear any old markers
     removeMarkers();
 
+    //only continue if there are hikes returned from the search
     if(hikes.length > 0) {
       addMarkers();
       markerCluster.current.repaint();
 
+      //if there are more than 500 hikes, we need to hide markers to help performance
       if(hikes.length > 500) {
         //filter the markers to only show those in bounds
         const bounds = getBounds();
@@ -409,11 +425,14 @@ const Map = props => {
     }
   }
 
+  //handles the map offset
   const handleMapOffset = () => {
+    //set the ref to the prop value so it can be accessed in event listeners from previous renders
     contentWindowExpandedRef.current = contentWindowExpanded;
     if(window.innerWidth > laptopRes) {  //only run in desktop mode
       if(initialMapLoad.current) {  //only run if the map has loaded at least once
         if(contentWindowExpanded) {
+          //the content window is expanded, offset is needed
           if(window.innerWidth < desktopRes) {
             map.panBy(-218, 0);
           } else {
@@ -437,22 +456,29 @@ const Map = props => {
   const centerUser = () => {
     if(map) {
       if(userLocation.enabled) {
+        //user shared their location
         if(hikes.length > 0) {
+          //there are hikes, orient the user with the hikes and close the content window
           closeContentWindow();
           orientUser();
         } else {
+          //there are no hikes, so pan to the user's location
           map.panTo({lat: userLocation.lat, lng: userLocation.lng});
         }
       } else {
+        //user didn't share location, use WA corods as center point
         if(hikes.length > 0) {
+          //there are hikes, orient the user with the hikes and close the content window
           closeContentWindow();
           markerCluster.current.fitMapToMarkers();
         } else {
+          //there are no hikes, so pan to the WA coords and set zoom to 6
           map.panTo(waCoords);
           map.setZoom(6);
         }
       }
 
+      //manage offset
       if(window.innerWidth > laptopRes && contentWindowExpanded) {
         if(window.innerWidth < 1400) {
           map.panBy(-218, 0);
