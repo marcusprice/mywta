@@ -117,9 +117,13 @@ mywta follows somewhat of an MVC architecture:
 
 * logic related to db transactions is found in the models directory
 * logic related to processing the api requests is found in the controllers directory
-* request routes are found in the routes directory. 
+* request routes are found in the routes directory
+* the root route points to the build directory in the client
 
 The frontend/client is found in the client directory and is bootstrapped with [Create React App](https://create-react-app.dev/) and requests are proxied to the backend server (see the client's [package.json file](https://github.com/marcusprice/mywta/blob/master/client/package.json)). More detail on the frontend development can be found in the client directory.
+
+## Deployment
+Deploying the app is pretty simple - aside from the normal steps you take to set up the server, simply run the `npm run build` command from the client directory to build the current version of the frontend. The root route (/) points to the build directory in the client, so as soon as you build the frontend the app will serve it. If you miss this step, you will get the "cannot get" response from the server.
 
 ## Contributions
 If anyone is interested, I would love to collaborate on this project and add more features to it. In addition to that, any help with discovering and fixing bugs is totally welcomed. I don't have any detailed protocol in place for contributing/collaborating since this is a relitively low-key project at the moment. 
