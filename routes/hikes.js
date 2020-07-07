@@ -2,7 +2,6 @@
  * hike routes
  * routes the requests to controllers based on URI
  * @module routes/hikes
- * @TODO add POST, PUT & DELETE request logic for API feature (even though data is read-only)
  */
 
 const cors = require('cors');
@@ -26,8 +25,7 @@ module.exports = (app) => {
   //non geolocation endpoint for api
   app.get('/api/v1/getHikes', cors(), (req, res) => {
     hikes.getHikes(req.query, hikeData => {
-      console.log(hikeData);
-      res.end();
+      res.json(hikeData);
     });
   });
   

@@ -15,8 +15,6 @@ const ELEVATION_GAIN_MAX = 10000;
 /** gets hike info from db without locational arguments */
 const getHikes = (parameters) => {
   const query = buildQuery(parameters);
-  console.log(query);
-  
   return pool.query(query.sql, query.values);
 }
 

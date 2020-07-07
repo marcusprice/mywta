@@ -10,12 +10,10 @@ const { parseBool, getCoordinateBoundries } = require('../lib/tools');
 
 /** getHikes converts the non-locational request from strings to numeric & boolean values */
 const getHikes = async (request, callback) => {
-  let convertedRequest = checkParams(request);
-  convertedRequest = convertParameters(request);
-  
+  let convertedRequest = convertParameters(request);
+  convertedRequest = checkForMissingParams(convertedRequest);
   const hikeData =  await Hikes.getHikes(convertedRequest);
-  //console.log(hikeData);
-  
+
   callback(hikeData.rows);
 }
 
@@ -47,12 +45,13 @@ const convertParameters = request => {
 }
 
 //checks the params from the request and adds defaults for any missing
-const checkParams = params => {
+const checkForMissingParams = params => {
   let output = params;
   let keys = Object.keys(params);
 
   //range params
   if(!keys.includes('lengthMin')) output.lengthMin = 0;
+  if(!keys.includes('lengthMax')) output.lengthMax = 50;
   if(!keys.includes('elevationMin')) output.elevationMin = 0;
   if(!keys.includes('elevationGainMin')) output.elevationGainMin = 0;
   if(!keys.includes('minRating')) output.minRating = 0;
