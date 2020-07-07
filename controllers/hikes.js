@@ -10,20 +10,28 @@ const { parseBool, getCoordinateBoundries } = require('../lib/tools');
 
 /** getHikes converts the non-locational request from strings to numeric & boolean values */
 const getHikes = async (request, callback) => {
+  //convert the request for the model
   let convertedRequest = convertParameters(request);
   convertedRequest = checkForMissingParams(convertedRequest);
+
+  //get data from model
   const hikeData =  await Hikes.getHikes(convertedRequest);
 
-  callback(hikeData.rows);
+  //pass data to callback function
+  callback(hikeData.rows); 
 }
 
 /** getHikesWithLocation converts the locational request from strings to numeric & boolean values. It also gets the boundries to pass on to the model */
 const getHikesWithLocation = async (request, callback) => {
+  //convert the request for the model
   let convertedRequest = convertParameters(request);
   convertedRequest = checkForMissingParams(convertedRequest);
   const coordinateBoundries = getCoordinateBoundries({lat: convertedRequest.userLat, lng: convertedRequest.userLng}, convertedRequest.distance);
+
+  //get data from model
   const hikeData = await Hikes.getHikesWithLocation(request, coordinateBoundries);
 
+  //pass data to callback function
   callback(hikeData.rows);
 }
 
@@ -56,7 +64,6 @@ const checkForMissingParams = params => {
   if(!keys.includes('elevationMin')) output.elevationMin = 0;
   if(!keys.includes('elevationGainMin')) output.elevationGainMin = 0;
   if(!keys.includes('minRating')) output.minRating = 0;
-  if(!keys.includes('lengthMax')) output.lengthMax = 50;
   if(!keys.includes('elevationMax')) output.elevationMax = 10000;
   if(!keys.includes('elevationGainMax')) output.elevationGainMax = 10000;
 

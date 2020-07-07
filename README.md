@@ -140,4 +140,4 @@ Here are some potential features that might be cool to add in future releases in
 * Weather data for the hikes? 
 
 ## API
-The API for mywta is coming very soon. Keep an eye here and the wiki pages for more info related to the API.
+There is a REST API available for mywta's trail data, and a GraphQL API coming soon as well. You can learn about the mywta REST API by reviewing it's [wiki page](https://github.com/marcusprice/mywta/wiki/mywta-REST-API)
