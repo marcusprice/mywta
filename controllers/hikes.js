@@ -19,7 +19,8 @@ const getHikes = async (request, callback) => {
 
 /** getHikesWithLocation converts the locational request from strings to numeric & boolean values. It also gets the boundries to pass on to the model */
 const getHikesWithLocation = async (request, callback) => {
-  const convertedRequest = convertParameters(request);
+  let convertedRequest = convertParameters(request);
+  convertedRequest = checkForMissingParams(convertedRequest);
   const coordinateBoundries = getCoordinateBoundries({lat: convertedRequest.userLat, lng: convertedRequest.userLng}, convertedRequest.distance);
   const hikeData = await Hikes.getHikesWithLocation(request, coordinateBoundries);
 

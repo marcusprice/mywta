@@ -2,6 +2,7 @@
  * hike routes
  * routes the requests to controllers based on URI
  * @module routes/hikes
+ * @TODO add some api monitoring tools
  */
 
 const cors = require('cors');
@@ -31,6 +32,14 @@ module.exports = (app) => {
   
   //geolocation endpoint for api
   app.get('/api/v1/getHikesWithLocation', cors(), (req, res) => {
-
+    //this endpoint requires userLat, userLng & distance params
+    const requestKeys = Object.keys(req.query);
+    if(requestKeys.includes('userLat') && requestKeys.includes('userLng') && requestKeys.includes('distance')) {
+      hikes.getHikesWithLocation(req.query, hikeData => {
+        res.json(hikeData);
+      });
+    } else {
+      res.json({error: 'the request didn\'t include required userLat, userLng and/or distance parameters'});
+    }
   });
 }
