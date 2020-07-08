@@ -112,7 +112,7 @@ npm run start
 
 TODO: create a utility that starts the environments in one command.
 
-## App arcitecture 
+## App architecture 
 mywta follows somewhat of an MVC architecture: 
 
 * logic related to db transactions is found in the models directory
