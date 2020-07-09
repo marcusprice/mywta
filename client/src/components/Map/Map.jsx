@@ -508,7 +508,7 @@ const Map = props => {
     if(userLocation.enabled && map) {
       addUserMarkers();
     }
-  }, [map, userLocation.enabled]);
+  }, [map, userLocation]);
 
   //adds hike markers to map
   useEffect(() => {    
