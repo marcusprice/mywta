@@ -64,7 +64,7 @@ const App = () => {
   });
 
   //searches for hikes when locationChecked is set to true
-  //TODO: this is somewhat confusing, rename the state variable
+  //@TODO: this is somewhat confusing, rename the state variable
   useEffect(() => {
     if(locationChecked) {
       searchHikes();
